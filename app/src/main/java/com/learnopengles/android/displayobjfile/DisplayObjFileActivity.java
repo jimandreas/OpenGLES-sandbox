@@ -24,11 +24,12 @@ public class DisplayObjFileActivity extends Activity
     private int mNextNameIndex = -1;
     // wire in the names and display names
     private final String[] obj_file_names = new String[] {
-            "plants3",
-            "Birds",
             "cube",
             "teapot",
-            "cow"
+            "cow",
+            "plants3",
+            "Birds"
+
 
 
             // "lamp.obj"
@@ -37,11 +38,12 @@ public class DisplayObjFileActivity extends Activity
 
     String[] obj_file_display_name = new String[] {
 
-            "Plant",
-            "Birds",
             "Cube",
             "Teapot",
-            "Cow"
+            "Cow",
+            "Plant",
+            "Birds"
+
 
 
     };

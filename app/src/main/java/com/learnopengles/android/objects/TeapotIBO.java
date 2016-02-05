@@ -79,12 +79,13 @@ public class TeapotIBO {
         for (i = 0; i < teapot_indices.length-1; i++) {
             if (teapot_indices[i] == -1) {
                 // repeat previous and next index
-                // indexData[indexDataOffset++] = teapot_indices[i-1];
-                // indexData[indexDataOffset++] = teapot_indices[i+1];
+                indexData[indexDataOffset++] = teapot_indices[i-1];
+                indexData[indexDataOffset++] = teapot_indices[i+1];
                 /*
-                 * nothing fancy - just pass through the -1s...   :-)
+                 * passing through -1's blows up Genymotion,
+                 * so this experiment fails
                  */
-                    indexData[indexDataOffset++] = teapot_indices[i];
+                // indexData[indexDataOffset++] = teapot_indices[i];
                 if (teapot_indices[i + 1] == -1) {
                     Log.e("YOW!", "double minus ones at index " + i + " was after " +
                             teapot_indices[i-1]);
@@ -111,10 +112,9 @@ public class TeapotIBO {
 
         if (vbo[0] > 0 && ibo[0] > 0) {
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vbo[0]);
+            GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, ibo[0]);
             GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, vertexDataBuffer.capacity() * BYTES_PER_FLOAT,
                     vertexDataBuffer, GLES20.GL_STATIC_DRAW);
-
-            GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, ibo[0]);
             GLES20.glBufferData(GLES20.GL_ELEMENT_ARRAY_BUFFER, indexDataBuffer.capacity()
                     * BYTES_PER_SHORT, indexDataBuffer, GLES20.GL_STATIC_DRAW);
 
@@ -134,7 +134,7 @@ public class TeapotIBO {
     ) {
 
         // Debug: disable culling to remove back faces.
-        GLES20.glDisable(GLES20.GL_CULL_FACE);
+        // GLES20.glDisable(GLES20.GL_CULL_FACE);
 
         if (vbo[0] > 0 && ibo[0] > 0) {
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vbo[0]);
@@ -169,7 +169,7 @@ public class TeapotIBO {
         }
 
         // Debug:  Use culling to remove back faces.
-        GLES20.glEnable(GLES20.GL_CULL_FACE);
+        // GLES20.glEnable(GLES20.GL_CULL_FACE);
     }
 
     float teapotPositionData[] /* teapot_vertices[] */ = { 0.0663056f, 0.117825f, 2.10688e-008f,

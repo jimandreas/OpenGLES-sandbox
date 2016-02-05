@@ -35,6 +35,7 @@ import javax.microedition.khronos.opengles.GL10;
  */
 public class DisplayObjFileRenderer implements GLSurfaceView.Renderer
 {
+    private final String LOG_TAG = "Renderer";
 
     String mObjFileName;
 
@@ -307,6 +308,12 @@ public class DisplayObjFileRenderer implements GLSurfaceView.Renderer
         // final float far = 5.0f;  nothing visible
 		
 		Matrix.frustumM(mProjectionMatrix, 0, left, right, bottom, top, near, far);
+
+        int glError;
+        glError = GLES20.glGetError();
+        if (glError != GLES20.GL_NO_ERROR) {
+            Log.e(LOG_TAG, "GLERROR: " + glError);
+        }
 	}	
 
 	@Override
@@ -400,6 +407,8 @@ public class DisplayObjFileRenderer implements GLSurfaceView.Renderer
 
             Matrix.multiplyMV(mLightPosInWorldSpace, 0, mLightModelMatrix, 0, mLightPosInModelSpace, 0);
             Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
+
+
         }
 
 //        // Obj #1 upper left
@@ -464,7 +473,7 @@ public class DisplayObjFileRenderer implements GLSurfaceView.Renderer
         Matrix.translateM(mModelMatrix, 0, -1.0f, -.75f, -2.5f);
         Matrix.scaleM(mModelMatrix, 0, 3.5f, 3.5f, 3.5f);
         do_matrix_setup();
-        drawTeapotIBO();
+ //        drawTeapotIBO();  blows up Genymotion
 //
 //        // Obj #8 bottom center
 //        Matrix.setIdentityM(mModelMatrix, 0);
@@ -473,12 +482,12 @@ public class DisplayObjFileRenderer implements GLSurfaceView.Renderer
 //        do_matrix_setup();
 //        drawTriangleTest();
 //
-//        // Obj #9 bottom right
-//        Matrix.setIdentityM(mModelMatrix, 0);
-//        Matrix.translateM(mModelMatrix, 0, 1.0f, -1.0f, -2.5f);
-//        Matrix.scaleM(mModelMatrix, 0, 0.9f, 0.9f, 0.9f);
-//        do_matrix_setup();
-//        drawCone();
+        // Obj #9 bottom right
+        Matrix.setIdentityM(mModelMatrix, 0);
+        Matrix.translateM(mModelMatrix, 0, 1.0f, -1.0f, -2.5f);
+        Matrix.scaleM(mModelMatrix, 0, 0.9f, 0.9f, 0.9f);
+        do_matrix_setup();
+        drawCone();
 	}
 
 
@@ -520,6 +529,12 @@ public class DisplayObjFileRenderer implements GLSurfaceView.Renderer
 
         // Pass in the light position in eye space.
         GLES20.glUniform3f(mLightPosHandle, mLightPosInEyeSpace[0], mLightPosInEyeSpace[1], mLightPosInEyeSpace[2]);
+
+        int glError;
+        glError = GLES20.glGetError();
+        if (glError != GLES20.GL_NO_ERROR) {
+            Log.e(LOG_TAG, "GLERROR: " + glError);
+        }
     }
 
 	/**

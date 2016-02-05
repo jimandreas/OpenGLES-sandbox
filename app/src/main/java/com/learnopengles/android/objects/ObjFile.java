@@ -228,7 +228,7 @@ public class ObjFile {
             vertex += mLastVertexNumber;
         }
         mVertexIndex.add(vertex);
-        String leftover = item.substring(first_slash+1, item.length());
+        String leftover = item.substring(first_slash + 1, item.length());
         int second_slash = leftover.indexOf('/');
         if (second_slash == -1) {
             mTextureIndex.add(parseInteger(leftover));
@@ -401,7 +401,7 @@ public class ObjFile {
             GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, vertexDataBuffer.capacity() * BYTES_PER_FLOAT,
                     vertexDataBuffer, GLES20.GL_STATIC_DRAW);
 
-            GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+            // GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
         } else {
             // errorHandler.handleError(ErrorHandler.ErrorType.BUFFER_CREATION_ERROR, "glGenBuffers");
             throw new RuntimeException("error on buffer gen");
@@ -448,6 +448,7 @@ public class ObjFile {
                     indexDataBuffer.capacity()
                             * BYTES_PER_SHORT, indexDataBuffer, GLES20.GL_STATIC_DRAW);
             GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, 0);
+            GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
         } else {
             // errorHandler.handleError(ErrorHandler.ErrorType.BUFFER_CREATION_ERROR, "glGenBuffers");
             throw new RuntimeException("error on buffer gen");
@@ -463,6 +464,7 @@ public class ObjFile {
         // Debug: disable culling to remove back faces.
         GLES20.glDisable(GLES20.GL_CULL_FACE);
 
+        // TODO : make sure the buffer is NOT released before the Indexes are bound!!
         /*
          * draw using the IBO - index buffer object,
          * and the revised vertex data that has

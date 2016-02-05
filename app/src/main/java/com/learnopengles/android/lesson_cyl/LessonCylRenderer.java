@@ -34,7 +34,7 @@ import javax.microedition.khronos.opengles.GL10;
 public class LessonCylRenderer implements GLSurfaceView.Renderer
 {
 
-
+    private static String LOG_TAG = "Renderer";
     // update to add touch control - these are set by the SurfaceView class
     // These still work without volatile, but refreshes are not guaranteed to happen.
     public volatile float mDeltaX;
@@ -176,8 +176,13 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
 		
 		// Enable depth testing
 		GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-			
-		// Position the eye in front of the origin.
+
+        int glError;
+        glError = GLES20.glGetError();
+        if (glError != GLES20.GL_NO_ERROR) {
+            Log.e(LOG_TAG, "GLERROR: " + glError);
+        }
+        // Position the eye in front of the origin.
 		final float eyeX = 0.0f;
 		final float eyeY = 0.0f;
 		final float eyeZ = -0.5f;
@@ -299,6 +304,12 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
         // final float far = 5.0f;  nothing visible
 		
 		Matrix.frustumM(mProjectionMatrix, 0, left, right, bottom, top, near, far);
+
+        int glError;
+        glError = GLES20.glGetError();
+        if (glError != GLES20.GL_NO_ERROR) {
+            Log.e(LOG_TAG, "GLERROR: " + glError);
+        }
 	}	
 
 	@Override
@@ -399,7 +410,7 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
         Matrix.translateM(mModelMatrix, 0, -.75f, 1.0f, -2.5f);
         Matrix.scaleM(mModelMatrix, 0, 1.0f, 1.0f, 1.0f);
         do_matrix_setup();
-        drawCylinder();
+        // drawCylinder();
 
         // Obj #2 upper center
         // drawTesting();
@@ -454,6 +465,12 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
         Matrix.scaleM(mModelMatrix, 0, 0.9f, 0.9f, 0.9f);
         do_matrix_setup();
         drawCone();
+
+        int glError;
+        glError = GLES20.glGetError();
+        if (glError != GLES20.GL_NO_ERROR) {
+            Log.e(LOG_TAG, "GLERROR: " + glError);
+        }
 	}
 
 
@@ -495,6 +512,12 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
 
         // Pass in the light position in eye space.
         GLES20.glUniform3f(mLightPosHandle, mLightPosInEyeSpace[0], mLightPosInEyeSpace[1], mLightPosInEyeSpace[2]);
+
+        int glError;
+        glError = GLES20.glGetError();
+        if (glError != GLES20.GL_NO_ERROR) {
+            Log.e(LOG_TAG, "GLERROR: " + glError);
+        }
     }
 
 	/**
