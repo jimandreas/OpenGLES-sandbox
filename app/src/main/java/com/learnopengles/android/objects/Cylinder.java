@@ -1,6 +1,7 @@
 package com.learnopengles.android.objects;
 
 import android.opengl.GLES20;
+import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -122,7 +123,8 @@ public class Cylinder {
         }
         mNumIndices = numSlices + 1;
         /*
-         * debug - print out list of formated vertex data
+         * DEBUG:
+         * print out list of formated vertex data
          */
 //        for (i = 0; i < ((numSlices + 2) * STRIDE_IN_FLOATS) * 2; i+= STRIDE_IN_FLOATS) {
 //            vx = vertexData[i + 0];
@@ -137,23 +139,26 @@ public class Cylinder {
 //                    + vertexData[i + 6] + " " + vertexData[i + 7] + " " + vertexData[i + 8]);
 //        }
 
-        final FloatBuffer vertexDataBuffer = ByteBuffer
-                .allocateDirect(vertexData.length * BYTES_PER_FLOAT)
-                .order(ByteOrder.nativeOrder())
-                .asFloatBuffer();
-        vertexDataBuffer.put(vertexData).position(0);
+        {
+            FloatBuffer vertexDataBuffer = ByteBuffer
+                            .allocateDirect(vertexData.length * BYTES_PER_FLOAT)
+                            .order(ByteOrder.nativeOrder())
+                            .asFloatBuffer();
+            vertexDataBuffer.put(vertexData).position(0);
 
-        GLES20.glGenBuffers(1, vbo_top_and_bottom, 0);
+            GLES20.glGenBuffers(1, vbo_top_and_bottom, 0);
 
-        if (vbo_top_and_bottom[0] > 0) {
-            GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vbo_top_and_bottom[0]);
-            GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, vertexDataBuffer.capacity() * BYTES_PER_FLOAT,
-                    vertexDataBuffer, GLES20.GL_STATIC_DRAW);
+            if (vbo_top_and_bottom[0] > 0) {
+                GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vbo_top_and_bottom[0]);
+                GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, vertexDataBuffer.capacity() * BYTES_PER_FLOAT,
+                        vertexDataBuffer, GLES20.GL_STATIC_DRAW);
 
-            GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
-        } else {
-            // errorHandler.handleError(ErrorHandler.ErrorType.BUFFER_CREATION_ERROR, "glGenBuffers");
-            throw new RuntimeException("error on buffer gen");
+                GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+            } else {
+                // errorHandler.handleError(ErrorHandler.ErrorType.BUFFER_CREATION_ERROR, "glGenBuffers");
+                throw new RuntimeException("error on buffer gen");
+            }
+            vertexDataBuffer.limit(0);
         }
 
         /*
@@ -195,6 +200,32 @@ public class Cylinder {
         }
 
         /*
+         * DEBUG:
+         * optional vertex printout
+         */
+//        float nvx, nvy, nvz;
+//        for (i = 0; i < ((numSlices + 2) * STRIDE_IN_FLOATS) * 2; i += STRIDE_IN_FLOATS) {
+//            vx = vertexData[i + 0];
+//            vy = vertexData[i + 1];
+//            vz = vertexData[i + 2];
+//            String svx = String.format("%6.2f", vx);
+//            String svy = String.format("%6.2f", vy);
+//            String svz = String.format("%6.2f", vz);
+//
+//            nvx = vertexData[i + 3];
+//            nvy = vertexData[i + 4];
+//            nvz = vertexData[i + 5];
+//            String snvx = String.format("%6.2f", nvx);
+//            String snvy = String.format("%6.2f", nvy);
+//            String snvz = String.format("%6.2f", nvz);
+//
+//            Log.w("cyl ", i + " x y z nx ny nz "
+//                    + svx + " " + svy + " " + svz + " and " + snvx + " " + snvy + " " + snvz
+//                    + " clr "
+//                    + vertexData[i + 6] + " " + vertexData[i + 7] + " " + vertexData[i + 8]);
+//        }
+
+        /*
          * saved the revised vertex + normal + color data in a new VBO
          */
         final FloatBuffer cylBodyVertexDataBuffer = ByteBuffer
@@ -202,24 +233,13 @@ public class Cylinder {
                 .order(ByteOrder.nativeOrder())
                 .asFloatBuffer();
         cylBodyVertexDataBuffer.put(vertexData).position(0);
-        GLES20.glGenBuffers(1, vbo_body, 0);
-
-        if (vbo_body[0] > 0) {
-            GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vbo_body[0]);
-            GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, cylBodyVertexDataBuffer.capacity() * BYTES_PER_FLOAT,
-                    cylBodyVertexDataBuffer, GLES20.GL_STATIC_DRAW);
-            GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
-        } else {
-            // errorHandler.handleError(ErrorHandler.ErrorType.BUFFER_CREATION_ERROR, "glGenBuffers");
-            throw new RuntimeException("error on buffer gen");
-        }
 
         /*
          * the index for the body of the cylinder. 
          */
         offset = 0;
         int x;
-        final short[] indexData = new short[(2 * (numSlices+1)) /* +1 */];
+        final short[] indexData = new short[(2 * (numSlices+1))];
         for (x = 1; x < numSlices+2; x++) {
 
             indexData[offset++] = (short) x;
@@ -230,15 +250,29 @@ public class Cylinder {
         final ShortBuffer indexDataBuffer = ByteBuffer
                 .allocateDirect(indexData.length * BYTES_PER_SHORT).order(ByteOrder.nativeOrder())
                 .asShortBuffer();
+        indexDataBuffer.position(0);
         indexDataBuffer.put(indexData).position(0);
 
+        GLES20.glGenBuffers(1, vbo_body, 0);
         GLES20.glGenBuffers(1, ibo, 0);
-        if (ibo[0] > 0) {
+        if ((vbo_body[0] > 0) && (ibo[0] > 0)) {
+            GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vbo_body[0]);
             GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, ibo[0]);
-            GLES20.glBufferData(GLES20.GL_ELEMENT_ARRAY_BUFFER,
-                    indexDataBuffer.capacity()
-                            * BYTES_PER_SHORT, indexDataBuffer, GLES20.GL_STATIC_DRAW);
+
+            GLES20.glBufferData(
+                    GLES20.GL_ARRAY_BUFFER,
+                    cylBodyVertexDataBuffer.capacity() * BYTES_PER_FLOAT,
+                    cylBodyVertexDataBuffer, GLES20.GL_STATIC_DRAW);
+
+            GLES20.glBufferData(
+                    GLES20.GL_ELEMENT_ARRAY_BUFFER,
+                    indexDataBuffer.capacity() * BYTES_PER_SHORT,
+                    indexDataBuffer, GLES20.GL_STATIC_DRAW);
+
+            GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
             GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, 0);
+            cylBodyVertexDataBuffer.limit(0);
+            indexDataBuffer.limit(0);
         } else {
             // errorHandler.handleError(ErrorHandler.ErrorType.BUFFER_CREATION_ERROR, "glGenBuffers");
             throw new RuntimeException("error on buffer gen");
@@ -251,7 +285,7 @@ public class Cylinder {
             int normalAttribute) {
 
         // Debug: disable culling to remove back faces.
-        // GLES20.glDisable(GLES20.GL_CULL_FACE);
+        GLES20.glDisable(GLES20.GL_CULL_FACE);
 
         /*
          * draw top and bottom with triangle fans,
@@ -299,6 +333,14 @@ public class Cylinder {
                     0);  // offset
             GLES20.glEnableVertexAttribArray(positionAttribute);
 
+            // for tracking in gllog
+            GLES20.glEnableVertexAttribArray(positionAttribute);
+            GLES20.glEnableVertexAttribArray(positionAttribute);
+            GLES20.glEnableVertexAttribArray(positionAttribute);
+            GLES20.glEnableVertexAttribArray(positionAttribute);
+            GLES20.glEnableVertexAttribArray(positionAttribute);
+
+
             GLES20.glVertexAttribPointer(normalAttribute, NORMAL_DATA_SIZE_IN_ELEMENTS, GLES20.GL_FLOAT, false,
                     STRIDE_IN_BYTES, POSITION_DATA_SIZE_IN_ELEMENTS * BYTES_PER_FLOAT);
             GLES20.glEnableVertexAttribArray(normalAttribute);
@@ -312,15 +354,15 @@ public class Cylinder {
              */
             GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, ibo[0]);
             GLES20.glDrawElements(
-                    GLES20.GL_TRIANGLE_STRIP,
+                    GLES20.GL_TRIANGLE_STRIP, // GLES20.GL_TRIANGLE_STRIP,  GLES20.GL_LINE_STRIP
                     mCylinderIndexCount,
                     GLES20.GL_UNSIGNED_SHORT,
-                    1);
+                    0);
             GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, 0); // release
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);  // release
         }
         // Debug:  Use culling to remove back faces.
-        // GLES20.glEnable(GLES20.GL_CULL_FACE);
+        GLES20.glEnable(GLES20.GL_CULL_FACE);
     }
 
     public void release() {

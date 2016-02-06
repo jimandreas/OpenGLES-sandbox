@@ -252,31 +252,31 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
         float color_teapot_green[] = new float[] { 0f, 0.3f, 0.0f, 1.0f };
         float color_teapot_red[] = new float[] { 0.3f, 0.0f, 0.0f, 1.0f };
 
-        mCube = new Cube();
-        mTeapot = new Teapot( color_teapot_green );
-        mTeapotIBO = new TeapotIBO( color_teapot_red );
-        mHeightMap = new HeightMap();
-
-        mSphere = new Sphere(
-			30, // slices
-			0.5f, // radius
-            color_teapot_green );
+//        mCube = new Cube();
+//        mTeapot = new Teapot( color_teapot_green );
+//        mTeapotIBO = new TeapotIBO( color_teapot_red );
+//        mHeightMap = new HeightMap();
+//
+//        mSphere = new Sphere(
+//			30, // slices
+//			0.5f, // radius
+//            color_teapot_green );
 
         // Cylinder notes
         //   3 - slices makes a prism
         //   4 - slices makes a cube
 		mCylinder = new Cylinder(
-            30, // slices
+            5, // slices
             0.25f, // radius
             .5f, // length
             color );
-        mCone = new Cone(
-                50, // slices
-                0.25f, // radius
-                .5f, // length
-                nice_color,
-                color_red );
-        mTriangleTest = new TriangleTest();
+//        mCone = new Cone(
+//                50, // slices
+//                0.25f, // radius
+//                .5f, // length
+//                nice_color,
+//                color_red );
+//        mTriangleTest = new TriangleTest();
 
         // Initialize the modifier matrices
         Matrix.setIdentityM(mAccumulatedRotation, 0);
@@ -410,67 +410,67 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
         Matrix.translateM(mModelMatrix, 0, -.75f, 1.0f, -2.5f);
         Matrix.scaleM(mModelMatrix, 0, 1.0f, 1.0f, 1.0f);
         do_matrix_setup();
-        // drawCylinder();
+        drawCylinder();
 
         // Obj #2 upper center
         // drawTesting();
 
-        // Obj #3 upper right
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 1.0f, .75f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, 3.5f, 3.5f, 3.5f);
-        do_matrix_setup();
-        drawTeapotIBO();
-
-        // Obj #4 mid left
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, -1.0f, 0.0f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, .25f, .25f, .25f);
-        do_matrix_setup();
-        drawCube();
-
-        // Obj #5 center
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 0.0f, 0.0f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, .6f, .6f, .6f);
-        do_matrix_setup();
-        drawSphere();
-
-        // Obj #6 mid right
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 1.0f, -0.25f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, 3.5f, 3.5f, 3.5f);
-        do_matrix_setup();
-        if (!mRenderOnlyIBO) {
-            drawTeapot();  // direct rendering
-        }
-
-        // Obj #7 bottom left
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, -1.0f, -1.0f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, .05f, .05f, .05f);
-        do_matrix_setup();
-        drawHeightmap();
-
-        // Obj #8 bottom center
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 0.0f, -1.0f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, .4f, .4f, .4f);
-        do_matrix_setup();
-        drawTriangleTest();
-
-        // Obj #9 bottom right
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 1.0f, -1.0f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, 0.9f, 0.9f, 0.9f);
-        do_matrix_setup();
-        drawCone();
-
-        int glError;
-        glError = GLES20.glGetError();
-        if (glError != GLES20.GL_NO_ERROR) {
-            Log.e(LOG_TAG, "GLERROR: " + glError);
-        }
+//        // Obj #3 upper right
+//        Matrix.setIdentityM(mModelMatrix, 0);
+//        Matrix.translateM(mModelMatrix, 0, 1.0f, .75f, -2.5f);
+//        Matrix.scaleM(mModelMatrix, 0, 3.5f, 3.5f, 3.5f);
+//        do_matrix_setup();
+//        // drawTeapotIBO();
+//
+//        // Obj #4 mid left
+//        Matrix.setIdentityM(mModelMatrix, 0);
+//        Matrix.translateM(mModelMatrix, 0, -1.0f, 0.0f, -2.5f);
+//        Matrix.scaleM(mModelMatrix, 0, .25f, .25f, .25f);
+//        do_matrix_setup();
+//        // drawCube();
+//
+//        // Obj #5 center
+//        Matrix.setIdentityM(mModelMatrix, 0);
+//        Matrix.translateM(mModelMatrix, 0, 0.0f, 0.0f, -2.5f);
+//        Matrix.scaleM(mModelMatrix, 0, .6f, .6f, .6f);
+//        do_matrix_setup();
+//        // drawSphere();
+//
+//        // Obj #6 mid right
+//        Matrix.setIdentityM(mModelMatrix, 0);
+//        Matrix.translateM(mModelMatrix, 0, 1.0f, -0.25f, -2.5f);
+//        Matrix.scaleM(mModelMatrix, 0, 3.5f, 3.5f, 3.5f);
+//        do_matrix_setup();
+//        if (!mRenderOnlyIBO) {
+// //            drawTeapot();  // direct rendering
+//        }
+//
+//        // Obj #7 bottom left
+//        Matrix.setIdentityM(mModelMatrix, 0);
+//        Matrix.translateM(mModelMatrix, 0, -1.0f, -1.0f, -2.5f);
+//        Matrix.scaleM(mModelMatrix, 0, .05f, .05f, .05f);
+//        do_matrix_setup();
+//        // drawHeightmap();
+//
+//        // Obj #8 bottom center
+//        Matrix.setIdentityM(mModelMatrix, 0);
+//        Matrix.translateM(mModelMatrix, 0, 0.0f, -1.0f, -2.5f);
+//        Matrix.scaleM(mModelMatrix, 0, .4f, .4f, .4f);
+//        do_matrix_setup();
+//        // drawTriangleTest();
+//
+//        // Obj #9 bottom right
+//        Matrix.setIdentityM(mModelMatrix, 0);
+//        Matrix.translateM(mModelMatrix, 0, 1.0f, -1.0f, -2.5f);
+//        Matrix.scaleM(mModelMatrix, 0, 0.9f, 0.9f, 0.9f);
+//        do_matrix_setup();
+//        // drawCone();
+//
+//        int glError;
+//        glError = GLES20.glGetError();
+//        if (glError != GLES20.GL_NO_ERROR) {
+//            Log.e(LOG_TAG, "GLERROR: " + glError);
+//        }
 	}
 
 
