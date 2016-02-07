@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>    
-    <string name="app_name">Learn OpenGL ES Tutorials</string>
+    <string name="app_name">0Sandbox</string>
     <string name="toc">Table of Contents</string>
-    <string name="tocHeader">Welcome to the Learn OpenGL ES tutorials! Please visit the website at: http://www.learnopengles.com/</string>
+    <string name="tocHeader">Table of contents</string>
     <string name="lesson_one">Lesson One: Getting Started</string>  
     <string name="lesson_one_subtitle">This lesson shows the basics of drawing in OpenGL ES 2.</string>
     <string name="lesson_two">Lesson Two: An Intro to Lighting</string>  

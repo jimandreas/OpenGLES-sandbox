@@ -25,6 +25,7 @@ public class DisplayObjFileActivity extends Activity
     // wire in the names and display names
     private final String[] obj_file_names = new String[] {
             "cube",
+            "helixcoil",
             "teapot",
             "cow",
             "plants3",
@@ -39,6 +40,7 @@ public class DisplayObjFileActivity extends Activity
     String[] obj_file_display_name = new String[] {
 
             "Cube",
+            "Coiled Helix",
             "Teapot",
             "Cow",
             "Plant",

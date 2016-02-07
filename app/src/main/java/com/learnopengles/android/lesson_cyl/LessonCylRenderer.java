@@ -9,6 +9,7 @@ import android.util.Log;
 import com.learnopengles.android.objects.Cone;
 import com.learnopengles.android.objects.Cube;
 import com.learnopengles.android.objects.Cylinder;
+import com.learnopengles.android.objects.Ellipse;
 import com.learnopengles.android.objects.HeightMap;
 import com.learnopengles.android.objects.Sphere;
 import com.learnopengles.android.objects.Teapot;
@@ -151,6 +152,7 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
     private HeightMap mHeightMap;
     private Sphere mSphere;
     private Cylinder mCylinder;
+    private Ellipse mEllipse;
     private Cone mCone;
     private TriangleTest mTriangleTest;
 
@@ -266,10 +268,16 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
         //   3 - slices makes a prism
         //   4 - slices makes a cube
 		mCylinder = new Cylinder(
-            5, // slices
+            30, // slices
             0.25f, // radius
             .5f, // length
             color );
+
+        mEllipse = new Ellipse(
+                30, // slices
+                0.25f, // radius
+                .5f, // length
+                color );
 //        mCone = new Cone(
 //                50, // slices
 //                0.25f, // radius
@@ -411,6 +419,13 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
         Matrix.scaleM(mModelMatrix, 0, 1.0f, 1.0f, 1.0f);
         do_matrix_setup();
         drawCylinder();
+
+        // Obj #2 middle
+        Matrix.setIdentityM(mModelMatrix, 0);
+        Matrix.translateM(mModelMatrix, 0, 0.0f, 0.0f, -2.5f);
+        Matrix.scaleM(mModelMatrix, 0, 1.0f, 1.0f, 1.0f);
+        do_matrix_setup();
+        drawEllipse();
 
         // Obj #2 upper center
         // drawTesting();
@@ -825,6 +840,16 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
     {
         // Pass in the position information
         mCylinder.render(mPositionHandle,
+                mColorHandle,
+                mNormalHandle
+        );
+    }
+
+    /* cylinder */
+    private void drawEllipse()
+    {
+        // Pass in the position information
+        mEllipse.render(mPositionHandle,
                 mColorHandle,
                 mNormalHandle
         );
