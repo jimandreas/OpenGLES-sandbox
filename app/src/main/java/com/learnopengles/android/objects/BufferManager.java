@@ -134,6 +134,7 @@ public class BufferManager {
         mGLarrayList.add(new GLArrayEntry());
         GLArrayEntry ae = mGLarrayList.get(sCurrentGlArrayEntry);
         GLES20.glGenBuffers(1, ae.gl_buf, 0);
+        ae.numVertices = sFloatArrayIndex;
         int numbytes = sFloatArrayIndex * BYTES_PER_FLOAT;
 
         if (ae.gl_buf[0] > 0) {
@@ -147,6 +148,8 @@ public class BufferManager {
             // errorHandler(// do something );
             throw new RuntimeException("error on buffer gen");
         }
+
+        // dumpVertexList();
     }
 
     /*
@@ -206,5 +209,37 @@ public class BufferManager {
             }
         }
 
+    }
+    
+    private void dumpVertexList() {
+    /*
+     * DEBUG:
+     * optional vertex printout
+     */
+    float nvx, nvy, nvz;
+    float vx, vy, vz;
+    int i;
+    for (i = 0; i < sFloatArrayIndex; i += STRIDE_IN_FLOATS) {
+        vx = sFloatArray[i + 0];
+        vy = sFloatArray[i + 1];
+        vz = sFloatArray[i + 2];
+        String svx = String.format("%6.2f", vx);
+        String svy = String.format("%6.2f", vy);
+        String svz = String.format("%6.2f", vz);
+
+        nvx = sFloatArray[i + 3];
+        nvy = sFloatArray[i + 4];
+        nvz = sFloatArray[i + 5];
+        String snvx = String.format("%6.2f", nvx);
+        String snvy = String.format("%6.2f", nvy);
+        String snvz = String.format("%6.2f", nvz);
+
+        Log.w("vert ", i + " x y z nx ny nz "
+                        + svx + " " + svy + " " + svz + " and " + snvx + " " + snvy + " " + snvz
+//                    + " clr "
+//                    + vertexData[i + 6] + " " + vertexData[i + 7] + " "
+//                    + vertexData[i + 8] + " " + vertexData[i + 8]
+        );
+    }
     }
 }
