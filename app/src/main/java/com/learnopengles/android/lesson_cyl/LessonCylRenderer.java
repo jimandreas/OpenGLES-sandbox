@@ -6,10 +6,12 @@ import android.opengl.Matrix;
 import android.os.SystemClock;
 import android.util.Log;
 
+import com.learnopengles.android.objects.BufferManager;
 import com.learnopengles.android.objects.Cone;
 import com.learnopengles.android.objects.Cube;
 import com.learnopengles.android.objects.Cylinder;
 import com.learnopengles.android.objects.Ellipse;
+import com.learnopengles.android.objects.EllipseHelix;
 import com.learnopengles.android.objects.HeightMap;
 import com.learnopengles.android.objects.Sphere;
 import com.learnopengles.android.objects.Teapot;
@@ -153,10 +155,11 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
     private Sphere mSphere;
     private Cylinder mCylinder;
     private Ellipse mEllipse;
+    private EllipseHelix mEllipseHelix;
     private Cone mCone;
     private TriangleTest mTriangleTest;
 
-
+    private BufferManager mBufferManager;
 
 	/*
 	 * Let's get started.
@@ -165,11 +168,14 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
 	{
         mLessonCylActivity = lessonCylActivity;
         mGlSurfaceView = glSurfaceView;
+        mBufferManager = BufferManager.getInstance(lessonCylActivity);
+        BufferManager.allocateInitialBuffer();
 	}
 
 	@Override
 	public void onSurfaceCreated(GL10 glUnused, EGLConfig config) 
 	{
+
 		// Set the background clear color to black.
 		GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		
@@ -278,6 +284,14 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
                 0.25f, // radius
                 .5f, // length
                 color );
+        mEllipseHelix = new EllipseHelix(
+                mBufferManager,
+                30, // slices
+                .5f, // radius
+                .5f, // length
+                color );
+        // commit the vertices
+        mBufferManager.transferToGl();
 //        mCone = new Cone(
 //                50, // slices
 //                0.25f, // radius
@@ -423,6 +437,13 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
         // Obj #2 middle
         Matrix.setIdentityM(mModelMatrix, 0);
         Matrix.translateM(mModelMatrix, 0, 0.0f, 0.0f, -2.5f);
+        Matrix.scaleM(mModelMatrix, 0, 1.0f, 1.0f, 1.0f);
+        do_matrix_setup();
+        drawEllipseHelix();
+
+        // Obj #2 middle
+        Matrix.setIdentityM(mModelMatrix, 0);
+        Matrix.translateM(mModelMatrix, 0, -1.0f, -1.0f, -2.5f);
         Matrix.scaleM(mModelMatrix, 0, 1.0f, 1.0f, 1.0f);
         do_matrix_setup();
         drawEllipse();
@@ -845,11 +866,21 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
         );
     }
 
-    /* cylinder */
+    /* ellipse */
     private void drawEllipse()
     {
         // Pass in the position information
         mEllipse.render(mPositionHandle,
+                mColorHandle,
+                mNormalHandle
+        );
+    }
+
+    /* ellipse with only triangles, now IBO */
+    private void drawEllipseHelix()
+    {
+        // Pass in the position information
+       mBufferManager.render(mPositionHandle,
                 mColorHandle,
                 mNormalHandle
         );

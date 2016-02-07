@@ -12,10 +12,12 @@ import android.view.View;
 import android.widget.Button;
 
 import com.learnopengles.android.R;
+import com.learnopengles.android.objects.BufferManager;
 
 public class LessonCylActivity extends Activity
 {
     private static String LOG_TAG = "activity";
+
     /** Hold a reference to our GLSurfaceView */
 	private LessonCylGLSurfaceView mGLSurfaceView;
 	private LessonCylRenderer mRenderer;
