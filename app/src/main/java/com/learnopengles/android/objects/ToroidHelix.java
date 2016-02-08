@@ -118,7 +118,7 @@ public class ToroidHelix {
             y2 = y1 + r2 * (float) Math.cos(phi) * (float) Math.cos(phi * F);
             z2 = z1 + r2 * (float) Math.sin(phi * F);
 
-/* the derivitive of x1+x2 to get velocity vector direction */
+/* the derivative of x1+x2 to get velocity vector direction */
             x2d = r1 * (float) Math.cos(phi) + r2 * (float) Math.cos(phi) * (float) Math.cos(phi * F) - F * r2 * (float) Math.sin(phi) * (float) Math.sin(phi * F);
             y2d = -r1 * (float) Math.sin(phi) - r2 * (float) Math.sin(phi) * (float) Math.cos(phi * F) - F * r2 * (float) Math.cos(phi) * (float) Math.sin(phi * F);
             z2d = F * r2 * (float) Math.cos(phi * F);

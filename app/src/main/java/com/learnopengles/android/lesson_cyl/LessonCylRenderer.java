@@ -303,15 +303,15 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer {
         float color_teapot_green[] = new float[]{0f, 0.3f, 0.0f, 1.0f};
         float color_teapot_red[] = new float[]{0.3f, 0.0f, 0.0f, 1.0f};
 
-//        mCube = new Cube();
-//        mTeapot = new Teapot( color_teapot_green );
-//        mTeapotIBO = new TeapotIBO( color_teapot_red );
-//        mHeightMap = new HeightMap();
-//
-//        mSphere = new Sphere(
-//			30, // slices
-//			0.5f, // radius
-//            color_teapot_green );
+        mCube = new Cube();
+        mTeapot = new Teapot( color_teapot_green );
+        mTeapotIBO = new TeapotIBO( color_teapot_red );
+        mHeightMap = new HeightMap();
+
+        mSphere = new Sphere(
+			30, // slices
+			0.5f, // radius
+            color_teapot_green );
 
         // Cylinder notes
         //   3 - slices makes a prism
@@ -327,29 +327,29 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer {
                 0.25f, // radius
                 .5f, // length
                 color);
-//        mEllipseHelix = new EllipseHelix(
-//                mBufferManager,
-//                10, // slices
-//                .5f, // radius
-//                .5f, // length
-//                color);
 
+        mEllipseHelix = new EllipseHelix(
+                mBufferManager,
+                10, // slices
+                .5f, // radius
+                .5f, // length
+                color);
 
 
         mToroidHelix = new ToroidHelix(
                 mBufferManager,
-                color );
+                color);
         mBufferManager.transferToGl();
 
         // commit the vertices
 
-//        mCone = new Cone(
-//                50, // slices
-//                0.25f, // radius
-//                .5f, // length
-//                nice_color,
-//                color_red );
-//        mTriangleTest = new TriangleTest();
+        mCone = new Cone(
+                50, // slices
+                0.25f, // radius
+                .5f, // length
+                nice_color,
+                color_red );
+        mTriangleTest = new TriangleTest();
 
         // Initialize the modifier matrices
         Matrix.setIdentityM(mAccumulatedRotation, 0);
@@ -481,81 +481,80 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer {
         Matrix.translateM(mModelMatrix, 0, -.75f, 1.0f, -2.5f);
         Matrix.scaleM(mModelMatrix, 0, 1.0f, 1.0f, 1.0f);
         do_matrix_setup();
-        drawCylinder();
+        mCylinder.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
 
-        // Obj #2 middle
+        // Obj #5 center
         Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 0.0f, 0.0f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, .05f, .05f, .05f);
+        Matrix.translateM(mModelMatrix, 0, 0.0f, 1.0f, -2.5f);
+        Matrix.scaleM(mModelMatrix, 0, .6f, .6f, .6f);
         do_matrix_setup();
-        drawBufferedTriangles();
+        mSphere.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
 
-        // Obj #2 middle
+        // Obj #3 upper right
         Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, -1.0f, -1.0f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, 1.0f, 1.0f, 1.0f);
+        Matrix.translateM(mModelMatrix, 0, 1.0f, .75f, -2.5f);
+        Matrix.scaleM(mModelMatrix, 0, 3.5f, 3.5f, 3.5f);
         do_matrix_setup();
-        drawEllipse();
+        mTeapotIBO.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
 
-        // Obj #2 upper center
-        // drawTesting();
+        // Obj #4 mid left
+        Matrix.setIdentityM(mModelMatrix, 0);
+        Matrix.translateM(mModelMatrix, 0, -1.0f, 0.0f, -2.5f);
+        Matrix.scaleM(mModelMatrix, 0, .25f, .25f, .25f);
+        do_matrix_setup();
+        mCube.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
 
-//        // Obj #3 upper right
-//        Matrix.setIdentityM(mModelMatrix, 0);
-//        Matrix.translateM(mModelMatrix, 0, 1.0f, .75f, -2.5f);
-//        Matrix.scaleM(mModelMatrix, 0, 3.5f, 3.5f, 3.5f);
-//        do_matrix_setup();
-//        // drawTeapotIBO();
-//
-//        // Obj #4 mid left
-//        Matrix.setIdentityM(mModelMatrix, 0);
-//        Matrix.translateM(mModelMatrix, 0, -1.0f, 0.0f, -2.5f);
-//        Matrix.scaleM(mModelMatrix, 0, .25f, .25f, .25f);
-//        do_matrix_setup();
-//        // drawCube();
-//
 //        // Obj #5 center
 //        Matrix.setIdentityM(mModelMatrix, 0);
 //        Matrix.translateM(mModelMatrix, 0, 0.0f, 0.0f, -2.5f);
 //        Matrix.scaleM(mModelMatrix, 0, .6f, .6f, .6f);
 //        do_matrix_setup();
-//        // drawSphere();
+//        // mSphere.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
 //
-//        // Obj #6 mid right
-//        Matrix.setIdentityM(mModelMatrix, 0);
-//        Matrix.translateM(mModelMatrix, 0, 1.0f, -0.25f, -2.5f);
-//        Matrix.scaleM(mModelMatrix, 0, 3.5f, 3.5f, 3.5f);
-//        do_matrix_setup();
-//        if (!mRenderOnlyIBO) {
-// //            drawTeapot();  // direct rendering
-//        }
-//
-//        // Obj #7 bottom left
-//        Matrix.setIdentityM(mModelMatrix, 0);
-//        Matrix.translateM(mModelMatrix, 0, -1.0f, -1.0f, -2.5f);
-//        Matrix.scaleM(mModelMatrix, 0, .05f, .05f, .05f);
-//        do_matrix_setup();
-//        // drawHeightmap();
-//
-//        // Obj #8 bottom center
-//        Matrix.setIdentityM(mModelMatrix, 0);
-//        Matrix.translateM(mModelMatrix, 0, 0.0f, -1.0f, -2.5f);
-//        Matrix.scaleM(mModelMatrix, 0, .4f, .4f, .4f);
-//        do_matrix_setup();
-//        // drawTriangleTest();
-//
-//        // Obj #9 bottom right
-//        Matrix.setIdentityM(mModelMatrix, 0);
-//        Matrix.translateM(mModelMatrix, 0, 1.0f, -1.0f, -2.5f);
-//        Matrix.scaleM(mModelMatrix, 0, 0.9f, 0.9f, 0.9f);
-//        do_matrix_setup();
-//        // drawCone();
-//
-//        int glError;
-//        glError = GLES20.glGetError();
-//        if (glError != GLES20.GL_NO_ERROR) {
-//            Log.e(LOG_TAG, "GLERROR: " + glError);
-//        }
+        // Obj #5 center
+        Matrix.setIdentityM(mModelMatrix, 0);
+        Matrix.translateM(mModelMatrix, 0, 0.0f, 0.0f, -2.5f);
+        Matrix.scaleM(mModelMatrix, 0, .05f, .05f, .05f);
+        do_matrix_setup();
+        mBufferManager.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
+
+
+        // Obj #6 mid right
+        Matrix.setIdentityM(mModelMatrix, 0);
+        Matrix.translateM(mModelMatrix, 0, 1.0f, -0.25f, -2.5f);
+        Matrix.scaleM(mModelMatrix, 0, 3.5f, 3.5f, 3.5f);
+        do_matrix_setup();
+        if (!mRenderOnlyIBO) {
+            mTeapot.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);  // direct rendering
+        }
+
+        // Obj #7 bottom left
+        Matrix.setIdentityM(mModelMatrix, 0);
+        Matrix.translateM(mModelMatrix, 0, -1.0f, -1.0f, -2.5f);
+        Matrix.scaleM(mModelMatrix, 0, .05f, .05f, .05f);
+        do_matrix_setup();
+        mHeightMap.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
+
+        // Obj #2 middle
+        Matrix.setIdentityM(mModelMatrix, 0);
+        Matrix.translateM(mModelMatrix, 0, 0.0f, -1.0f, -2.5f);
+        Matrix.scaleM(mModelMatrix, 0, 1.0f, 1.0f, 1.0f);
+        do_matrix_setup();
+        // mTriangleTest.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
+        mEllipse.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
+
+        // Obj #9 bottom right
+        Matrix.setIdentityM(mModelMatrix, 0);
+        Matrix.translateM(mModelMatrix, 0, 1.0f, -1.0f, -2.5f);
+        Matrix.scaleM(mModelMatrix, 0, 0.9f, 0.9f, 0.9f);
+        do_matrix_setup();
+        mCone.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
+
+        int glError;
+        glError = GLES20.glGetError();
+        if (glError != GLES20.GL_NO_ERROR) {
+            Log.e(LOG_TAG, "GLERROR: " + glError);
+        }
     }
 
 
@@ -835,100 +834,6 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer {
                         + "}                                                                     \n";
 
         return perPixelFragmentShader;
-    }
-
-    /*
-     * Draws a teapot
-     */
-    private void drawTeapot() {
-        // Pass in the position information
-        mTeapot.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle,
-                mWireFrameRenderingFlag);
-    }
-
-    private void drawTeapotIBO() {
-        // Pass in the position information
-        mTeapotIBO.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle,
-                mWireFrameRenderingFlag);
-    }
-
-    /*
-     * Draws a cube.
-     */
-    private void drawCube() {
-        // Pass in the position information
-        mCube.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle
-        );
-    }
-
-    /* Heightmap (lesson 8) */
-    private void drawHeightmap() {
-        // Pass in the position information
-        mHeightMap.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle
-        );
-    }
-
-    /* sphere - derived from heightmap */
-    private void drawSphere() {
-        // Pass in the position information
-        mSphere.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle
-        );
-    }
-
-    /* cylinder */
-    private void drawCylinder() {
-        // Pass in the position information
-        mCylinder.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle
-        );
-    }
-
-    /* ellipse */
-    private void drawEllipse() {
-        // Pass in the position information
-        mEllipse.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle
-        );
-    }
-
-    /* ellipse with only triangles, now IBO */
-    private void drawBufferedTriangles() {
-        // Pass in the position information
-        mBufferManager.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle,
-                mWireFrameRenderingFlag
-        );
-    }
-
-    /* cone - two triangle fans */
-    private void drawCone() {
-        // Pass in the position information
-        mCone.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle
-        );
-    }
-
-    /* triangle test */
-    private void drawTriangleTest() {
-        // Pass in the position information
-        mTriangleTest.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle
-        );
     }
 
     public void toggleShader() {

@@ -162,7 +162,16 @@ public class HeightMap {
     public void render(
             int positionAttribute,
             int colorAttribute,
-            int normalAttribute) {
+            int normalAttribute,
+            boolean doWireframeRendering ) {
+
+        // Draw
+        int todo;
+        if (doWireframeRendering) {
+            todo = GLES20.GL_LINE_STRIP;
+        } else {
+            todo = GLES20.GL_TRIANGLE_STRIP;
+        }
 
         if (vbo[0] > 0 && ibo[0] > 0) {
 
@@ -186,7 +195,7 @@ public class HeightMap {
 
             // Draw
             GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, ibo[0]);
-            GLES20.glDrawElements(GLES20.GL_TRIANGLE_STRIP, indexCount, GLES20.GL_UNSIGNED_SHORT, 0);
+            GLES20.glDrawElements(todo, indexCount, GLES20.GL_UNSIGNED_SHORT, 0);
 
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
             GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, 0);

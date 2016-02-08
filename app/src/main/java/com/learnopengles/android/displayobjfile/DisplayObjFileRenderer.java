@@ -487,7 +487,7 @@ public class DisplayObjFileRenderer implements GLSurfaceView.Renderer
         Matrix.translateM(mModelMatrix, 0, 1.0f, -1.0f, -2.5f);
         Matrix.scaleM(mModelMatrix, 0, 0.9f, 0.9f, 0.9f);
         do_matrix_setup();
-        drawCone();
+        mCone.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
 	}
 
 
@@ -782,89 +782,6 @@ public class DisplayObjFileRenderer implements GLSurfaceView.Renderer
                         + "}                                                                     \n";
 
         return perPixelFragmentShader;
-    }
-
-    /*
-     * Draws a teapot
-     */
-    private void drawTeapot()
-    {
-        // Pass in the position information
-        mTeapot.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle,
-                mWireFrameRenderingFlag);
-    }
-
-    private void drawTeapotIBO()
-    {
-        // Pass in the position information
-        mTeapotIBO.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle,
-                mWireFrameRenderingFlag);
-    }
-
-    /*
-     * Draws a cube.
-     */
-    private void drawCube()
-    {
-        // Pass in the position information
-        mCube.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle
-        );
-    }
-
-    /* Heightmap (lesson 8) */
-    private void drawHeightmap()
-    {
-        // Pass in the position information
-        mHeightMap.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle
-        );
-    }
-
-    /* sphere - derived from heightmap */
-    private void drawSphere()
-    {
-        // Pass in the position information
-        mSphere.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle
-        );
-    }
-
-    /* cylinder */
-    private void drawCylinder()
-    {
-        // Pass in the position information
-        mCylinder.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle
-        );
-    }
-
-    /* cone - two triangle fans */
-    private void drawCone()
-    {
-        // Pass in the position information
-        mCone.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle
-        );
-    }
-
-    /* triangle test */
-    private void drawTriangleTest()
-    {
-        // Pass in the position information
-        mTriangleTest.render(mPositionHandle,
-                mColorHandle,
-                mNormalHandle
-        );
     }
 
     /* asset obj */

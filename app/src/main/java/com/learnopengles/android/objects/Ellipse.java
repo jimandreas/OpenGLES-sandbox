@@ -283,10 +283,19 @@ public class Ellipse {
     public void render(
             int positionAttribute,
             int colorAttribute,
-            int normalAttribute) {
+            int normalAttribute,
+            boolean doWireframeRendering ) {
+
+        // Draw
+        int todo;
+        if (doWireframeRendering) {
+            todo = GLES20.GL_LINES;
+        } else {
+            todo = GLES20.GL_TRIANGLE_FAN;
+        }
 
         // Debug: disable culling to remove back faces.
-        GLES20.glDisable(GLES20.GL_CULL_FACE);
+        // GLES20.glDisable(GLES20.GL_CULL_FACE);
 
         /*
          * draw top and bottom with triangle fans,
@@ -312,8 +321,8 @@ public class Ellipse {
             GLES20.glEnableVertexAttribArray(colorAttribute);
 
             // Draw - no indexes, top and bottom
-            GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, mNumIndices + 1);
-            GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, mNumIndices + 1, mNumIndices + 1);
+            GLES20.glDrawArrays(todo, 0, mNumIndices + 1);
+            GLES20.glDrawArrays(todo, mNumIndices + 1, mNumIndices + 1);
 
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);  // release
         }
@@ -350,12 +359,18 @@ public class Ellipse {
                     STRIDE_IN_BYTES, (POSITION_DATA_SIZE_IN_ELEMENTS + NORMAL_DATA_SIZE_IN_ELEMENTS) * BYTES_PER_FLOAT);
             GLES20.glEnableVertexAttribArray(colorAttribute);
 
+            if (doWireframeRendering) {
+                todo = GLES20.GL_LINE_STRIP;
+            } else {
+                todo = GLES20.GL_TRIANGLE_STRIP;
+            }
+
             /*
              * draw using the IBO - index buffer object
              */
             GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, ibo[0]);
             GLES20.glDrawElements(
-                    GLES20.GL_TRIANGLE_STRIP, // GLES20.GL_TRIANGLE_STRIP,  GLES20.GL_LINE_STRIP
+                    todo,
                     mCylinderIndexCount,
                     GLES20.GL_UNSIGNED_SHORT,
                     0);
@@ -363,7 +378,7 @@ public class Ellipse {
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);  // release
         }
         // Debug:  Use culling to remove back faces.
-        GLES20.glEnable(GLES20.GL_CULL_FACE);
+        // GLES20.glEnable(GLES20.GL_CULL_FACE);
     }
 
     public void release() {

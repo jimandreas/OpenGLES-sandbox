@@ -189,8 +189,16 @@ public class Cone {
     public void render(
             int positionAttribute,
             int colorAttribute,
-            int normalAttribute) {
+            int normalAttribute,
+            boolean doWireframeRendering ) {
 
+        // Draw
+        int todo;
+        if (doWireframeRendering) {
+            todo = GLES20.GL_LINES;
+        } else {
+            todo = GLES20.GL_TRIANGLE_FAN;
+        }
 
         if (vbo_bottom[0] > 0) {
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vbo_bottom[0]);
@@ -209,13 +217,16 @@ public class Cone {
             GLES20.glEnableVertexAttribArray(colorAttribute);
 
             // Draw - no indexes
-
-            GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, mNumIndices+2);
+            GLES20.glDrawArrays(todo, 0, mNumIndices+2);
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
         }
 
-
+        if (doWireframeRendering) {
+            todo = GLES20.GL_LINES;
+        } else {
+            todo = GLES20.GL_TRIANGLE_FAN;
+        }
         if (vbo_top[0] > 0) {
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vbo_top[0]);
 
@@ -235,7 +246,7 @@ public class Cone {
             // Draw - no indexes
             // GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, ibo[0]);
             // GLES20.glDrawElements(GLES20.GL_TRIANGLE_FAN, mNumIndices, GLES20.GL_UNSIGNED_SHORT, 0);
-            GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, mNumIndices+2);
+            GLES20.glDrawArrays(todo, 0, mNumIndices+2);
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
             // GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, 0);
         }

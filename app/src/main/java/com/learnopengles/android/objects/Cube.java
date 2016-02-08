@@ -206,7 +206,16 @@ public class Cube {
 
     public void render(int mPositionHandle,
                           int mColorHandle,
-                          int mNormalHandle ) {
+                          int mNormalHandle,
+                       boolean doWireframeRendering ) {
+
+        // Draw
+        int todo;
+        if (doWireframeRendering) {
+            todo = GLES20.GL_LINES;
+        } else {
+            todo = GLES20.GL_TRIANGLES;
+        }
 
         // Pass in the position information
         mCubePositions.position(0);
@@ -230,7 +239,7 @@ public class Cube {
         GLES20.glEnableVertexAttribArray(mNormalHandle);
 
         // Draw the cube.
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 36);
+        GLES20.glDrawArrays(todo, 0, 36);
     }
 
 }
