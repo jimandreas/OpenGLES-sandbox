@@ -15,7 +15,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SimpleAdapter;
 
-import com.learnopengles.android.displayobjfile.DisplayObjFileActivity;
+import com.learnopengles.android.displayobjfile.ActivityDisplayObjFile;
 import com.learnopengles.android.lesson1.LessonOneActivity;
 import com.learnopengles.android.lesson2.LessonTwoActivity;
 import com.learnopengles.android.lesson3.LessonThreeActivity;
@@ -24,7 +24,7 @@ import com.learnopengles.android.lesson5.LessonFiveActivity;
 import com.learnopengles.android.lesson6.LessonSixActivity;
 import com.learnopengles.android.lesson7.LessonSevenActivity;
 import com.learnopengles.android.lesson8.LessonEightActivity;
-import com.learnopengles.android.lesson_cyl.LessonCylActivity;
+import com.learnopengles.android.displayobjects.ActiivtyDisplayObjects;
 
 public class TableOfContents extends ListActivity 
 {
@@ -51,7 +51,7 @@ public class TableOfContents extends ListActivity
 			item.put(ITEM_TITLE, getText(R.string.objects_title));
 			item.put(ITEM_SUBTITLE, getText(R.string.objects_subtitle));
 			data.add(item);
-			activityMapping.put(i++, LessonCylActivity.class);
+			activityMapping.put(i++, ActiivtyDisplayObjects.class);
 		}
 
 		{
@@ -60,7 +60,7 @@ public class TableOfContents extends ListActivity
 			item.put(ITEM_TITLE, getText(R.string.activity_load_obj_file_title));
 			item.put(ITEM_SUBTITLE, getText(R.string.activity_load_obj_file_subtitle));
 			data.add(item);
-			activityMapping.put(i++, DisplayObjFileActivity.class);
+			activityMapping.put(i++, ActivityDisplayObjFile.class);
 		}
 		
 		{

@@ -1,18 +1,15 @@
-package com.learnopengles.android.lesson_cyl;
+package com.learnopengles.android.displayobjects;
 
 import android.content.Context;
 import android.graphics.PointF;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
-import android.util.FloatMath;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.learnopengles.android.lesson7.LessonSevenRenderer;
-
-public class LessonCylGLSurfaceView extends GLSurfaceView
+public class GLSurfaceViewDisplayObjects extends GLSurfaceView
 {
-	private LessonCylRenderer mRenderer;
+	private RendererDisplayObjects mRenderer;
 
 	// Offsets for touch events
     private float mPreviousX;
@@ -22,12 +19,12 @@ public class LessonCylGLSurfaceView extends GLSurfaceView
     private boolean mTwoFingerOperation = false;
     float mOldX = 0f, mOldY = 0f;
 
-	public LessonCylGLSurfaceView(Context context)
+	public GLSurfaceViewDisplayObjects(Context context)
 	{
 		super(context);
 	}
 
-	public LessonCylGLSurfaceView(Context context, AttributeSet attrs)
+	public GLSurfaceViewDisplayObjects(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);		
 	}
@@ -171,7 +168,7 @@ public class LessonCylGLSurfaceView extends GLSurfaceView
     }
 
 	// Hides superclass method.
-	public void setRenderer(LessonCylRenderer renderer, float density)
+	public void setRenderer(RendererDisplayObjects renderer, float density)
 	{
 		mRenderer = renderer;
 		mDensity = density;

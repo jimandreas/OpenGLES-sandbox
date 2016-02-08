@@ -6,7 +6,6 @@ import android.opengl.Matrix;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.learnopengles.android.lesson_cyl.LessonCylActivity;
 import com.learnopengles.android.objects.Cone;
 import com.learnopengles.android.objects.Cube;
 import com.learnopengles.android.objects.Cylinder;
@@ -33,7 +32,7 @@ import javax.microedition.khronos.opengles.GL10;
  * This class implements our custom renderer. Note that the GL10 parameter passed in is unused for OpenGL ES 2.0
  * renderers -- the static class GLES20 is used instead.
  */
-public class DisplayObjFileRenderer implements GLSurfaceView.Renderer
+public class RendererDisplayObjFile implements GLSurfaceView.Renderer
 {
     private final String LOG_TAG = "Renderer";
 
@@ -135,7 +134,7 @@ public class DisplayObjFileRenderer implements GLSurfaceView.Renderer
 	private int mPointProgramHandle;
 
 
-    private DisplayObjFileActivity mDisplayObjFileActivity;
+    private ActivityDisplayObjFile mDisplayObjFileActivity;
     private GLSurfaceView mGlSurfaceView;
     /** A temporary matrix. */
     private float[] mTemporaryMatrix = new float[16];
@@ -164,7 +163,7 @@ public class DisplayObjFileRenderer implements GLSurfaceView.Renderer
 	/*
 	 * Let's get started.
 	 */
-	public DisplayObjFileRenderer(final DisplayObjFileActivity displayObjFileActivity, final GLSurfaceView glSurfaceView)
+	public RendererDisplayObjFile(final ActivityDisplayObjFile displayObjFileActivity, final GLSurfaceView glSurfaceView)
 	{
         mDisplayObjFileActivity = displayObjFileActivity;
         mGlSurfaceView = glSurfaceView;

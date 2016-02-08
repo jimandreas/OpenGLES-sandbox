@@ -3,7 +3,7 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"	
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
-	<com.learnopengles.android.lesson99.HackOneGLSurfaceView
+	<com.learnopengles.android.displayobjfile.GLSurfaceViewDisplayObjFile
 		android:id="@+id/gl_surface_view"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent" />
@@ -13,29 +13,29 @@
 		android:layout_gravity="bottom|center_horizontal"
 		android:orientation="horizontal">
 		<Button
-			android:id="@+id/button_decrease_num_cubes"
+			android:id="@+id/button_prev_obj"
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"					
-			android:text="@string/lesson_seven_decrease_cube_count" />	
+			android:text="@string/button_prev_obj" />
 		<Button
-			android:id="@+id/button_increase_num_cubes"
+			android:id="@+id/button_next_obj"
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"					
-			android:text="@string/lesson_seven_increase_cube_count" />
+			android:text="@string/button_next_obj" />
 		<Button
-			android:id="@+id/button_switch_VBOs"
+			android:id="@+id/button_switch_rendering_mode"
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"					
-			android:text="@string/lesson_seven_using_VBOs" />
+			android:text="@string/objects_using_wireframe_rendering" />
 		<Button
 			android:id="@+id/button_switch_shaders"
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"					
-			android:text="@string/lesson_seven_using_stride" />
+			android:text="@string/objects_using_vertex_shading" />
 	</LinearLayout>
 
 </FrameLayout>

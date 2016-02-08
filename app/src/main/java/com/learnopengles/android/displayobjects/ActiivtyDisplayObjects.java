@@ -1,4 +1,4 @@
-package com.learnopengles.android.lesson_cyl;
+package com.learnopengles.android.displayobjects;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -12,15 +12,14 @@ import android.view.View;
 import android.widget.Button;
 
 import com.learnopengles.android.R;
-import com.learnopengles.android.objects.BufferManager;
 
-public class LessonCylActivity extends Activity
+public class ActiivtyDisplayObjects extends Activity
 {
     private static String LOG_TAG = "activity";
 
     /** Hold a reference to our GLSurfaceView */
-	private LessonCylGLSurfaceView mGLSurfaceView;
-	private LessonCylRenderer mRenderer;
+	private GLSurfaceViewDisplayObjects mGLSurfaceView;
+	private RendererDisplayObjects mRenderer;
 
 	private ScaleGestureDetector mScaleDetector;
 
@@ -29,7 +28,7 @@ public class LessonCylActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.lesson_cyl);
+        setContentView(R.layout.display_objects);
 
         mScaleDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.OnScaleGestureListener() {
             @Override
@@ -46,7 +45,7 @@ public class LessonCylActivity extends Activity
             }
         });
 
-        mGLSurfaceView = (LessonCylGLSurfaceView) findViewById(R.id.gl_surface_view);
+        mGLSurfaceView = (GLSurfaceViewDisplayObjects) findViewById(R.id.gl_surface_view);
 
 		// Check if the system supports OpenGL ES 2.0.
 		final ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
@@ -61,7 +60,7 @@ public class LessonCylActivity extends Activity
             final DisplayMetrics displayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-            mRenderer = new LessonCylRenderer(this, mGLSurfaceView);
+            mRenderer = new RendererDisplayObjects(this, mGLSurfaceView);
 			mGLSurfaceView.setRenderer(mRenderer, displayMetrics.density);
 		} 
 		else 
@@ -148,9 +147,9 @@ public class LessonCylActivity extends Activity
             @Override
             public void run() {
                 if (useVertexShading) {
-                    ((Button) findViewById(R.id.button_switch_shaders)).setText(R.string.objects_using_vertex_shading);
-                } else {
                     ((Button) findViewById(R.id.button_switch_shaders)).setText(R.string.objects_using_pixel_shading);
+                } else {
+                    ((Button) findViewById(R.id.button_switch_shaders)).setText(R.string.objects_using_vertex_shading);
                 }
             }
         });

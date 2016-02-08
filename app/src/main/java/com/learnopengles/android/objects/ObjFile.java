@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.learnopengles.android.displayobjfile.DisplayObjFileActivity;
+import com.learnopengles.android.displayobjfile.ActivityDisplayObjFile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class ObjFile {
 
     Bundle mMaterial = new Bundle();
 
-    public ObjFile(DisplayObjFileActivity mActivity) {
+    public ObjFile(ActivityDisplayObjFile mActivity) {
         mAssetManager = mActivity.getAssets();
     }
 

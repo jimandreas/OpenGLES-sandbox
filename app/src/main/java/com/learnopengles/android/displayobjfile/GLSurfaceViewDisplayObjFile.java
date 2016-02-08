@@ -7,9 +7,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
-public class DisplayObjFileGLSurfaceView extends GLSurfaceView
+public class GLSurfaceViewDisplayObjFile extends GLSurfaceView
 {
-	private DisplayObjFileRenderer mRenderer;
+	private RendererDisplayObjFile mRenderer;
 
 	// Offsets for touch events
     private float mPreviousX;
@@ -19,12 +19,12 @@ public class DisplayObjFileGLSurfaceView extends GLSurfaceView
     private boolean mTwoFingerOperation = false;
     float mOldX = 0f, mOldY = 0f;
 
-	public DisplayObjFileGLSurfaceView(Context context)
+	public GLSurfaceViewDisplayObjFile(Context context)
 	{
 		super(context);
 	}
 
-	public DisplayObjFileGLSurfaceView(Context context, AttributeSet attrs)
+	public GLSurfaceViewDisplayObjFile(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);		
 	}
@@ -168,7 +168,7 @@ public class DisplayObjFileGLSurfaceView extends GLSurfaceView
     }
 
 	// Hides superclass method.
-	public void setRenderer(DisplayObjFileRenderer renderer, float density)
+	public void setRenderer(RendererDisplayObjFile renderer, float density)
 	{
 		mRenderer = renderer;
 		mDensity = density;

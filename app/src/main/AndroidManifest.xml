@@ -54,11 +54,11 @@
             android:label="@string/lesson_eight" />
 
         <activity
-            android:name=".lesson_cyl.LessonCylActivity"
+            android:name=".displayobjects.ActiivtyDisplayObjects"
             android:label="@string/objects_title" />
 
         <activity
-            android:name=".displayobjfile.DisplayObjFileActivity"
+            android:name=".displayobjfile.ActivityDisplayObjFile"
             android:label="@string/activity_load_obj_file_title" />
 
         <service

@@ -6,19 +6,18 @@ import android.content.Context;
 import android.content.pm.ConfigurationInfo;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
 
 import com.learnopengles.android.R;
 
 
-public class DisplayObjFileActivity extends Activity
+public class ActivityDisplayObjFile extends Activity
 {
     private static String LOG_TAG = "activity";
     /** Hold a reference to our GLSurfaceView */
-	private DisplayObjFileGLSurfaceView mGLSurfaceView;
-	private DisplayObjFileRenderer mRenderer;
+	private GLSurfaceViewDisplayObjFile mGLSurfaceView;
+	private RendererDisplayObjFile mRenderer;
     private static int mCurrentObjFileIndex = 0;
 
     private int mNextNameIndex = -1;
@@ -88,9 +87,9 @@ public class DisplayObjFileActivity extends Activity
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.display_obj);
+        setContentView(R.layout.display_obj_file);
 
-        mGLSurfaceView = (DisplayObjFileGLSurfaceView) findViewById(R.id.gl_surface_view);
+        mGLSurfaceView = (GLSurfaceViewDisplayObjFile) findViewById(R.id.gl_surface_view);
 
 		// Check if the system supports OpenGL ES 2.0.
 		final ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
@@ -105,7 +104,7 @@ public class DisplayObjFileActivity extends Activity
             final DisplayMetrics displayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-            mRenderer = new DisplayObjFileRenderer(this, mGLSurfaceView);
+            mRenderer = new RendererDisplayObjFile(this, mGLSurfaceView);
 			mGLSurfaceView.setRenderer(mRenderer, displayMetrics.density);
 		} 
 		else 

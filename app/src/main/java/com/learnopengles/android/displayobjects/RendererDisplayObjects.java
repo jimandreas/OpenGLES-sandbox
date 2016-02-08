@@ -1,4 +1,4 @@
-package com.learnopengles.android.lesson_cyl;
+package com.learnopengles.android.displayobjects;
 
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
@@ -35,7 +35,7 @@ import javax.microedition.khronos.opengles.GL10;
  * This class implements our custom renderer. Note that the GL10 parameter passed in is unused for OpenGL ES 2.0
  * renderers -- the static class GLES20 is used instead.
  */
-public class LessonCylRenderer implements GLSurfaceView.Renderer {
+public class RendererDisplayObjects implements GLSurfaceView.Renderer {
 
     private static String LOG_TAG = "Renderer";
     // update to add touch control - these are set by the SurfaceView class
@@ -171,7 +171,7 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer {
     private int mPointProgramHandle;
 
 
-    private LessonCylActivity mLessonCylActivity;
+    private ActiivtyDisplayObjects mLessonCylActivity;
     private GLSurfaceView mGlSurfaceView;
     /**
      * A temporary matrix.
@@ -209,7 +209,7 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer {
     /*
      * Let's get started.
      */
-    public LessonCylRenderer(final LessonCylActivity lessonCylActivity, final GLSurfaceView glSurfaceView) {
+    public RendererDisplayObjects(final ActiivtyDisplayObjects lessonCylActivity, final GLSurfaceView glSurfaceView) {
         mLessonCylActivity = lessonCylActivity;
         mGlSurfaceView = glSurfaceView;
         mBufferManager = BufferManager.getInstance(lessonCylActivity);
