@@ -35,7 +35,7 @@ import javax.microedition.khronos.opengles.GL;
  */
 public class BufferManager {
 
-    private static final int INITIAL_FLOAT_BUFFER_SIZE = 40000;
+    private static final int INITIAL_FLOAT_BUFFER_SIZE = 150000;
 
     private static final int POSITION_DATA_SIZE_IN_ELEMENTS = 3;
     private static final int NORMAL_DATA_SIZE_IN_ELEMENTS = 3;
@@ -134,7 +134,7 @@ public class BufferManager {
         mGLarrayList.add(new GLArrayEntry());
         GLArrayEntry ae = mGLarrayList.get(sCurrentGlArrayEntry);
         GLES20.glGenBuffers(1, ae.gl_buf, 0);
-        ae.numVertices = sFloatArrayIndex;
+        ae.numVertices = sFloatArrayIndex / STRIDE_IN_FLOATS;
         int numbytes = sFloatArrayIndex * BYTES_PER_FLOAT;
 
         if (ae.gl_buf[0] > 0) {
@@ -169,7 +169,8 @@ public class BufferManager {
     public void render(
             int positionAttribute,
             int colorAttribute,
-            int normalAttribute) {
+            int normalAttribute,
+            boolean doWireframeRendering ) {
 
         GLArrayEntry ae;
 
@@ -197,9 +198,15 @@ public class BufferManager {
                         STRIDE_IN_BYTES, (POSITION_DATA_SIZE_IN_ELEMENTS + NORMAL_DATA_SIZE_IN_ELEMENTS) * BYTES_PER_FLOAT);
                 GLES20.glEnableVertexAttribArray(colorAttribute);
 
-                // Draw Triangles (or GL_LINES for debugging)
-                // GLES20.glDrawArrays(GLES20.GL_LINES, 0, ae.numVertices);
-                GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, ae.numVertices);
+                // Draw
+                int todo;
+                if (doWireframeRendering) {
+                    todo = GLES20.GL_LINES;
+                } else {
+                    todo = GLES20.GL_TRIANGLES;
+                }
+
+                GLES20.glDrawArrays(todo, 0, ae.numVertices);
 
                 GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);  // release
             }
