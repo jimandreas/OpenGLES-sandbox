@@ -16,6 +16,7 @@ import com.learnopengles.android.objects.HeightMap;
 import com.learnopengles.android.objects.Sphere;
 import com.learnopengles.android.objects.Teapot;
 import com.learnopengles.android.objects.TeapotIBO;
+import com.learnopengles.android.objects.ToroidHelix;
 import com.learnopengles.android.objects.TriangleTest;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -156,6 +157,7 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
     private Cylinder mCylinder;
     private Ellipse mEllipse;
     private EllipseHelix mEllipseHelix;
+    private ToroidHelix mToroidHelix;
     private Cone mCone;
     private TriangleTest mTriangleTest;
 
@@ -289,6 +291,9 @@ public class LessonCylRenderer implements GLSurfaceView.Renderer
                 30, // slices
                 .5f, // radius
                 .5f, // length
+                color );
+        mToroidHelix = new ToroidHelix(
+                mBufferManager,
                 color );
         // commit the vertices
         mBufferManager.transferToGl();
