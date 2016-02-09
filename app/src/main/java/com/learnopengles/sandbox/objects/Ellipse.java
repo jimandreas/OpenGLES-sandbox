@@ -67,7 +67,7 @@ public class Ellipse {
             vertexData[offset++] = radius * -(float) Math.sin(angleInRadians) * ELLIPSE_Z_FACTOR;
 
             // normal vector
-            vertexData[offset++] = 0f; // normal is wierd??
+            vertexData[offset++] = 0f;
             vertexData[offset++] = 3f;
             vertexData[offset++] = 0f;
             // color value
@@ -170,15 +170,22 @@ public class Ellipse {
         offset = STRIDE_IN_FLOATS; // start after the center point of the fan
         float normalX, normalZ;
         for (i = 0; i <= numSlices; i++) {
-            
+            float angleInRadians =
+                    ((float) i / (float) numSlices)
+                            * ((float) Math.PI * 2f);
             normalX = vertexData[offset++];
             offset++;
             normalZ = vertexData[offset++];
 
             // normal vector
-            vertexData[offset++] = normalX * NORMAL_BRIGHTNESS_FACTOR;
+//            vertexData[offset++] = normalX * NORMAL_BRIGHTNESS_FACTOR;
+//            vertexData[offset++] = 0f;
+//            vertexData[offset++] = normalZ * NORMAL_BRIGHTNESS_FACTOR;
+            // normals were getting scaled by ellipse compression, fix this
+            vertexData[offset++] = radius * (float) Math.cos(angleInRadians) * NORMAL_BRIGHTNESS_FACTOR;
             vertexData[offset++] = 0f;
-            vertexData[offset++] = normalZ * NORMAL_BRIGHTNESS_FACTOR;
+            vertexData[offset++] = radius * (float) Math.sin(angleInRadians) * NORMAL_BRIGHTNESS_FACTOR;
+
             // skip over color value
             offset += COLOR_DATA_SIZE_IN_ELEMENTS;
         }

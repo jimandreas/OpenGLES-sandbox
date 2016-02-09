@@ -172,6 +172,8 @@ public class BufferManager {
 
         GLArrayEntry ae;
 
+        // GLES20.glDisable(GLES20.GL_CULL_FACE);
+
         for (int i = 0; i < mGLarrayList.size(); i++ ) {
             ae = mGLarrayList.get(i);
             if (ae.buffer_allocated == false) {
@@ -213,6 +215,8 @@ public class BufferManager {
                 throw new RuntimeException("buffer manager render: null buffer");
             }
         }
+
+        // GLES20.glEnable(GLES20.GL_CULL_FACE);
 
     }
     

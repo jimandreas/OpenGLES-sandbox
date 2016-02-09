@@ -374,7 +374,8 @@ public class RendererDisplayObjects implements GLSurfaceView.Renderer {
         final float bottom = -1.0f * mScaleF;
         final float top = 1.0f * mScaleF;
         final float near = 1.0f;
-        final float far = 20.0f;
+        // final float far = 20.0f;
+        final float far = 10.0f;
         // final float far = 5.0f;  nothing visible
 
         Matrix.frustumM(mProjectionMatrix, 0, left, right, bottom, top, near, far);
@@ -478,6 +479,8 @@ public class RendererDisplayObjects implements GLSurfaceView.Renderer {
             Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
         }
 
+        // GLES20.glClearDepth(1.0f);
+
         // Obj #1 upper left
         Matrix.setIdentityM(mModelMatrix, 0);
         Matrix.translateM(mModelMatrix, 0, -.75f, 1.0f, -2.5f);
@@ -517,6 +520,8 @@ public class RendererDisplayObjects implements GLSurfaceView.Renderer {
         Matrix.setIdentityM(mModelMatrix, 0);
         Matrix.translateM(mModelMatrix, 0, 0.0f, 0.0f, -2.5f);
         Matrix.scaleM(mModelMatrix, 0, .05f, .05f, .05f);
+        // 5X large version - usefule for debugging
+        // Matrix.scaleM(mModelMatrix, 0, .25f, .25f, .25f);
         do_matrix_setup();
         mBufferManager.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
 
@@ -828,9 +833,9 @@ public class RendererDisplayObjects implements GLSurfaceView.Renderer {
                         + "   vec3 lightVector = normalize(u_LightPos - v_Position);             \n"
                         // Calculate the dot product of the light vector and vertex normal. If the normal and light vector are
                         // pointing in the same direction then it will get max illumination.  *** was 0.1, now *** 0.6
-                        + "   float diffuse = max(dot(v_Normal, lightVector), 0.6);              \n"
+                        + "   float diffuse = max(dot(v_Normal, lightVector), 0.1);              \n"
                         // Add attenuation.
-                        + "   diffuse = diffuse * (1.0 / (1.0 + (0.25 * distance /* * distance */)));  \n"
+                        // + "   diffuse = diffuse * (1.0 / (1.0 + (0.25 * distance /* * distance */)));  \n"
                         // Multiply the color by the diffuse illumination level to get final output color.
                         + "   gl_FragColor = v_Color * diffuse;                                  \n"
                         + "}                                                                     \n";

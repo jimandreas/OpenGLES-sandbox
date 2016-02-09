@@ -188,13 +188,22 @@ public class ToroidHelix {
         for (i = 0; i < (nx - 1); i++) {
 /* reuse last point of i and j as first point */
             for (j = 0; j < (ny - 1); j++) {
+//                add_to_buffer(raw_index[i][j], ny);
+//                add_to_buffer(raw_index[i][j + 1], ny);
+//                add_to_buffer(raw_index[i + 1][j + 1], ny);
+                // reverse 2 and 3 winding
                 add_to_buffer(raw_index[i][j], ny);
+                add_to_buffer(raw_index[i + 1][j + 1], ny);
                 add_to_buffer(raw_index[i][j + 1], ny);
-                add_to_buffer(raw_index[i + 1][j + 1], ny);
+
                 polys++;
+//                add_to_buffer(raw_index[i][j], ny);
+//                add_to_buffer(raw_index[i + 1][j + 1], ny);
+//                add_to_buffer(raw_index[i + 1][j], ny);
+                // reverse 2 and 3 winding
                 add_to_buffer(raw_index[i][j], ny);
-                add_to_buffer(raw_index[i + 1][j + 1], ny);
                 add_to_buffer(raw_index[i + 1][j], ny);
+                add_to_buffer(raw_index[i + 1][j + 1], ny);
                 polys++;
             }
         }
@@ -227,16 +236,16 @@ public class ToroidHelix {
         vertexData[offset++] = vy;
         vertexData[offset++] = vz;
 
-        vertexData[offset++] = 70f * nvx;
-        vertexData[offset++] = 70f * nvy;
-        vertexData[offset++] = 70f * nvz;
+        vertexData[offset++] = -9.1f * nvx;
+        vertexData[offset++] = -9.1f * nvy;
+        vertexData[offset++] = -9.1f * nvz;
 
 //        vertexData[offset++] = 0.0f;
-//        vertexData[offset++] = 3.0f;
 //        vertexData[offset++] = 0.0f;
+//        vertexData[offset++] = 7.0f;
 
-//        vertexData[offset++] = -7f * vx;
-//        vertexData[offset++] = -7f * vy;
+//        vertexData[offset++] = -1f * vx;
+//        vertexData[offset++] = -1f * vy;
 //        vertexData[offset++] = 7f * vz;
 
         // color value
