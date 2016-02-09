@@ -2,8 +2,11 @@ package com.learnopengles.sandbox.objects;
 
 
 /*
-* http://userpages.umbc.edu/~squire/download/make_helix_635.c
-*/
+ * Algorithm credit:
+ * http://userpages.umbc.edu/~squire/cs437_lect.html
+ * Lecture 14, Curves and Surfaces, targets
+ * http://userpages.umbc.edu/~squire/download/make_helix_635.c
+ */
 
 import android.os.SystemClock;
 import android.util.Log;
@@ -23,14 +26,8 @@ public class ToroidHelix {
     private static final int STRIDE_IN_BYTES = STRIDE_IN_FLOATS * BYTES_PER_FLOAT;
 
     private static final float NORMAL_BRIGHTNESS_FACTOR = 7f;
-    private static final float ELLIPSE_X_FACTOR = 2f / 9f;
-    private static final float ELLIPSE_Z_FACTOR = 1f;
 
     private int mNumIndices = 0;
-    private int mCylinderIndexCount;
-    final int[] vbo_top_and_bottom = new int[1];
-    final int[] vbo_body = new int[1];
-    final int[] ibo = new int[1];
 
     private BufferManager mBufMgr;
 
@@ -67,9 +64,12 @@ public class ToroidHelix {
         vertexData = mBufMgr.getFloatArray(12288 * STRIDE_IN_FLOATS);
         offset = mBufMgr.getFloatArrayIndex();
 
-        int[] tri_raw_p1 = new int[TRIS];
-        int[] tri_raw_p2 = new int[TRIS];
-        int[] tri_raw_p3 = new int[TRIS];
+        float start_time = SystemClock.uptimeMillis();
+        Log.w(LOG_TAG, "start calculation");
+
+//        int[] tri_raw_p1 = new int[TRIS];
+//        int[] tri_raw_p2 = new int[TRIS];
+//        int[] tri_raw_p3 = new int[TRIS];
 
         float phi, theta;
         float phi1, theta1;
@@ -88,25 +88,25 @@ public class ToroidHelix {
         float F = 8.0f;  /* wrapping factor of r2 around r1 */
 
 /*   for big helix  */
-        float phi_step = pi / 128.0f;
-        int nx = 257;
+//        float phi_step = pi / 128.0f;
+//        int nx = 257;
+//
+//        float theta_step = pi / 8.0f;
+//        int ny = 17;
 
+/* for smooth shaded helix, smaller steps */
+        float phi_step = pi / 64.0f;
+        int nx = 129;
         float theta_step = pi / 8.0f;
         int ny = 17;
 
-/* for smooth shaded helix, smaller steps */
-        phi_step = pi / 64.0f;
-        nx = 129;
-        theta_step = pi / 8.0f;
-        ny = 17;
+        points = 1; /* that is the standard */
 
-        points = 1; /* thats the standard */
-
-        float start_time = SystemClock.uptimeMillis();
-        Log.w(LOG_TAG, "start calculation");
+        /* loop around toride at radius r2, around that at r2 */
+        /* this makes x1+x2, the center of the generated figure */
 
         phi1 = 0.0f;
-        for (i = 0; i < nx; i++)   /* loop around toride at radius r2, around that at r2 */ {                     /* this makes x1+x2, the center of the generated figure */
+        for (i = 0; i < nx; i++)   {
             phi = phi1;
             phi1 = phi1 + phi_step;
             x1 = r1 * (float) Math.sin(phi);
@@ -158,31 +158,31 @@ public class ToroidHelix {
             }
         }
         points--;
-// printf("raw built \n");
+
 
         polys = 0;             /* now build set of points defining surface */
-        for (i = 0; i < (nx - 1); i++) {
-/* reuse last point of i and j as first point */
-            for (j = 0; j < (ny - 1); j++) {
-                tri_raw_p1[polys] = raw_index[i][j];
-                tri_raw_p2[polys] = raw_index[i][j + 1];
-                tri_raw_p3[polys] = raw_index[i + 1][j + 1];
-                polys++;
-                tri_raw_p1[polys] = raw_index[i][j];
-                tri_raw_p2[polys] = raw_index[i + 1][j + 1];
-                tri_raw_p3[polys] = raw_index[i + 1][j];
-                polys++;
-            }
-        }
+//        for (i = 0; i < (nx - 1); i++) {
+///* reuse last point of i and j as first point */
+//            for (j = 0; j < (ny - 1); j++) {
+//                tri_raw_p1[polys] = raw_index[i][j];
+//                tri_raw_p2[polys] = raw_index[i][j + 1];
+//                tri_raw_p3[polys] = raw_index[i + 1][j + 1];
+//                polys++;
+//                tri_raw_p1[polys] = raw_index[i][j];
+//                tri_raw_p2[polys] = raw_index[i + 1][j + 1];
+//                tri_raw_p3[polys] = raw_index[i + 1][j];
+//                polys++;
+//            }
+//        }
 
-        for (i = 0; i < nx; i++) {  /* loop around toride at radius r2, around that at r2 */
-            for (i = 0; i < polys; i++) {  /* now output 3 point polygons */
-//                Log.w(LOG_TAG, "indx are "
-//                        + tri_raw_p1[i] + " "
-//                        + tri_raw_p2[i] + " "
-//                        + tri_raw_p3[i]);
-            }
-        }
+//        for (i = 0; i < nx; i++) {  /* loop around toride at radius r2, around that at r2 */
+//            for (i = 0; i < polys; i++) {  /* now output 3 point polygons */
+////                Log.w(LOG_TAG, "indx are "
+////                        + tri_raw_p1[i] + " "
+////                        + tri_raw_p2[i] + " "
+////                        + tri_raw_p3[i]);
+//            }
+//        }
 
         polys = 0;             /* now build set of points defining surface */
         for (i = 0; i < (nx - 1); i++) {
@@ -227,9 +227,17 @@ public class ToroidHelix {
         vertexData[offset++] = vy;
         vertexData[offset++] = vz;
 
-        vertexData[offset++] = -7f * vx;
-        vertexData[offset++] = -7f * vy;
-        vertexData[offset++] = -7f * vz;
+        vertexData[offset++] = 70f * nvx;
+        vertexData[offset++] = 70f * nvy;
+        vertexData[offset++] = 70f * nvz;
+
+//        vertexData[offset++] = 0.0f;
+//        vertexData[offset++] = 3.0f;
+//        vertexData[offset++] = 0.0f;
+
+//        vertexData[offset++] = -7f * vx;
+//        vertexData[offset++] = -7f * vy;
+//        vertexData[offset++] = 7f * vz;
 
         // color value
         vertexData[offset++] = mColor[0];

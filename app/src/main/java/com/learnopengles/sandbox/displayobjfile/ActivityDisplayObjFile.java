@@ -195,9 +195,9 @@ public class ActivityDisplayObjFile extends Activity
             @Override
             public void run() {
                 if (useVertexShading) {
-                    ((Button) findViewById(R.id.button_switch_shaders)).setText(R.string.objects_using_vertex_shading);
-                } else {
                     ((Button) findViewById(R.id.button_switch_shaders)).setText(R.string.objects_using_pixel_shading);
+                } else {
+                    ((Button) findViewById(R.id.button_switch_shaders)).setText(R.string.objects_using_vertex_shading);
                 }
             }
         });

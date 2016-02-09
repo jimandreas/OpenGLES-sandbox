@@ -35,7 +35,7 @@
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"					
-			android:text="@string/objects_using_vertex_shading" />
+			android:text="@string/objects_using_pixel_shading" />
 	</LinearLayout>
 
 </FrameLayout>

@@ -299,6 +299,7 @@ public class RendererDisplayScaled implements GLSurfaceView.Renderer {
          */
         // float color[] = new float[] { 0.5f, 0.5f, 0.0f, 0.0f };
         float nice_color[] = new float[]{218f / 256f, 182f / 256f, 85f / 256f, 1.0f};
+        float chimera_color[] = new float[]{229f / 256f, 196f / 256f, 153f / 256f, 1.0f};
         float color[] = new float[]{0.0f, 0.4f, 0.0f, 1.0f};
         float color_red[] = new float[]{0.6f, 0.0f, 0.0f, 1.0f};
         float color_teapot_green[] = new float[]{0f, 0.3f, 0.0f, 1.0f};
@@ -306,7 +307,7 @@ public class RendererDisplayScaled implements GLSurfaceView.Renderer {
 
         mToroidHelix = new ToroidHelix(
                 mBufferManager,
-                color);
+                chimera_color);
         mBufferManager.transferToGl();
 
 
@@ -689,7 +690,7 @@ public class RendererDisplayScaled implements GLSurfaceView.Renderer {
                         + "   float diffuse = max(dot(modelViewNormal, lightVector), 0.6);       \n"
                         // Attenuate the light based on distance.
                         //  + "   diffuse = diffuse * (1.0 / (1.0 + (0.25 * distance * distance )));  \n"
-                        + "   diffuse = diffuse * (1.0 / (1.0 + (0.55 * distance /* * distance */)));  \n"
+                        + "   diffuse = diffuse * (1.0 / (1.0 + (0.25 * distance /* * distance */)));  \n"
                         // HACK: minimal level of diffuse for ambient
                         // result - blew out the highlihts, didn't bring up the shadows as expected
                         //   + "   diffuse = min(diffuse, 0.2);  \n"
@@ -768,8 +769,9 @@ public class RendererDisplayScaled implements GLSurfaceView.Renderer {
                         + "   vec3 lightVector = normalize(u_LightPos - v_Position);             \n"
                         // Calculate the dot product of the light vector and vertex normal. If the normal and light vector are
                         // pointing in the same direction then it will get max illumination.  *** was 0.1, now *** 0.6
-                        + "   float diffuse = max(dot(v_Normal, lightVector), 0.3);              \n"
+                        + "   float diffuse = max(dot(v_Normal, lightVector), 0.6);              \n"
                         // Add attenuation.
+                        // + "   diffuse = diffuse * (1.0 / (1.0 + (0.25 * distance /* * distance */)));  \n"
                         + "   diffuse = diffuse * (1.0 / (1.0 + (0.25 * distance /* * distance */)));  \n"
                         // Multiply the color by the diffuse illumination level to get final output color.
                         + "   gl_FragColor = v_Color * diffuse;                                  \n"
