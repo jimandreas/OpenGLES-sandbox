@@ -62,4 +62,9 @@
     <string name="activity_load_obj_file_subtitle">Parses an OBJ file and displays it</string>
     <string name="button_next_obj">Next OBJ</string>
     <string name="button_prev_obj">Prev OBJ</string>
+
+    <string name="objects_multiple_title">Add triangles to the scene</string>
+    <string name="objects_multiple_subtitle">Find the system performance limit</string>
+    <string name="objects_multiple_more_triangles">More TRIs</string>
+    <string name="objects_multiple_fewer_triangles">Fewer TRIs</string>
 </resources>

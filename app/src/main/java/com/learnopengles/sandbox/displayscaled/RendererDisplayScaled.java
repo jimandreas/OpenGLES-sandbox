@@ -1,4 +1,4 @@
-package com.learnopengles.sandbox.displayobjects;
+package com.learnopengles.sandbox.displayscaled;
 
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
@@ -35,7 +35,7 @@ import javax.microedition.khronos.opengles.GL10;
  * This class implements our custom renderer. Note that the GL10 parameter passed in is unused for OpenGL ES 2.0
  * renderers -- the static class GLES20 is used instead.
  */
-public class RendererDisplayObjects implements GLSurfaceView.Renderer {
+public class RendererDisplayScaled implements GLSurfaceView.Renderer {
 
     private static String LOG_TAG = "Renderer";
     // update to add touch control - these are set by the SurfaceView class
@@ -164,6 +164,7 @@ public class RendererDisplayObjects implements GLSurfaceView.Renderer {
 
     private boolean mWireFrameRenderingFlag = false;
     private boolean mRenderOnlyIBO = true;
+    private int mModelsInScene = 1;
 
     /**
      * This is a handle to our light point program.
@@ -171,7 +172,7 @@ public class RendererDisplayObjects implements GLSurfaceView.Renderer {
     private int mPointProgramHandle;
 
 
-    private ActivtyDisplayObjects mLessonCylActivity;
+    private ActivtyDisplayScaled mLessonCylActivity;
     private GLSurfaceView mGlSurfaceView;
     /**
      * A temporary matrix.
@@ -209,7 +210,7 @@ public class RendererDisplayObjects implements GLSurfaceView.Renderer {
     /*
      * Let's get started.
      */
-    public RendererDisplayObjects(final ActivtyDisplayObjects lessonCylActivity, final GLSurfaceView glSurfaceView) {
+    public RendererDisplayScaled(final ActivtyDisplayScaled lessonCylActivity, final GLSurfaceView glSurfaceView) {
         mLessonCylActivity = lessonCylActivity;
         mGlSurfaceView = glSurfaceView;
         mBufferManager = BufferManager.getInstance(lessonCylActivity);
@@ -303,53 +304,11 @@ public class RendererDisplayObjects implements GLSurfaceView.Renderer {
         float color_teapot_green[] = new float[]{0f, 0.3f, 0.0f, 1.0f};
         float color_teapot_red[] = new float[]{0.3f, 0.0f, 0.0f, 1.0f};
 
-        mCube = new Cube();
-        mTeapot = new Teapot( color_teapot_green );
-        mTeapotIBO = new TeapotIBO( color_teapot_red );
-        mHeightMap = new HeightMap();
-
-        mSphere = new Sphere(
-			30, // slices
-			0.5f, // radius
-            color_teapot_green );
-
-        // Cylinder notes
-        //   3 - slices makes a prism
-        //   4 - slices makes a cube
-        mCylinder = new Cylinder(
-                30, // slices
-                0.25f, // radius
-                .5f, // length
-                color);
-
-        mEllipse = new Ellipse(
-                30, // slices
-                0.25f, // radius
-                .5f, // length
-                color);
-
-        mEllipseHelix = new EllipseHelix(
-                mBufferManager,
-                10, // slices
-                .5f, // radius
-                .5f, // length
-                color);
-
-
         mToroidHelix = new ToroidHelix(
                 mBufferManager,
                 color);
         mBufferManager.transferToGl();
 
-        // commit the vertices
-
-        mCone = new Cone(
-                50, // slices
-                0.25f, // radius
-                .5f, // length
-                nice_color,
-                color_red );
-        mTriangleTest = new TriangleTest();
 
         // Initialize the modifier matrices
         Matrix.setIdentityM(mAccumulatedRotation, 0);
@@ -476,79 +435,17 @@ public class RendererDisplayObjects implements GLSurfaceView.Renderer {
             Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
         }
 
-        // Obj #1 upper left
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, -.75f, 1.0f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, 1.0f, 1.0f, 1.0f);
-        do_matrix_setup();
-        mCylinder.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
-
-        // Obj #5 center
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 0.0f, 1.0f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, .6f, .6f, .6f);
-        do_matrix_setup();
-        mSphere.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
-
-        // Obj #3 upper right
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 1.0f, .75f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, 3.5f, 3.5f, 3.5f);
-        do_matrix_setup();
-        mTeapotIBO.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
-
-        // Obj #4 mid left
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, -1.0f, 0.0f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, .25f, .25f, .25f);
-        do_matrix_setup();
-        mCube.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
-
-//        // Obj #5 center
-//        Matrix.setIdentityM(mModelMatrix, 0);
-//        Matrix.translateM(mModelMatrix, 0, 0.0f, 0.0f, -2.5f);
-//        Matrix.scaleM(mModelMatrix, 0, .6f, .6f, .6f);
-//        do_matrix_setup();
-//        // mSphere.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
-//
-        // Obj #5 center
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 0.0f, 0.0f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, .05f, .05f, .05f);
-        do_matrix_setup();
-        mBufferManager.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
-
-
-        // Obj #6 mid right
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 1.0f, -0.25f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, 3.5f, 3.5f, 3.5f);
-        do_matrix_setup();
-        if (!mRenderOnlyIBO) {
-            mTeapot.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);  // direct rendering
+        for (int i = mModelsInScene; i > 0; i -= 9) {
+            int levels_back = (i-1)/9;
+            float zoffset = ((float) levels_back) * -1.0f - 2.5f;
+            float dispersion = ((float) levels_back) * .9f + 1.0f;
+            model_iterator(
+                    (i>=9)? 9 : i,
+                    zoffset,
+                    levels_back,
+                    dispersion
+            );
         }
-
-        // Obj #7 bottom left
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, -1.0f, -1.0f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, .05f, .05f, .05f);
-        do_matrix_setup();
-        mHeightMap.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
-
-        // Obj #2 middle
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 0.0f, -1.0f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, 1.0f, 1.0f, 1.0f);
-        do_matrix_setup();
-        // mTriangleTest.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
-        mEllipse.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
-
-        // Obj #9 bottom right
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 1.0f, -1.0f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, 0.9f, 0.9f, 0.9f);
-        do_matrix_setup();
-        mCone.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
 
         int glError;
         glError = GLES20.glGetError();
@@ -556,6 +453,51 @@ public class RendererDisplayObjects implements GLSurfaceView.Renderer {
             Log.e(LOG_TAG, "GLERROR: " + glError);
         }
     }
+
+    private void model_iterator(
+            int num,
+            float zoffset,
+            int levels_back,
+            float dispersion ) {
+
+        float[] xoffsetArray = {
+                0f, 1f, -1f, 0f, 0f, 1f, 1f, -1f, -1f
+        };
+
+        float[] yoffsetArray = {
+                0f, 0f, 0f, 1f, -1f, 1f, -1f, 1f, -1f
+        };
+
+        float center_spiral_x;
+        float center_spiral_y;
+        float angle = ((float) levels_back) / 7.0f * 2.0f * (float)Math.PI;
+
+        center_spiral_x = (float)Math.sin( angle ) * levels_back * 0.5f;
+        center_spiral_y = (float)Math.cos( angle ) * levels_back * 0.5f;
+
+        for (int i = 0; i < num; i++) {
+
+            Matrix.setIdentityM(mModelMatrix, 0);
+            if ((i == 0) && (levels_back >= 1)){
+                Matrix.translateM(mModelMatrix,
+                        0,
+                        xoffsetArray[i] * dispersion + center_spiral_x,
+                        yoffsetArray[i] * dispersion + center_spiral_y,
+                        zoffset);
+            } else {
+                Matrix.translateM(mModelMatrix,
+                        0,
+                        xoffsetArray[i] * dispersion,
+                        yoffsetArray[i] * dispersion,
+                        zoffset);
+            }
+            Matrix.scaleM(mModelMatrix,
+                    0, .03f, .03f, .03f);
+            do_matrix_setup();
+            mBufferManager.render(mPositionHandle, mColorHandle, mNormalHandle, mWireFrameRenderingFlag);
+        }
+    }
+
 
 
     private void do_matrix_setup() {
@@ -856,13 +798,22 @@ public class RendererDisplayObjects implements GLSurfaceView.Renderer {
         }
     }
 
-    public void toggleRenderIBOFlag() {
-        if (mRenderOnlyIBO) {
-            mRenderOnlyIBO = false;
-            mLessonCylActivity.updateRenderOnlyIBOStatus(false);
+    public void fewerTris() {
+        if (mModelsInScene == 1) {
+            return;
+        }
+        if (mModelsInScene > 9) {
+            mModelsInScene -= 9;
         } else {
-            mRenderOnlyIBO = true;
-            mLessonCylActivity.updateRenderOnlyIBOStatus(true);
+            mModelsInScene--;
+        }
+    }
+
+    public void moreTris() {
+        if (mModelsInScene >= 9) {
+            mModelsInScene += 9;
+        } else {
+            mModelsInScene++;
         }
     }
 }

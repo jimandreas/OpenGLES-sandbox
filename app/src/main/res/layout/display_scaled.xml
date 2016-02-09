@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"	
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<com.learnopengles.sandbox.displayscaled.GLSurfaceViewDisplayScaled
+		android:id="@+id/gl_surface_view"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent" />
+	<LinearLayout		
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom|center_horizontal"
+		android:orientation="horizontal">
+		<Button
+			android:id="@+id/button_fewer"
+			android:layout_width="0dp"
+			android:layout_weight="1"
+			android:layout_height="match_parent"					
+			android:text="@string/objects_multiple_fewer_triangles" />
+		<Button
+			android:id="@+id/button_more"
+			android:layout_width="0dp"
+			android:layout_weight="1"
+			android:layout_height="match_parent"					
+			android:text="@string/objects_multiple_more_triangles" />
+		<Button
+			android:id="@+id/button_switch_rendering_mode"
+			android:layout_width="0dp"
+			android:layout_weight="1"
+			android:layout_height="match_parent"					
+			android:text="@string/objects_using_wireframe_rendering" />
+		<Button
+			android:id="@+id/button_switch_shaders"
+			android:layout_width="0dp"
+			android:layout_weight="1"
+			android:layout_height="match_parent"					
+			android:text="@string/objects_using_pixel_shading" />
+	</LinearLayout>
+
+</FrameLayout>

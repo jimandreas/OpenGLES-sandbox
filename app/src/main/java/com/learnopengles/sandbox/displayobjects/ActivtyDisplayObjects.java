@@ -13,7 +13,7 @@ import android.widget.Button;
 
 import com.learnopengles.sandbox.R;
 
-public class ActiivtyDisplayObjects extends Activity
+public class ActivtyDisplayObjects extends Activity
 {
     private static String LOG_TAG = "activity";
 

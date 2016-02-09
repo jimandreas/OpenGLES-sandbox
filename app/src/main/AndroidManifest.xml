@@ -28,6 +28,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".displayobjects.ActivtyDisplayObjects"
+            android:label="@string/objects_title" />
+
+        <activity
+            android:name="com.learnopengles.sandbox.displayobjfile.ActivityDisplayObjFile"
+            android:label="@string/activity_load_obj_file_title" />
+
+        <activity
+            android:name=".displayscaled.ActivtyDisplayScaled"
+            android:label="@string/objects_title" />
+
         <activity
             android:name="com.learnopengles.sandbox.lesson1.LessonOneActivity"
             android:label="@string/lesson_one" />
@@ -53,13 +66,6 @@
             android:name="com.learnopengles.sandbox.lesson8.LessonEightActivity"
             android:label="@string/lesson_eight" />
 
-        <activity
-            android:name="com.learnopengles.sandbox.displayobjects.ActiivtyDisplayObjects"
-            android:label="@string/objects_title" />
-
-        <activity
-            android:name="com.learnopengles.sandbox.displayobjfile.ActivityDisplayObjFile"
-            android:label="@string/activity_load_obj_file_title" />
 
 
     </application>

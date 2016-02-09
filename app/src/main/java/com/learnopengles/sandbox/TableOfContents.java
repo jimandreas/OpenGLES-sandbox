@@ -16,6 +16,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SimpleAdapter;
 
 import com.learnopengles.sandbox.displayobjfile.ActivityDisplayObjFile;
+import com.learnopengles.sandbox.displayscaled.ActivtyDisplayScaled;
 import com.learnopengles.sandbox.lesson1.LessonOneActivity;
 import com.learnopengles.sandbox.lesson2.LessonTwoActivity;
 import com.learnopengles.sandbox.lesson3.LessonThreeActivity;
@@ -24,7 +25,7 @@ import com.learnopengles.sandbox.lesson5.LessonFiveActivity;
 import com.learnopengles.sandbox.lesson6.LessonSixActivity;
 import com.learnopengles.sandbox.lesson7.LessonSevenActivity;
 import com.learnopengles.sandbox.lesson8.LessonEightActivity;
-import com.learnopengles.sandbox.displayobjects.ActiivtyDisplayObjects;
+import com.learnopengles.sandbox.displayobjects.ActivtyDisplayObjects;
 
 public class TableOfContents extends ListActivity 
 {
@@ -51,7 +52,7 @@ public class TableOfContents extends ListActivity
 			item.put(ITEM_TITLE, getText(R.string.objects_title));
 			item.put(ITEM_SUBTITLE, getText(R.string.objects_subtitle));
 			data.add(item);
-			activityMapping.put(i++, ActiivtyDisplayObjects.class);
+			activityMapping.put(i++, ActivtyDisplayObjects.class);
 		}
 
 		{
@@ -62,7 +63,16 @@ public class TableOfContents extends ListActivity
 			data.add(item);
 			activityMapping.put(i++, ActivityDisplayObjFile.class);
 		}
-		
+
+		{
+			final Map<String, Object> item = new HashMap<String, Object>();
+			item.put(ITEM_IMAGE, R.drawable.ic_lesson_seven);
+			item.put(ITEM_TITLE, getText(R.string.objects_multiple_title));
+			item.put(ITEM_SUBTITLE, getText(R.string.objects_multiple_subtitle));
+			data.add(item);
+			activityMapping.put(i++, ActivtyDisplayScaled.class);
+		}
+
 		{
 			final Map<String, Object> item = new HashMap<String, Object>();
 			item.put(ITEM_IMAGE, R.drawable.ic_lesson_one);
@@ -135,9 +145,13 @@ public class TableOfContents extends ListActivity
 			activityMapping.put(i++, LessonEightActivity.class);
 		}
 
+		final SimpleAdapter dataAdapter = new SimpleAdapter(
+                this,
+                data,
+                R.layout.toc_item,
+                new String[] {ITEM_IMAGE, ITEM_TITLE, ITEM_SUBTITLE},
+                new int[] {R.id.Image, R.id.Title, R.id.SubTitle});
 
-		
-		final SimpleAdapter dataAdapter = new SimpleAdapter(this, data, R.layout.toc_item, new String[] {ITEM_IMAGE, ITEM_TITLE, ITEM_SUBTITLE}, new int[] {R.id.Image, R.id.Title, R.id.SubTitle});
 		setListAdapter(dataAdapter);	
 		
 		getListView().setOnItemClickListener(new OnItemClickListener() 
