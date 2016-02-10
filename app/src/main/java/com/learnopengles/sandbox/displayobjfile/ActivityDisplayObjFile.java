@@ -27,12 +27,7 @@ public class ActivityDisplayObjFile extends Activity
             "helixcoil",
             "teapot",
             "cow",
-            "plants3",
-            "Birds"
-
-
-
-            // "lamp.obj"
+            "teddybear"
 
     };
 
@@ -42,8 +37,7 @@ public class ActivityDisplayObjFile extends Activity
             "Coiled Helix",
             "Teapot",
             "Cow",
-            "Plant",
-            "Birds"
+            "Teddy Bear"
 
 
 

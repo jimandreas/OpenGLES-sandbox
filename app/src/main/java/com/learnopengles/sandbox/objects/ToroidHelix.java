@@ -8,6 +8,20 @@ package com.learnopengles.sandbox.objects;
  * http://userpages.umbc.edu/~squire/download/make_helix_635.c
  */
 
+/*
+ * modifications to the original algorithm (jim a):
+ *
+ * walk the indices to generate normals for each TRI, and then
+ * assemble the TRIs into a packed VBO (vertex XYZ + Normal + color4f).
+ *
+ * some of the original code and secondary steps are commented out but left in
+ *  - this makes things a bit messy but helps to sort of document the progression
+ *
+ * reference (great for study of packed VBO's:
+ *
+ * http://www.learnopengles.com/android-lesson-seven-an-introduction-to-vertex-buffer-objects-vbos/
+ */
+
 import android.os.SystemClock;
 import android.util.Log;
 

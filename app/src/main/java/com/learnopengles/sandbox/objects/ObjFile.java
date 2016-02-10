@@ -214,7 +214,7 @@ public class ObjFile {
             if (vertex < 0) {
                 vertex += mLastVertexNumber;
             }
-            mVertexIndex.add(vertex);
+            mIndices.add(vertex);
             return;
         }
         // wait wait there are more indices in this line
@@ -222,7 +222,7 @@ public class ObjFile {
         if (vertex < 0) {
             vertex += mLastVertexNumber;
         }
-        mVertexIndex.add(vertex);
+        mIndices.add(vertex);
         String leftover = item.substring(first_slash + 1, item.length());
         int second_slash = leftover.indexOf('/');
         if (second_slash == -1) {
@@ -315,7 +315,19 @@ public class ObjFile {
         }
     }
 
-
+    /*
+     * pull the data from the buffers and assemble
+     * a packed VBO (vertex + normal + color) buffer,
+     * and an indices buffer.
+     *
+     * Walk the indices list
+     * to pull the triangle vertices, calculate the normals,
+     * and stuff them back into the packed VBO.
+     *
+     * TODO: use the normals if supplied.
+     *   Right now the code just does its own calculation
+     *   for normals.
+     */
     public void build_buffers(float[] color /*RGBA*/) {
         int i;
         int offset = 0;
@@ -324,29 +336,19 @@ public class ObjFile {
                         * STRIDE_IN_FLOATS];
 
         float vx, vy, vz;
+
         /*
          * loop to generate vertices.
          */
         for (i = 0; i < mVertices.size(); i += 3) {
 
-//            vertexData[offset++] = mVertices.get(i + 0);
-//            vertexData[offset++] = mVertices.get(i + 1);
-//            vertexData[offset++] = mVertices.get(i + 2);
+            vertexData[offset++] = mVertices.get(i + 0);
+            vertexData[offset++] = mVertices.get(i + 1);
+            vertexData[offset++] = mVertices.get(i + 2);
 
-            vx = mVertices.get(i + 0);
-            vy = mVertices.get(i + 1);
-            vz = mVertices.get(i + 2);
-
-            vertexData[offset++] = vx;
-            vertexData[offset++] = vy;
-            vertexData[offset++] = vz;
-
-            // normal vector
-            vertexData[offset++] = vx / 5.0f; // hack the normal for now
-            vertexData[offset++] = vy / 5.0f; // hack the normal for now
-            vertexData[offset++] = vz / 5.0f; // hack the normal for now
-
-            // color value
+            vertexData[offset++] = 0.0f; // set normal to zero for now
+            vertexData[offset++] = 0.0f;
+            vertexData[offset++] = 0.0f;
 
             if (mHaveMaterialColor) {
                 vertexData[offset++] = mColors.get(i + 0);
@@ -360,7 +362,43 @@ public class ObjFile {
                 vertexData[offset++] = color[2];
                 vertexData[offset++] = color[3];
             }
+        }
 
+        // calculate the normal,
+        // set it in the packed VBO.
+        // If current normal is non-zero, average it with previous value.
+
+        int v1i, v2i, v3i;
+        for (i = 0; i < mIndices.size(); i += 3) {
+            v1i = mIndices.get(i + 0) - 1;
+            v2i = mIndices.get(i + 1) - 1;
+            v3i = mIndices.get(i + 2) - 1;
+
+            v1[0] = mVertices.get(v1i * 3 + 0);
+            v1[1] = mVertices.get(v1i * 3 + 1);
+            v1[2] = mVertices.get(v1i * 3 + 2);
+
+            v2[0] = mVertices.get(v2i * 3 + 0);
+            v2[1] = mVertices.get(v2i * 3 + 1);
+            v2[2] = mVertices.get(v2i * 3 + 2);
+
+            v3[0] = mVertices.get(v3i * 3 + 0);
+            v3[1] = mVertices.get(v3i * 3 + 1);
+            v3[2] = mVertices.get(v3i * 3 + 2);
+
+            n = XYZ.getNormal(v1, v2, v3);
+
+            vertexData[v1i * STRIDE_IN_FLOATS + 3 + 0] = n[0] * NORMAL_BRIGHTNESS_FACTOR;
+            vertexData[v1i * STRIDE_IN_FLOATS + 3 + 1] = n[1] * NORMAL_BRIGHTNESS_FACTOR;
+            vertexData[v1i * STRIDE_IN_FLOATS + 3 + 2] = n[2] * NORMAL_BRIGHTNESS_FACTOR;
+
+            vertexData[v2i * STRIDE_IN_FLOATS + 3 + 0] = n[0] * NORMAL_BRIGHTNESS_FACTOR;
+            vertexData[v2i * STRIDE_IN_FLOATS + 3 + 1] = n[1] * NORMAL_BRIGHTNESS_FACTOR;
+            vertexData[v2i * STRIDE_IN_FLOATS + 3 + 2] = n[2] * NORMAL_BRIGHTNESS_FACTOR;
+
+            vertexData[v3i * STRIDE_IN_FLOATS + 3 + 0] = n[0] * NORMAL_BRIGHTNESS_FACTOR;
+            vertexData[v3i * STRIDE_IN_FLOATS + 3 + 1] = n[1] * NORMAL_BRIGHTNESS_FACTOR;
+            vertexData[v3i * STRIDE_IN_FLOATS + 3 + 2] = n[2] * NORMAL_BRIGHTNESS_FACTOR;
 
         }
 
@@ -407,10 +445,10 @@ public class ObjFile {
          */
         offset = 0;
         int x;
-        final short[] indexData = new short[mVertexIndex.size()];
-        for (x = 0; x < mVertexIndex.size(); x++) {
+        final short[] indexData = new short[mIndices.size()];
+        for (x = 0; x < mIndices.size(); x++) {
 
-            short index = mVertexIndex.get(x).shortValue();
+            short index = mIndices.get(x).shortValue();
             indexData[offset++] = --index;
         }
         mTriangleIndexCount = indexData.length;
@@ -531,7 +569,7 @@ public class ObjFile {
         mVertices.clear();
         mNormals.clear();
         mColors.clear();
-        mVertexIndex.clear();
+        mIndices.clear();
         mTextureIndex.clear();
         mHaveMaterialColor = false;
     }
@@ -565,8 +603,13 @@ public class ObjFile {
     List<Float> mVertices = new ArrayList<>();
     List<Float> mNormals = new ArrayList<>();
     List<Float> mColors = new ArrayList<>();
-    List<Integer> mVertexIndex = new ArrayList<>();
+    List<Integer> mIndices = new ArrayList<>();
     List<Integer> mNormalIndex = new ArrayList<>();
     List<Integer> mTextureIndex = new ArrayList<>();
+
+    static float[] v1 = new float[3];
+    static float[] v2 = new float[3];
+    static float[] v3 = new float[3];
+    static float[] n = new float[3];
 
 }
