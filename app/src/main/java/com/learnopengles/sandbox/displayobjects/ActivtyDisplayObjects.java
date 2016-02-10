@@ -147,9 +147,9 @@ public class ActivtyDisplayObjects extends Activity
             @Override
             public void run() {
                 if (useVertexShading) {
-                    ((Button) findViewById(R.id.button_switch_shaders)).setText(R.string.objects_using_pixel_shading);
+                    ((Button) findViewById(R.id.button_switch_shaders)).setText(R.string.button_objects_using_pixel_shading);
                 } else {
-                    ((Button) findViewById(R.id.button_switch_shaders)).setText(R.string.objects_using_vertex_shading);
+                    ((Button) findViewById(R.id.button_switch_shaders)).setText(R.string.button_objects_using_vertex_shading);
                 }
             }
         });
@@ -160,10 +160,10 @@ public class ActivtyDisplayObjects extends Activity
             public void run() {
                 if (wireFrameRendering) {
                     ((Button) findViewById(
-                            R.id.button_switch_rendering_mode)).setText(R.string.objects_using_triangle_rendering);
+                            R.id.button_switch_rendering_mode)).setText(R.string.button_objects_using_triangle_rendering);
                 } else {
                     ((Button) findViewById(
-                            R.id.button_switch_rendering_mode)).setText(R.string.objects_using_wireframe_rendering);
+                            R.id.button_switch_rendering_mode)).setText(R.string.button_objects_using_wireframe_rendering);
                 }
             }
         });
@@ -175,10 +175,10 @@ public class ActivtyDisplayObjects extends Activity
             public void run() {
                 if (renderOnlyIBO) {
                     ((Button) findViewById(
-                            R.id.button_only_ibo)).setText(R.string.objects_with_direct);
+                            R.id.button_only_ibo)).setText(R.string.button_objects_with_direct);
                 } else {
                     ((Button) findViewById(
-                            R.id.button_only_ibo)).setText(R.string.objects_only_ibo);
+                            R.id.button_only_ibo)).setText(R.string.button_objects_only_ibo);
                 }
             }
         });

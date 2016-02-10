@@ -17,25 +17,25 @@
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"					
-			android:text="@string/objects_with_direct" />
+			android:text="@string/button_objects_with_direct" />
 		<Button
 			android:id="@+id/button_increase_num_cubes"
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"					
-			android:text="@string/lesson_seven_increase_cube_count" />
+			android:text="@string/button_null_string" />
 		<Button
 			android:id="@+id/button_switch_rendering_mode"
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"					
-			android:text="@string/objects_using_wireframe_rendering" />
+			android:text="@string/button_objects_using_wireframe_rendering" />
 		<Button
 			android:id="@+id/button_switch_shaders"
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"					
-			android:text="@string/objects_using_pixel_shading" />
+			android:text="@string/button_objects_using_pixel_shading" />
 	</LinearLayout>
 
 </FrameLayout>

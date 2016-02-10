@@ -51,20 +51,24 @@
 
     <string name="objects_title">Various objects - with lighting</string>
     <string name="objects_subtitle">Switchable shaders.</string>
-    <string name="objects_using_vertex_shading">Vertex shading</string>
-    <string name="objects_using_pixel_shading">Pixel shading</string>
-    <string name="objects_using_wireframe_rendering">Wire frame</string>
-    <string name="objects_using_triangle_rendering">Solid</string>
-    <string name="objects_only_ibo">Only IBO</string>
-    <string name="objects_with_direct">Add Direct</string>
+
+    <string name="button_objects_using_vertex_shading">Vertex shading</string>
+    <string name="button_objects_using_pixel_shading">Pixel shading</string>
+    <string name="button_objects_using_wireframe_rendering">Wire frame</string>
+    <string name="button_objects_using_triangle_rendering">Solid</string>
+    <string name="button_objects_only_ibo">Only IBO</string>
+    <string name="button_objects_with_direct">Add Direct</string>
 
     <string name="activity_load_obj_file_title">Load an OBJ file</string>
     <string name="activity_load_obj_file_subtitle">Parses an OBJ file and displays it</string>
+
     <string name="button_next_obj">Next OBJ</string>
     <string name="button_prev_obj">Prev OBJ</string>
+    <string name="button_null_string"> </string>
 
     <string name="objects_multiple_title">Add triangles to the scene</string>
     <string name="objects_multiple_subtitle">Find the system performance limit</string>
-    <string name="objects_multiple_more_triangles">More TRIs</string>
-    <string name="objects_multiple_fewer_triangles">Fewer TRIs</string>
+
+    <string name="button_objects_multiple_more_triangles">More TRIs</string>
+    <string name="button_objects_multiple_fewer_triangles">Fewer TRIs</string>
 </resources>
