@@ -41,10 +41,10 @@ public class ToroidHelix {
     float raw_z[][] = new float[LINES][POINTS];
     int raw_index[][] = new int[LINES][POINTS];
 
-    // adding normals
-    float normal_x[][] = new float[LINES][POINTS];
-    float normal_y[][] = new float[LINES][POINTS];
-    float normal_z[][] = new float[LINES][POINTS];
+    static float[] v1 = new float[3];
+    static float[] v2 = new float[3];
+    static float[] v3 = new float[3];
+    static float[] n = new float[3];
 
     static int sCount;
 
@@ -144,11 +144,6 @@ public class ToroidHelix {
                 y3 = r3 * (ry2 * (float) Math.cos(theta) + vy2 * (float) Math.sin(theta));
                 z3 = r3 * (rz2 * (float) Math.cos(theta) + vz2 * (float) Math.sin(theta));
 
-                // record normal
-                normal_x[i][j] = rx2 * (float) Math.cos(theta) + vx2 * (float) Math.sin(theta);
-                normal_y[i][j] = ry2 * (float) Math.cos(theta) + vy2 * (float) Math.sin(theta);
-                normal_z[i][j] = rz2 * (float) Math.cos(theta) + vz2 * (float) Math.sin(theta);
-
                 raw_x[i][j] = x2 + x3;  /* actually sum of x1+x2+x3, the final point on surface */
                 raw_y[i][j] = y2 + y3;
                 raw_z[i][j] = z2 + z3;
@@ -192,61 +187,77 @@ public class ToroidHelix {
 //                add_to_buffer(raw_index[i][j + 1], ny);
 //                add_to_buffer(raw_index[i + 1][j + 1], ny);
                 // reverse 2 and 3 winding
-                add_to_buffer(raw_index[i][j], ny);
-                add_to_buffer(raw_index[i + 1][j + 1], ny);
-                add_to_buffer(raw_index[i][j + 1], ny);
+//                add_to_buffer(raw_index[i][j], ny);
+//                add_to_buffer(raw_index[i + 1][j + 1], ny);
+//                add_to_buffer(raw_index[i][j + 1], ny);
+
+                triangle(
+                        raw_index[i][j],
+                        raw_index[i + 1][j + 1],
+                        raw_index[i][j + 1],
+                        ny
+                );
 
                 polys++;
 //                add_to_buffer(raw_index[i][j], ny);
 //                add_to_buffer(raw_index[i + 1][j + 1], ny);
 //                add_to_buffer(raw_index[i + 1][j], ny);
                 // reverse 2 and 3 winding
-                add_to_buffer(raw_index[i][j], ny);
-                add_to_buffer(raw_index[i + 1][j], ny);
-                add_to_buffer(raw_index[i + 1][j + 1], ny);
+//                add_to_buffer(raw_index[i][j], ny);
+//                add_to_buffer(raw_index[i + 1][j], ny);
+//                add_to_buffer(raw_index[i + 1][j + 1], ny);
+
+                triangle(
+                        raw_index[i][j],
+                        raw_index[i + 1][j],
+                        raw_index[i + 1][j + 1],
+                        ny
+                );
+
                 polys++;
             }
         }
 
         float elapsed_time = (SystemClock.uptimeMillis() - start_time) / 1000;
         String pretty_print = String.format("%6.2f", elapsed_time);
-        Log.w(LOG_TAG, "end calculating in " + elapsed_time + " seconds, count is " + sCount);
+        Log.w(LOG_TAG, "end calculating in " + pretty_print + " seconds, count is " + sCount);
 
         mNumIndices = offset;
         mBufMgr.setFloatArrayIndex(offset);
     }
 
-    private void add_to_buffer(int index, int blocking) {
+    private void triangle(int t1_index, int t2_index, int t3_index, int blocking) {
+        t1_index--;
+        t2_index--;
+        t3_index--;
+        v1[0] = raw_x[t1_index / blocking][t1_index % blocking];
+        v1[1] = raw_y[t1_index / blocking][t1_index % blocking];
+        v1[2] = raw_z[t1_index / blocking][t1_index % blocking];
 
-        sCount++;
-        --index; // zero based index now.
-        float vx = raw_x[index / blocking][index % blocking];
-        float vy = raw_y[index / blocking][index % blocking];
-        float vz = raw_z[index / blocking][index % blocking];
+        v2[0] = raw_x[t2_index / blocking][t2_index % blocking];
+        v2[1] = raw_y[t2_index / blocking][t2_index % blocking];
+        v2[2] = raw_z[t2_index / blocking][t2_index % blocking];
 
-        if ((vx == 0f) && (vy == 0f) && (vz == 0f)) {
-            Log.e(LOG_TAG, "oops all vertices are zero at index " + index);
-        }
+        v3[0] = raw_x[t3_index / blocking][t3_index % blocking];
+        v3[1] = raw_y[t3_index / blocking][t3_index % blocking];
+        v3[2] = raw_z[t3_index / blocking][t3_index % blocking];
 
-        float nvx = normal_x[index / blocking][index % blocking];
-        float nvy = normal_y[index / blocking][index % blocking];
-        float nvz = normal_z[index / blocking][index % blocking];
+        n = XYZ.getNormal(v1, v2, v3);
 
-        vertexData[offset++] = vx;
-        vertexData[offset++] = vy;
-        vertexData[offset++] = vz;
+        add_to_buffer(v1);
+        add_to_buffer(v2);
+        add_to_buffer(v3);
 
-        vertexData[offset++] = -9.1f * nvx;
-        vertexData[offset++] = -9.1f * nvy;
-        vertexData[offset++] = -9.1f * nvz;
+    }
+    private void add_to_buffer(float[] v) {
 
-//        vertexData[offset++] = 0.0f;
-//        vertexData[offset++] = 0.0f;
-//        vertexData[offset++] = 7.0f;
+        vertexData[offset++] = v[0];
+        vertexData[offset++] = v[1];
+        vertexData[offset++] = v[2];
 
-//        vertexData[offset++] = -1f * vx;
-//        vertexData[offset++] = -1f * vy;
-//        vertexData[offset++] = 7f * vz;
+        vertexData[offset++] = n[0] * NORMAL_BRIGHTNESS_FACTOR;
+        vertexData[offset++] = n[1] * NORMAL_BRIGHTNESS_FACTOR;
+        vertexData[offset++] = n[2] * NORMAL_BRIGHTNESS_FACTOR;
 
         // color value
         vertexData[offset++] = mColor[0];

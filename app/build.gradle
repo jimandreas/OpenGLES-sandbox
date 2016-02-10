@@ -27,9 +27,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
 }
 dependencies {
     testCompile 'junit:junit:4.12'

@@ -18,6 +18,7 @@ import com.learnopengles.sandbox.objects.Teapot;
 import com.learnopengles.sandbox.objects.TeapotIBO;
 import com.learnopengles.sandbox.objects.ToroidHelix;
 import com.learnopengles.sandbox.objects.TriangleTest;
+import com.learnopengles.sandbox.objects.XYZ;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -37,6 +38,8 @@ import javax.microedition.khronos.opengles.GL10;
  */
 public class RendererDisplayObjects implements GLSurfaceView.Renderer {
 
+    private XYZ mXYZ = new XYZ();
+
     private static String LOG_TAG = "Renderer";
     // update to add touch control - these are set by the SurfaceView class
     // These still work without volatile, but refreshes are not guaranteed to happen.
@@ -51,6 +54,7 @@ public class RendererDisplayObjects implements GLSurfaceView.Renderer {
     private static boolean shrinking = true;
     private static int mHeight;
     private static int mWidth;
+
 
     /**
      * Used for debug logs.
@@ -253,8 +257,8 @@ public class RendererDisplayObjects implements GLSurfaceView.Renderer {
         // view matrix. In OpenGL 2, we can keep track of these matrices separately if we choose.
         Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
 
-        String vertexShader = getVertexShaderLesson2();
-        String fragmentShader = getFragmentShaderLesson2();
+        String vertexShader = mXYZ.getVertexShaderLesson2();
+        String fragmentShader = mXYZ.getFragmentShaderLesson2();
         int vertexShaderHandle = compileShader(GLES20.GL_VERTEX_SHADER, vertexShader);
         int fragmentShaderHandle = compileShader(GLES20.GL_FRAGMENT_SHADER, fragmentShader);
 
@@ -262,8 +266,8 @@ public class RendererDisplayObjects implements GLSurfaceView.Renderer {
                 new String[]{"a_Position", "a_Color", "a_Normal"});
 
         /* add in a pixel shader from lesson 3 - switchable */
-        vertexShader = getVertexShaderLesson3();
-        fragmentShader = getFragmentShaderLesson3();
+        vertexShader = mXYZ.getVertexShaderLesson3();
+        fragmentShader = mXYZ.getFragmentShaderLesson3();
         vertexShaderHandle = compileShader(GLES20.GL_VERTEX_SHADER, vertexShader);
         fragmentShaderHandle = compileShader(GLES20.GL_FRAGMENT_SHADER, fragmentShader);
         mPerPixelProgramHandle = createAndLinkProgram(vertexShaderHandle, fragmentShaderHandle,

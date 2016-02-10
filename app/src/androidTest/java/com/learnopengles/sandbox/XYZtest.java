@@ -26,9 +26,9 @@ public class XYZtest extends AndroidTestCase {
 
         float p2_tests[][] = {
                 { 1f, 0f, 0f },
-                { 0f, 0f, -1f },
+                { 0f, 0f, 1f },
                 { -1f, 0f, 0f },
-                { -1f, 0f, -1f },
+                { 0f, 0f, -1f },
                 { 1f, 1f, 0f },
                 { 10f, 10f, 0f }
         };

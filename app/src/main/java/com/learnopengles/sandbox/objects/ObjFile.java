@@ -1,5 +1,6 @@
 package com.learnopengles.sandbox.objects;
 
+import android.annotation.SuppressLint;
 import android.content.res.AssetManager;
 import android.opengl.GLES20;
 import android.os.Bundle;
@@ -19,13 +20,13 @@ import java.nio.ShortBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressLint("DefaultLocale")
 public class ObjFile {
 
-    private static String LOG_TAG = "Mesh";
+    private static String LOG_TAG = "ObjFile";
     private AssetManager mAssetManager;
     boolean mHaveMaterialColor = false;
     float[] mMaterialColor = new float[3];
-
 
     Bundle mMaterial = new Bundle();
 
@@ -47,8 +48,8 @@ public class ObjFile {
         Log.w(LOG_TAG, "finished parsing in " + pretty_print + " seconds.");
         Log.w(LOG_TAG, "max xyz min xyz" + mMaxX + " " + mMaxY + " " + mMaxZ + " and "
                 + mMinX + " " + mMinY + " " + mMinZ);
-
     }
+
     private void inputMaterialTemplateLibrary(String objFileName) {
         InputStream inputStream;
         BufferedReader reader = null;
@@ -56,7 +57,7 @@ public class ObjFile {
         try {
             inputStream = mAssetManager.open(objFileName, AssetManager.ACCESS_BUFFER);
             if (inputStream == null) {
-                Log.d(LOG_TAG, "cannot open" + objFileName +", returning");
+                Log.d(LOG_TAG, "cannot open" + objFileName + ", returning");
                 return;
             }
 
@@ -83,7 +84,7 @@ public class ObjFile {
         }
     }
 
-    /**
+    /*
      * ParseKaColorLine
      *   Assumptions:
      *
@@ -111,13 +112,13 @@ public class ObjFile {
         mHaveMaterialColor = true;
     }
 
-    /**
+    /*
      * ParseMaterialTemplateName
      *   Assumptions:
      *     picking just the Ka will work on the binding between name and color value
      */
     private String parseMaterialTemplateName(String line) {
-        int space_index = line.indexOf(' ')+1;
+        int space_index = line.indexOf(' ') + 1;
         String mtl_name = line.substring(space_index);
         mtl_name = mtl_name.trim();
         return mtl_name;
@@ -130,7 +131,7 @@ public class ObjFile {
         try {
             inputStream = mAssetManager.open(objFileName, AssetManager.ACCESS_BUFFER);
             if (inputStream == null) {
-                Log.e(LOG_TAG, "cannot open" + objFileName +", returning");
+                Log.e(LOG_TAG, "cannot open" + objFileName + ", returning");
                 return;
             }
 
@@ -147,8 +148,7 @@ public class ObjFile {
                     parseNormal(line);
                 } else if (line.charAt(0) == 'f') {
                     parseTriangle(line);
-                }
-                else if ((line.charAt(0) == 'u') && (line.charAt(1) == 's')) {
+                } else if ((line.charAt(0) == 'u') && (line.charAt(1) == 's')) {
                     parseUsemtl(line);
                 }
             }
@@ -158,21 +158,15 @@ public class ObjFile {
                 Log.e(LOG_TAG, "IO exception at line: " + line);
             }
         }
-        String maxvx = String.format("%6.2f", mMaxX);
-        String maxvy = String.format("%6.2f", mMaxY);
-        String maxvz = String.format("%6.2f", mMaxZ);
-
-        String minvx = String.format("%6.2f", mMinX);
-        String minvy = String.format("%6.2f", mMinY);
-        String minvz = String.format("%6.2f", mMinZ);
     }
+
     /**
      * ParseMaterialTemplateName
-     *   Assumptions:
-     *     picking just the Ka will work on the binding between name and color value
+     * Assumptions:
+     * picking just the Ka will work on the binding between name and color value
      */
     private void parseUsemtl(String line) {
-        int space_index = line.indexOf(' ')+1;
+        int space_index = line.indexOf(' ') + 1;
         String mtl_name = line.substring(space_index);
         mtl_name = mtl_name.trim();
         float[] material_color = mMaterial.getFloatArray(mtl_name);
@@ -187,7 +181,8 @@ public class ObjFile {
         mMaterialColor[2] = material_color[2];
         mHaveMaterialColor = true;
     }
-    /**
+
+    /*
      * ParseTriangle
      *   Assumptions:
      *     exactly one space between the 'v' and the integer
@@ -196,10 +191,10 @@ public class ObjFile {
     private void parseTriangle(String line) {
         String first_integer = line.substring(2);
         first_integer = first_integer.trim();
-        int second_space_index = first_integer.indexOf(' ')+1;
+        int second_space_index = first_integer.indexOf(' ') + 1;
         String second_integer = first_integer.substring(second_space_index);
         second_integer = second_integer.trim();
-        int third_space_index = second_integer.indexOf(' ')+1;
+        int third_space_index = second_integer.indexOf(' ') + 1;
         String third_integer = second_integer.substring(third_space_index);
         third_integer = third_integer.trim();
 
@@ -242,16 +237,16 @@ public class ObjFile {
 
     /**
      * ParseNormal
-     *   Assumptions:
-     *     exactly one space between the 'v' and the float
-     *     exactly one space between floats
+     * Assumptions:
+     * exactly one space between the 'v' and the float
+     * exactly one space between floats
      */
     private void parseNormal(String line) {
 
         String first_float = line.substring(2);
-        int second_space_index = first_float.indexOf(' ')+1;
+        int second_space_index = first_float.indexOf(' ') + 1;
         String second_float = first_float.substring(second_space_index);
-        int third_space_index = second_float.indexOf(' ')+1;
+        int third_space_index = second_float.indexOf(' ') + 1;
 
         float vx = parseFloat(first_float.substring(0, second_space_index - 1));
         float vy = parseFloat(second_float.substring(0, third_space_index - 1));
@@ -262,20 +257,20 @@ public class ObjFile {
         mNormals.add(vz);
     }
 
-        /**
-         * ParseVertex
-         *   Assumptions:
-         *     exactly one space between the 'v' and the float
-         *     exactly one space between floats
-         */
+    /*
+     * ParseVertex
+     *   Assumptions:
+     *     exactly one space between the 'v' and the float
+     *     exactly one space between floats
+     */
     private void parseVertex(String line) {
 
         String first_float = line.substring(2);
         first_float = first_float.trim();
-        int second_space_index = first_float.indexOf(' ')+1;
+        int second_space_index = first_float.indexOf(' ') + 1;
         String second_float = first_float.substring(second_space_index);
         second_float = second_float.trim();
-        int third_space_index = second_float.indexOf(' ')+1;
+        int third_space_index = second_float.indexOf(' ') + 1;
         String third_float = second_float.substring(third_space_index);
         third_float = third_float.trim();
 
@@ -315,7 +310,7 @@ public class ObjFile {
         try {
             return Integer.parseInt(s);
         } catch (RuntimeException e) {
-            Log.e(LOG_TAG, "Bad Integer : " +s);
+            Log.e(LOG_TAG, "Bad Integer : " + s);
             return 0;
         }
     }
@@ -326,13 +321,13 @@ public class ObjFile {
         int offset = 0;
         final float[] vertexData = new float[
                 mVertices.size() / 3
-                * STRIDE_IN_FLOATS];
+                        * STRIDE_IN_FLOATS];
 
         float vx, vy, vz;
         /*
          * loop to generate vertices.
          */
-        for (i = 0; i < mVertices.size(); i +=3 ) {
+        for (i = 0; i < mVertices.size(); i += 3) {
 
 //            vertexData[offset++] = mVertices.get(i + 0);
 //            vertexData[offset++] = mVertices.get(i + 1);
@@ -523,7 +518,7 @@ public class ObjFile {
             ibo[0] = 0;
         }
     }
-    
+
     // clean out old data, reset state
     private void flushAllBuffers() {
         mMaxX = 0f;
@@ -540,6 +535,7 @@ public class ObjFile {
         mTextureIndex.clear();
         mHaveMaterialColor = false;
     }
+
     private static final int POSITION_DATA_SIZE_IN_ELEMENTS = 3;
     private static final int NORMAL_DATA_SIZE_IN_ELEMENTS = 3;
     private static final int COLOR_DATA_SIZE_IN_ELEMENTS = 4;
