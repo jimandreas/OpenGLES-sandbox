@@ -77,7 +77,7 @@ For more information on these samples please refer to the links above.
 
 ## More Triangles
 
-![MoreTries_goes_here](./Screenshots/MoreTris.png)
+![MoreTris_goes_here](./Screenshots/MoreTris.PNG)
 
 ## Lesson 1
 
