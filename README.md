@@ -24,7 +24,7 @@ Have fun looking at these if you like.
 
 ### Current Studio level (13 Feb 2016):
 
-Android Studio 2.0 Beta 2   Build date: 1 Dec 2015
+Android Studio 2.0 Beta 2   Build date: 4 Feb 2016
 
 compileSdkVersion 23
 
