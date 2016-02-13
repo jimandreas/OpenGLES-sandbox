@@ -63,7 +63,7 @@ stripped out.
 
 For more information on these samples please refer to the links above.
 
-## app Table Of Contents
+## Table Of Contents
 
 ![TableOfContents_goes_here](./Screenshots/TableOfContents2.png)
 
