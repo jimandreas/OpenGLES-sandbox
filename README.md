@@ -69,7 +69,7 @@ For more information on these samples please refer to the links above.
 
 ## Display Objects
 
-![Objects_goes_here](./Screenshots/VariousObjects.png)
+![Objects_goes_here](./Screenshots/VariousObjects.PNG)
 
 ## Load OBJ file
 
