@@ -48,7 +48,7 @@ public class TableOfContents extends ListActivity
 
 		{
 			final Map<String, Object> item = new HashMap<String, Object>();
-			item.put(ITEM_IMAGE, R.drawable.ic_lesson_two);
+			item.put(ITEM_IMAGE, R.drawable.display_objs);
 			item.put(ITEM_TITLE, getText(R.string.objects_title));
 			item.put(ITEM_SUBTITLE, getText(R.string.objects_subtitle));
 			data.add(item);
@@ -66,7 +66,7 @@ public class TableOfContents extends ListActivity
 
 		{
 			final Map<String, Object> item = new HashMap<String, Object>();
-			item.put(ITEM_IMAGE, R.drawable.ic_lesson_seven);
+			item.put(ITEM_IMAGE, R.drawable.more_tris);
 			item.put(ITEM_TITLE, getText(R.string.objects_multiple_title));
 			item.put(ITEM_SUBTITLE, getText(R.string.objects_multiple_subtitle));
 			data.add(item);

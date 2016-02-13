@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>    
-    <string name="app_name">0Sandbox</string>
+    <string name="app_name">3D Sandbox</string>
     <string name="toc">Table of Contents</string>
     <string name="tocHeader">Table of contents</string>
     <string name="lesson_one">Lesson One: Getting Started</string>  

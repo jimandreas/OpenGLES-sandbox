@@ -24,6 +24,9 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 /*
+ * notes : the teapot needs fixing but the Kronos data also had issues with direct rendering...
+ */
+/*
  *   Alt-Enter to disable annoying Lint warnings...
  *
  *   MVP

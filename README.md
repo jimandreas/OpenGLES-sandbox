@@ -1,29 +1,30 @@
-# Learn-OpenGLES-Tutorials / android / AndroidOpenGLESLessons/
+# OpenGLES-Sandbox
 
-*Port of AndroidOpenGLESLessons folder to Android Studio*
+Extension / experiments derived from:
+
+https://github.com/jimandreas/AndroidOpenGLESLessons
+
+which in turn were a port from:
 
 Original Github location:  https://github.com/learnopengles/Learn-OpenGLES-Tutorials
 
-This project is a repository for the lessons and tutorials over at http://www.learnopengles.com/
-
-The compiled app can be downloaded from the Android market at https://market.android.com/details?id=com.learnopengles.android
-
-*No WebGL work is present in this port of the Android folder*
-
 ## What has changed:
 
-The samples have been reworked so that they all live happily (more or less) in one Android Studio project.
-In theory you should be able to pull the repo or download the zip file, and then hand the (uncompressed) folder 
-to Android Studio and everything should just build.
+I have added three studies to the start of the over all lesson layout:
 
-The copy of the Gihub repo imported into Android Studio just fine.  I added my favorite .gitnore files and then compiled it.
-It was a completely clean build without changing a single line of code at the initial Git checkin tag.
-Since the initial build - I have taken screenshots and built a README.md file.    Now the reading and understanding
-and practice begins :sweat_smile:  - jim a
+1) A GL Object study - various geometric shapes are studied.
 
-### Current Studio level (27 Jan 2016):
+2) A small study on loading the OBJ file format was implemented.
 
-Android Studio 1.5.1   Build date: 1 Dec 2015
+3) The ToroidHelix object can be duplicated in a scene to study the performance of Android graphics.
+
+Have fun looking at these if you like.
+
+:sweat_smile:  - jim a
+
+### Current Studio level (13 Feb 2016):
+
+Android Studio 2.0 Beta 2   Build date: 1 Dec 2015
 
 compileSdkVersion 23
 
@@ -65,6 +66,18 @@ For more information on these samples please refer to the links above.
 ## app Table Of Contents
 
 ![TableOfContents_goes_here](./Screenshots/TableOfContents.png)
+
+## Display Objects
+
+![Objects_goes_here](./Screenshots/VariousObjects.png)
+
+## Load OBJ file
+
+![OBJ_goes_here](./Screenshots/LoadObjFile.png)
+
+## More Triangles
+
+![MoreTries_goes_here](./Screenshots/MoreTris.png)
 
 ## Lesson 1
 

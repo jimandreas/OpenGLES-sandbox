@@ -39,7 +39,7 @@
 
         <activity
             android:name=".displayscaled.ActivtyDisplayScaled"
-            android:label="@string/objects_title" />
+            android:label="@string/button_objects_multiple_more_triangles" />
 
         <activity
             android:name="com.learnopengles.sandbox.lesson1.LessonOneActivity"
