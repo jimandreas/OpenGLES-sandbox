@@ -57,7 +57,7 @@ public class TableOfContents extends ListActivity
 
 		{
 			final Map<String, Object> item = new HashMap<String, Object>();
-			item.put(ITEM_IMAGE, R.drawable.ic_lesson_seven);
+			item.put(ITEM_IMAGE, R.drawable.cow);
 			item.put(ITEM_TITLE, getText(R.string.activity_load_obj_file_title));
 			item.put(ITEM_SUBTITLE, getText(R.string.activity_load_obj_file_subtitle));
 			data.add(item);
