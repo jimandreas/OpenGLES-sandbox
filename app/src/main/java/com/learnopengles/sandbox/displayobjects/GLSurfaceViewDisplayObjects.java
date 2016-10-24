@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.PointF;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
-import android.util.Log;
+import timber.log.Timber;
 import android.view.MotionEvent;
 
 public class GLSurfaceViewDisplayObjects extends GLSurfaceView
@@ -53,10 +53,10 @@ public class GLSurfaceViewDisplayObjects extends GLSurfaceView
 				{
 					case MotionEvent.ACTION_DOWN:
 
-						Log.w("touch DOWN", "");
+						Timber.i("touch DOWN");
 						break;
 					case MotionEvent.ACTION_UP:
-						Log.w("touch UP", "");
+						Timber.i("touch UP");
 						break;
 					case MotionEvent.ACTION_MOVE:
 
@@ -79,14 +79,14 @@ public class GLSurfaceViewDisplayObjects extends GLSurfaceView
                         deltaSpacing = spacing(m);
                         deltaSpacing -= mPinchZoom;
                         deltaSpacing = deltaSpacing / (mDensity * 1000f);
-                        Log.w("pinchzoom", "deltaSpacing = " + deltaSpacing);
+                        Timber.i("deltaSpacing = " + deltaSpacing);
                         // mRenderer.mScaleDelta = -deltaSpacing;
 
-                        // Log.w("touch MOVE", "dy = " + deltay);
+                        // Timber.i("touch MOVE", "dy = " + deltay);
                         
                         break;
 					case MotionEvent.ACTION_POINTER_DOWN:
-						Log.w("touch POINTER DOWN", "");
+						Timber.i("touch POINTER DOWN");
 
                         x1 = m.getX(0);
                         y1 = m.getY(0);
@@ -96,7 +96,7 @@ public class GLSurfaceViewDisplayObjects extends GLSurfaceView
                         mOldX = (x1+x2) / 2.0f;
                         mOldY = (y1+y2) / 2.0f;
                         mPinchZoom = spacing(m);
-                        Log.w("Down", "touch DOWN, mPinchZoom is " + mPinchZoom);
+                        Timber.i("touch DOWN, mPinchZoom is " + mPinchZoom);
 						break;
 				}
 
@@ -121,7 +121,7 @@ public class GLSurfaceViewDisplayObjects extends GLSurfaceView
 
                         mRenderer.mDeltaX += deltaX;
                         mRenderer.mDeltaY += deltaY;
-                        // Log.w("touch", ": mDX = " + mRenderer.mDeltaX + " mDY = " + mRenderer.mDeltaY);
+                        // Timber.i("touch", ": mDX = " + mRenderer.mDeltaX + " mDY = " + mRenderer.mDeltaY);
                     }
                 }
                 mPreviousX = x;

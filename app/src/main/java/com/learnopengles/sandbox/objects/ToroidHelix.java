@@ -23,7 +23,7 @@ package com.learnopengles.sandbox.objects;
  */
 
 import android.os.SystemClock;
-import android.util.Log;
+import timber.log.Timber;
 
 public class ToroidHelix {
     private static final String LOG_TAG = ToroidHelix.class.getSimpleName();
@@ -79,7 +79,7 @@ public class ToroidHelix {
         offset = mBufMgr.getFloatArrayIndex();
 
         float start_time = SystemClock.uptimeMillis();
-        Log.w(LOG_TAG, "start calculation");
+        Timber.i("start calculation");
 
 //        int[] tri_raw_p1 = new int[TRIS];
 //        int[] tri_raw_p2 = new int[TRIS];
@@ -186,7 +186,7 @@ public class ToroidHelix {
 
 //        for (i = 0; i < nx; i++) {  /* loop around toride at radius r2, around that at r2 */
 //            for (i = 0; i < polys; i++) {  /* now output 3 point polygons */
-////                Log.w(LOG_TAG, "indx are "
+////                Timber.i("indx are "
 ////                        + tri_raw_p1[i] + " "
 ////                        + tri_raw_p2[i] + " "
 ////                        + tri_raw_p3[i]);
@@ -234,7 +234,7 @@ public class ToroidHelix {
 
         float elapsed_time = (SystemClock.uptimeMillis() - start_time) / 1000;
         String pretty_print = String.format("%6.2f", elapsed_time);
-        Log.w(LOG_TAG, "end calculating in " + pretty_print + " seconds, count is " + sCount);
+        Timber.i("end calculating in " + pretty_print + " seconds, count is " + sCount);
 
         mNumIndices = offset;
         mBufMgr.setFloatArrayIndex(offset);
@@ -290,7 +290,7 @@ public class ToroidHelix {
 //        String snvy = String.format("%6.2f", nvy);
 //        String snvz = String.format("%6.2f", nvz);
 
-//        Log.w("vert ", index + " x y z nx ny nz "
+//        Timber("vert ", index + " x y z nx ny nz "
 //                        + svx + " " + svy + " " + svz + " and " + snvx + " " + snvy + " " + snvz );
 //                    + " clr "
 //                    + vertexData[i + 6] + " " + vertexData[i + 7] + " "

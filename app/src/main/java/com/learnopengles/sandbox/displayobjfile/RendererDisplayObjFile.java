@@ -4,7 +4,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.os.SystemClock;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.learnopengles.sandbox.objects.Cone;
 import com.learnopengles.sandbox.objects.Cube;
@@ -315,7 +315,7 @@ public class RendererDisplayObjFile implements GLSurfaceView.Renderer
         int glError;
         glError = GLES20.glGetError();
         if (glError != GLES20.GL_NO_ERROR) {
-            Log.e(LOG_TAG, "GLERROR: " + glError);
+            Timber.e("GLERROR: " + glError);
         }
 	}	
 
@@ -536,7 +536,7 @@ public class RendererDisplayObjFile implements GLSurfaceView.Renderer
         int glError;
         glError = GLES20.glGetError();
         if (glError != GLES20.GL_NO_ERROR) {
-            Log.e(LOG_TAG, "GLERROR: " + glError);
+            Timber.e("GLERROR: " + glError);
         }
     }
 
@@ -589,7 +589,7 @@ public class RendererDisplayObjFile implements GLSurfaceView.Renderer
 			// If the compilation failed, delete the shader.
 			if (compileStatus[0] == 0) 
 			{
-				Log.e(TAG, "Error compiling shader: " + GLES20.glGetShaderInfoLog(shaderHandle));
+				Timber.e("Error compiling shader: " + GLES20.glGetShaderInfoLog(shaderHandle));
 				GLES20.glDeleteShader(shaderHandle);
 				shaderHandle = 0;
 			}
@@ -643,7 +643,7 @@ public class RendererDisplayObjFile implements GLSurfaceView.Renderer
 			// If the link failed, delete the program.
 			if (linkStatus[0] == 0) 
 			{				
-				Log.e(TAG, "Error compiling program: " + GLES20.glGetProgramInfoLog(programHandle));
+				Timber.e("Error compiling program: " + GLES20.glGetProgramInfoLog(programHandle));
 				GLES20.glDeleteProgram(programHandle);
 				programHandle = 0;
 			}

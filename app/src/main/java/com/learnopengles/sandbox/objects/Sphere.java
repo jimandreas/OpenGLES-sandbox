@@ -85,7 +85,7 @@ public class Sphere {
 //            String svy = String.format("%6.2f", vy);
 //            String svz = String.format("%6.2f", vz);
 //
-//            Log.w("cyl ", i/STRIDE_IN_FLOATS + " x y z "
+//            Timber("cyl ", i/STRIDE_IN_FLOATS + " x y z "
 //                    + svx + " " + svy + " " + svz + " and "
 //                    + vertexData[i + 6] + " " + vertexData[i + 7] + " " + vertexData[i + 8]);
 //        }

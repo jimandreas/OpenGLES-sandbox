@@ -3,7 +3,7 @@ package com.learnopengles.sandbox.objects;
 
 import android.opengl.GLES20;
 import android.opengl.Matrix;
-import android.util.Log;
+import timber.log.Timber;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -153,7 +153,7 @@ public class HeightMap {
                 throw new RuntimeException("error on buffer gen");
             }
         } catch (Throwable t) {
-            Log.w("Teapot", t);
+            Timber.e(t, "Teapot");
             // errorHandler.handleError(ErrorHandler.ErrorType.BUFFER_CREATION_ERROR, t.getLocalizedMessage());
             throw new RuntimeException("error on buffer gen");
         }

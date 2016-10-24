@@ -2,7 +2,7 @@ package com.learnopengles.sandbox.objects;
 
 import android.content.Context;
 import android.opengl.GLES20;
-import android.util.Log;
+import timber.log.Timber;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -88,7 +88,7 @@ public class BufferManager {
         }
         sFloatArray = new float[sFloatArraySize];
         if (sFloatArray == null) {
-            Log.e(LOG_TAG, "Error creating initial vertex buffer.");
+            Timber.e("Error creating initial vertex buffer.");
             throw new RuntimeException("Error creating initial vertex buffer.");
         }
 // TODO: wrap the FloatBuffer
@@ -243,7 +243,7 @@ public class BufferManager {
         String snvy = String.format("%6.2f", nvy);
         String snvz = String.format("%6.2f", nvz);
 
-        Log.w("vert ", i + " x y z nx ny nz "
+        Timber.i("vert " + i + " x y z nx ny nz "
                         + svx + " " + svy + " " + svz + " and " + snvx + " " + snvy + " " + snvz
 //                    + " clr "
 //                    + vertexData[i + 6] + " " + vertexData[i + 7] + " "

@@ -220,7 +220,7 @@ public class EllipseCalculator {
 //            String snvy = String.format("%6.2f", nvy);
 //            String snvz = String.format("%6.2f", nvz);
 //
-//            Log.w("vert ", i + " x y z nx ny nz "
+//            Timber("vert ", i + " x y z nx ny nz "
 //                            + svx + " " + svy + " " + svz + " and " + snvx + " " + snvy + " " + snvz
 ////                    + " clr "
 ////                    + vertexData[i + 6] + " " + vertexData[i + 7] + " "

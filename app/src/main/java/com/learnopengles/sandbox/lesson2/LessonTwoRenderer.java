@@ -11,7 +11,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.os.SystemClock;
-import android.util.Log;
+import timber.log.Timber;
 
 /*
  *   Alt-Enter to disable annoying Lint warnings...s
@@ -580,7 +580,7 @@ public class LessonTwoRenderer implements GLSurfaceView.Renderer
 			// If the compilation failed, delete the shader.
 			if (compileStatus[0] == 0) 
 			{
-				Log.e(TAG, "Error compiling shader: " + GLES20.glGetShaderInfoLog(shaderHandle));
+				Timber.e("Error compiling shader: " + GLES20.glGetShaderInfoLog(shaderHandle));
 				GLES20.glDeleteShader(shaderHandle);
 				shaderHandle = 0;
 			}
@@ -634,7 +634,7 @@ public class LessonTwoRenderer implements GLSurfaceView.Renderer
 			// If the link failed, delete the program.
 			if (linkStatus[0] == 0) 
 			{				
-				Log.e(TAG, "Error compiling program: " + GLES20.glGetProgramInfoLog(programHandle));
+				Timber.e("Error compiling program: " + GLES20.glGetProgramInfoLog(programHandle));
 				GLES20.glDeleteProgram(programHandle);
 				programHandle = 0;
 			}

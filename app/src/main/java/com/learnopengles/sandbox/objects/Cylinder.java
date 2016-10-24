@@ -133,7 +133,7 @@ public class Cylinder {
 //            String svy = String.format("%6.2f", vy);
 //            String svz = String.format("%6.2f", vz);
 //
-//            Log.w("cyl ", i + " x y z "
+//            Timber("cyl ", i + " x y z "
 //                    + svx + " " + svy + " " + svz + " and "
 //                    + vertexData[i + 6] + " " + vertexData[i + 7] + " " + vertexData[i + 8]);
 //        }
@@ -218,7 +218,7 @@ public class Cylinder {
 //            String snvy = String.format("%6.2f", nvy);
 //            String snvz = String.format("%6.2f", nvz);
 //
-//            Log.w("cyl ", i + " x y z nx ny nz "
+//            Timber("cyl ", i + " x y z nx ny nz "
 //                    + svx + " " + svy + " " + svz + " and " + snvx + " " + snvy + " " + snvz
 //                    + " clr "
 //                    + vertexData[i + 6] + " " + vertexData[i + 7] + " " + vertexData[i + 8]);

@@ -61,7 +61,7 @@ public class XYZtest extends AndroidTestCase {
             String svy = String.format("%6.2f", vy);
             String svz = String.format("%6.2f", vz);
 
-            Log.d(LOG_TAG, "nx ny nz "
+            Timber.i("nx ny nz "
                     + vx + " " + vy + " " + vz );
 
         }

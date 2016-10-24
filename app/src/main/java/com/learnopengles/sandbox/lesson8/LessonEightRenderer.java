@@ -3,7 +3,7 @@ package com.learnopengles.sandbox.lesson8;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.learnopengles.sandbox.R;
 import com.learnopengles.sandbox.common.RawResourceReader;
@@ -395,7 +395,7 @@ public class LessonEightRenderer implements GLSurfaceView.Renderer {
 					errorHandler.handleError(ErrorType.BUFFER_CREATION_ERROR, "glGenBuffers");
 				}
 			} catch (Throwable t) {
-				Log.w(TAG, t);
+				Timber.e(t);
 				errorHandler.handleError(ErrorType.BUFFER_CREATION_ERROR, t.getLocalizedMessage());
 			}
 		}

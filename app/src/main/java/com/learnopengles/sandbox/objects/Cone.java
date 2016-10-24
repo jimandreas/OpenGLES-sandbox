@@ -89,7 +89,7 @@ public class Cone {
 //            String svy = String.format("%.2f", vy);
 //            String svz = String.format("%.2f", vz);
 //
-//            Log.w("cyl", " x y z "
+//            Timber("cyl", " x y z "
 //                    + svx + " " + svy + " " + svz + " and "
 //                    + vertexData[i + 6] + " " + vertexData[i + 7] + " " + vertexData[i + 8]);
 //        }
@@ -160,7 +160,7 @@ public class Cone {
 //            String svy = String.format("%.2f", vy);
 //            String svz = String.format("%.2f", vz);
 //
-//            Log.w("cyl", " x y z "
+//            Timber("cyl", " x y z "
 //                    + svx + " " + svy + " " + svz + " and "
 //                    + vertexData[i + 6] + " " + vertexData[i + 7] + " " + vertexData[i + 8]);
 //        }

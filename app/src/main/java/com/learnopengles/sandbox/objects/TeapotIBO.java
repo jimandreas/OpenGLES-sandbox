@@ -1,7 +1,7 @@
 package com.learnopengles.sandbox.objects;
 
 import android.opengl.GLES20;
-import android.util.Log;
+import timber.log.Timber;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -87,7 +87,7 @@ public class TeapotIBO {
                  */
                 // indexData[indexDataOffset++] = teapot_indices[i];
                 if (teapot_indices[i + 1] == -1) {
-                    Log.e("YOW!", "double minus ones at index " + i + " was after " +
+                    Timber.e("Yow double minus ones at index " + i + " was after " +
                             teapot_indices[i-1]);
                 }
             } else {

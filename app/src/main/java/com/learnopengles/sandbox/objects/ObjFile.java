@@ -5,7 +5,7 @@ import android.content.res.AssetManager;
 import android.opengl.GLES20;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.learnopengles.sandbox.displayobjfile.ActivityDisplayObjFile;
 
@@ -35,7 +35,7 @@ public class ObjFile {
     }
 
     public void parse(String objFileName) {
-        // Log.w(LOG_TAG, "start parsing files = " + objFileName);
+        // Timber.i("start parsing files = " + objFileName);
         float start_time = SystemClock.uptimeMillis();
 
         flushAllBuffers();
@@ -45,8 +45,8 @@ public class ObjFile {
         float elapsed_time = (SystemClock.uptimeMillis() - start_time) / 1000;
         String pretty_print = String.format("%6.2f", elapsed_time);
 
-        Log.w(LOG_TAG, "finished parsing in " + pretty_print + " seconds.");
-        Log.w(LOG_TAG, "max xyz min xyz" + mMaxX + " " + mMaxY + " " + mMaxZ + " and "
+        Timber.i("finished parsing in " + pretty_print + " seconds.");
+        Timber.i("max xyz min xyz" + mMaxX + " " + mMaxY + " " + mMaxZ + " and "
                 + mMinX + " " + mMinY + " " + mMinZ);
     }
 
@@ -57,7 +57,7 @@ public class ObjFile {
         try {
             inputStream = mAssetManager.open(objFileName, AssetManager.ACCESS_BUFFER);
             if (inputStream == null) {
-                Log.d(LOG_TAG, "cannot open" + objFileName + ", returning");
+                Timber.i("cannot open" + objFileName + ", returning");
                 return;
             }
 
@@ -65,7 +65,7 @@ public class ObjFile {
 
             String name = null;
             while ((line = reader.readLine()) != null) {
-                // Log.w(LOG_TAG, "line is: " + line);
+                // Timber.i("line is: " + line);
                 if (line.length() == 0) {
                     continue;
                 }
@@ -76,9 +76,9 @@ public class ObjFile {
                 }
             }
         } catch (IOException e) {
-            Log.d(LOG_TAG, "IO error in file " + objFileName);
+            Timber.i("IO error in file " + objFileName);
             if (line != null) {
-                Log.d(LOG_TAG, "IO exception at line: " + line);
+                Timber.i("IO exception at line: " + line);
             }
 
         }
@@ -131,14 +131,14 @@ public class ObjFile {
         try {
             inputStream = mAssetManager.open(objFileName, AssetManager.ACCESS_BUFFER);
             if (inputStream == null) {
-                Log.e(LOG_TAG, "cannot open" + objFileName + ", returning");
+                Timber.e("cannot open" + objFileName + ", returning");
                 return;
             }
 
             reader = new BufferedReader(new InputStreamReader(inputStream));
 
             while ((line = reader.readLine()) != null) {
-                // Log.w(LOG_TAG, "line is: " + line);
+                // Timber.i("line is: " + line);
                 if (line.length() == 0) {
                     continue;
                 }
@@ -153,9 +153,9 @@ public class ObjFile {
                 }
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "IO error in file " + objFileName);
+            Timber.e("IO error in file " + objFileName);
             if (line != null) {
-                Log.e(LOG_TAG, "IO exception at line: " + line);
+                Timber.e("IO exception at line: " + line);
             }
         }
     }
@@ -310,7 +310,7 @@ public class ObjFile {
         try {
             return Integer.parseInt(s);
         } catch (RuntimeException e) {
-            Log.e(LOG_TAG, "Bad Integer : " + s);
+            Timber.e("Bad Integer : " + s);
             return 0;
         }
     }
@@ -413,7 +413,7 @@ public class ObjFile {
 //            String svy = String.format("%6.2f", vy);
 //            String svz = String.format("%6.2f", vz);
 //
-//            Log.w("data ", i + " x y z "
+//            Timber("data ", i + " x y z "
 //                    + svx + " " + svy + " " + svz + " and color = "
 //                    + vertexData[i + 6] + " " + vertexData[i + 7] + " " + vertexData[i + 8]);
 //        }
@@ -462,7 +462,7 @@ public class ObjFile {
 //            iy = indexData[i + 1];
 //            iz = indexData[i + 2];
 //
-//            Log.w("data ", i + " i1 i2 i3 "
+//            Timber("data ", i + " i1 i2 i3 "
 //                    + ix + " " + iy + " " + iz );
 //        }
 

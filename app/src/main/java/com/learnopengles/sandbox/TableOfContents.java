@@ -27,6 +27,8 @@ import com.learnopengles.sandbox.lesson7.LessonSevenActivity;
 import com.learnopengles.sandbox.lesson8.LessonEightActivity;
 import com.learnopengles.sandbox.displayobjects.ActivtyDisplayObjects;
 
+import timber.log.Timber;
+
 public class TableOfContents extends ListActivity 
 {
 	private static final String ITEM_IMAGE = "item_image";
@@ -37,6 +39,11 @@ public class TableOfContents extends ListActivity
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
+
+		if (BuildConfig.DEBUG) {
+			Timber.plant(new Timber.DebugTree());
+		}
+
 		setTitle(R.string.toc);
 		setContentView(R.layout.table_of_contents);
 		

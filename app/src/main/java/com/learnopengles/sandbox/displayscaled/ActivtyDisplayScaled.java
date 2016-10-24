@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.pm.ConfigurationInfo;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import timber.log.Timber;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
@@ -40,7 +40,7 @@ public class ActivtyDisplayScaled extends Activity
             }
             @Override
             public boolean onScale(ScaleGestureDetector detector) {
-                Log.d(LOG_TAG, "zoom ongoing, scale: " + detector.getScaleFactor());
+                Timber.i("zoom ongoing, scale: " + detector.getScaleFactor());
                 return false;
             }
         });
