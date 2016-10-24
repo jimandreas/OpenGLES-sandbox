@@ -79,7 +79,7 @@ public class GLSurfaceViewDisplayObjects extends GLSurfaceView
                         deltaSpacing = spacing(m);
                         deltaSpacing -= mPinchZoom;
                         deltaSpacing = deltaSpacing / (mDensity * 1000f);
-                        Timber.i("deltaSpacing = " + deltaSpacing);
+//                        Timber.i("deltaSpacing = " + deltaSpacing);
                         // mRenderer.mScaleDelta = -deltaSpacing;
 
                         // Timber.i("touch MOVE", "dy = " + deltay);
