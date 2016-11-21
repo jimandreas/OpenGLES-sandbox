@@ -1,11 +1,7 @@
 Android OpenGL test repo
 ------------------------
 
-Extended from this framework: https://github.com/learnopengles/Learn-OpenGLES-Tutorials
-
-## What has changed:
-
-I have added three studies to the start of the over all lesson layout:
+<b>Description</b>
 
 1) A GL Object study - various geometric shapes are studied.
 
@@ -17,11 +13,11 @@ Have fun looking at these if you like.
 
 :sweat_smile:  - jim a
 
-### Current Studio level (Nov 2016
+### Current Studio level (Nov 2016)
 
 Android Studio 2.2.2
 
-## License
+### License
 
 See LICENSE.TXT
 
@@ -41,13 +37,11 @@ See LICENSE.TXT
 
 <img src="Screenshots/MoreTris.PNG" width = 200>
 
+# Acknowledgements
 
-Information from original repo README.TXT
-=============
-This project is a repository for the lessons and tutorials over at http://www.learnopengles.com/
+This Android OpenGL study used this Repo as a base for initial coding:
 
-The compiled app can be downloaded from the Android market at https://market.android.com/details?id=com.learnopengles.android
+https://github.com/learnopengles/Learn-OpenGLES-Tutorials
 
-The WebGL tutorials can be viewed at http://www.learnopengles.com/
 
 
