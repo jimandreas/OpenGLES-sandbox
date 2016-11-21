@@ -13,13 +13,16 @@ Have fun looking at these if you like.
 
 :sweat_smile:  - jim a
 
-### Current Studio level (Nov 2016)
+### Current Studio level (Nov 2016) - Android Studio 2.2.2
 
-Android Studio 2.2.2
+### License - See LICENSE.TXT
 
-### License
+Gif movie
+---------
+Demonstrates what this app has implemented:<br>
+<img src="Screenshots/movie.gif" width = 200>
 
-See LICENSE.TXT
+Note: gif movie made with the following tool:  http://image.online-convert.com/convert-to-gif
 
 ## Table Of Contents
 
