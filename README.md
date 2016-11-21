@@ -13,9 +13,13 @@ Have fun looking at these if you like.
 
 :sweat_smile:  - jim a
 
-### Current Studio level (Nov 2016) - Android Studio 2.2.2
+<b>Play store</b> - downloadable test app - try it here:
 
-### License - See LICENSE.TXT
+http://play.google.com/store/apps/details?id=com.learnopengles.sandbox&hl=en
+
+<b>Current Studio level:</b> (Nov 2016) - Android Studio 2.2.2
+
+<b>License:</b> See LICENSE.TXT in repo
 
 Gif movie
 ---------
