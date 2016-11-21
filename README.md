@@ -24,22 +24,6 @@ Demonstrates what this app has implemented:<br>
 
 Note: gif movie made with the following tool:  http://image.online-convert.com/convert-to-gif
 
-## Table Of Contents
-
-<img src="Screenshots/TableOfContents2.png" width = 200>
-
-## Display Objects
-
-<img src="Screenshots/VariousObjects.PNG" width = 200>
-
-## Load OBJ file
-
-<img src="Screenshots/LoadObjFile.png" width = 200>
-
-## More Triangles
-
-<img src="Screenshots/Tris.PNG" width = 200>
-
 # Acknowledgements
 
 This Android OpenGL study used this Repo as a base for initial coding:
