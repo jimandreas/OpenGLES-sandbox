@@ -39,7 +39,8 @@ public class ToroidHelix {
             (POSITION_DATA_SIZE_IN_ELEMENTS + NORMAL_DATA_SIZE_IN_ELEMENTS + COLOR_DATA_SIZE_IN_ELEMENTS);
     private static final int STRIDE_IN_BYTES = STRIDE_IN_FLOATS * BYTES_PER_FLOAT;
 
-    private static final float NORMAL_BRIGHTNESS_FACTOR = 7f;
+//    private static final float NORMAL_BRIGHTNESS_FACTOR = 7f;
+    private static final float NORMAL_BRIGHTNESS_FACTOR = 21f;
 
     private int mNumIndices = 0;
 

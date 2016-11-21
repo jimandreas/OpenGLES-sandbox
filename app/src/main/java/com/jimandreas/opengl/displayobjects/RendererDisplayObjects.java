@@ -42,8 +42,6 @@ import javax.microedition.khronos.opengles.GL10;
 public class RendererDisplayObjects implements GLSurfaceView.Renderer {
 
     private XYZ mXYZ = new XYZ();
-
-    private static String LOG_TAG = "Renderer";
     // update to add touch control - these are set by the SurfaceView class
     // These still work without volatile, but refreshes are not guaranteed to happen.
     public volatile float mDeltaX;
@@ -58,11 +56,6 @@ public class RendererDisplayObjects implements GLSurfaceView.Renderer {
     private static int mHeight;
     private static int mWidth;
 
-
-    /**
-     * Used for debug logs.
-     */
-    private static final String TAG = "LessonCylRenderer";
 
     /**
      * Store the model matrix. This matrix is used to move models from object space (where each model can be thought

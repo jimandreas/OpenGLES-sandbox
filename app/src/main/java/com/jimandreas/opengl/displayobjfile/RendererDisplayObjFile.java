@@ -38,8 +38,6 @@ public class RendererDisplayObjFile implements GLSurfaceView.Renderer
 
     private XYZ mXYZ = new XYZ();
 
-    private final String LOG_TAG = "Renderer";
-
     String mObjFileName;
 
 
@@ -56,9 +54,6 @@ public class RendererDisplayObjFile implements GLSurfaceView.Renderer
     private static boolean shrinking = true;
     private static int mHeight;
     private static int mWidth;
-
-    /** Used for debug logs. */
-	private static final String TAG = "LessonCylRenderer";
 
 	/**
 	 * Store the model matrix. This matrix is used to move models from object space (where each model can be thought
@@ -123,7 +118,7 @@ public class RendererDisplayObjFile implements GLSurfaceView.Renderer
 	/** Used to hold the transformed position of the light in eye space (after transformation via modelview matrix) */
 	private final float[] mLightPosInEyeSpace = new float[4];
 
-    private boolean mUseVertexShaderProgram = true;
+    private boolean mUseVertexShaderProgram = false;
 	/** This is a handle to our per-vertex cube shading program. */
 	private int mPerVertexProgramHandle = -1;
     /** This is a handle to our per-pixel cube shading program. */
@@ -434,57 +429,7 @@ public class RendererDisplayObjFile implements GLSurfaceView.Renderer
         do_matrix_setup();
         drawAssetObj();
 
-//        // Obj #3 upper right
-//        Matrix.setIdentityM(mModelMatrix, 0);
-//        Matrix.translateM(mModelMatrix, 0, 1.0f, .75f, -2.5f);
-//        Matrix.scaleM(mModelMatrix, 0, 3.5f, 3.5f, 3.5f);
-//        do_matrix_setup();
-//        drawTeapotIBO();
-//
-//        // Obj #4 mid left
-//        Matrix.setIdentityM(mModelMatrix, 0);
-//        Matrix.translateM(mModelMatrix, 0, -1.0f, 0.0f, -2.5f);
-//        Matrix.scaleM(mModelMatrix, 0, .25f, .25f, .25f);
-//        do_matrix_setup();
-//        drawCube();
-//
-//        // Obj #5 center
-//        Matrix.setIdentityM(mModelMatrix, 0);
-//        Matrix.translateM(mModelMatrix, 0, 0.0f, 0.0f, -2.5f);
-//        Matrix.scaleM(mModelMatrix, 0, .6f, .6f, .6f);
-//        do_matrix_setup();
-//        drawSphere();
-//
-//        // Obj #6 mid right
-//        Matrix.setIdentityM(mModelMatrix, 0);
-//        Matrix.translateM(mModelMatrix, 0, 1.0f, -0.25f, -2.5f);
-//        Matrix.scaleM(mModelMatrix, 0, 3.5f, 3.5f, 3.5f);
-//        do_matrix_setup();
-//        if (!mRenderOnlyIBO) {
-//            drawTeapot();  // direct rendering
-//        }
-//
-//        // Obj #7 bottom left
-//        Matrix.setIdentityM(mModelMatrix, 0);
-//        Matrix.translateM(mModelMatrix, 0, -1.0f, -1.0f, -2.5f);
-//        Matrix.scaleM(mModelMatrix, 0, .05f, .05f, .05f);
-//        do_matrix_setup();
-//        drawHeightmap();
 
-        // Obj #7 bottom left
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, -1.0f, -.75f, -2.5f);
-        Matrix.scaleM(mModelMatrix, 0, 3.5f, 3.5f, 3.5f);
-        do_matrix_setup();
- //        drawTeapotIBO();  blows up Genymotion
-//
-//        // Obj #8 bottom center
-//        Matrix.setIdentityM(mModelMatrix, 0);
-//        Matrix.translateM(mModelMatrix, 0, 0.0f, -1.0f, -2.5f);
-//        Matrix.scaleM(mModelMatrix, 0, .4f, .4f, .4f);
-//        do_matrix_setup();
-//        drawTriangleTest();
-//
         // Obj #9 bottom right
         Matrix.setIdentityM(mModelMatrix, 0);
         Matrix.translateM(mModelMatrix, 0, 1.0f, -1.0f, -2.5f);

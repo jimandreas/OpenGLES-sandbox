@@ -8,7 +8,12 @@ import java.util.Map;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
+
+import android.net.Uri;
 import android.os.Bundle;
+
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,7 +37,7 @@ public class TableOfContents extends ListActivity
 	{
 		super.onCreate(savedInstanceState);
 
-		if (BuildConfig.DEBUG) {
+		if (savedInstanceState==null && BuildConfig.DEBUG) {
 			Timber.plant(new Timber.DebugTree());
 		}
 
@@ -94,6 +99,26 @@ public class TableOfContents extends ListActivity
 					final Intent launchIntent = new Intent(TableOfContents.this, activityToLaunch);
 					startActivity(launchIntent);
 				}				
+			}
+		});
+
+		/*
+         * FAB button (floating action button = FAB) to get more information
+         *    Vector to the website for more info
+         *       Snackbar popup ommitted due to versionitis.
+         */
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.info_fab);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+
+			Timber.i("FAB clicked");
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			intent.setData(Uri.parse(
+					"https://github.com/jimandreas/OpenGLES-sandbox"
+					));
+			startActivity(intent);
+
 			}
 		});
 	}	

@@ -23,6 +23,8 @@ import com.jimandreas.opengl.objects.XYZ;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import static com.jimandreas.opengl.objects.BufferManager.transferToGl;
+
 /*
  *   Alt-Enter to disable annoying Lint warnings...
  *
@@ -39,8 +41,6 @@ import javax.microedition.khronos.opengles.GL10;
 public class RendererDisplayScaled implements GLSurfaceView.Renderer {
 
     private XYZ mXYZ = new XYZ();
-
-    private static String LOG_TAG = "Renderer";
     // update to add touch control - these are set by the SurfaceView class
     // These still work without volatile, but refreshes are not guaranteed to happen.
     public volatile float mDeltaX;
@@ -54,11 +54,6 @@ public class RendererDisplayScaled implements GLSurfaceView.Renderer {
     private static boolean shrinking = true;
     private static int mHeight;
     private static int mWidth;
-
-    /**
-     * Used for debug logs.
-     */
-    private static final String TAG = "LessonCylRenderer";
 
     /**
      * Store the model matrix. This matrix is used to move models from object space (where each model can be thought
@@ -153,7 +148,7 @@ public class RendererDisplayScaled implements GLSurfaceView.Renderer {
      */
     private final float[] mLightPosInEyeSpace = new float[4];
 
-    private boolean mUseVertexShaderProgram = true;
+    private boolean mUseVertexShaderProgram = false;
     /**
      * This is a handle to our per-vertex cube shading program.
      */
@@ -196,18 +191,7 @@ public class RendererDisplayScaled implements GLSurfaceView.Renderer {
     private final float[] mCurrentTranslation = new float[16];
     private final float[] mCurrentScaling = new float[16];
 
-    private Cube mCube;
-    private Teapot mTeapot;
-    private TeapotIBO mTeapotIBO;
-    private HeightMap mHeightMap;
-    private Sphere mSphere;
-    private Cylinder mCylinder;
-    private Ellipse mEllipse;
-    private EllipseHelix mEllipseHelix;
     private ToroidHelix mToroidHelix;
-    private Cone mCone;
-    private TriangleTest mTriangleTest;
-
     private BufferManager mBufferManager;
 
     /*
@@ -300,19 +284,21 @@ public class RendererDisplayScaled implements GLSurfaceView.Renderer {
         /*
          * begin the geometry assortment allocations
          */
-        // float color[] = new float[] { 0.5f, 0.5f, 0.0f, 0.0f };
-        float nice_color[] = new float[]{218f / 256f, 182f / 256f, 85f / 256f, 1.0f};
+//        float color[] = new float[] { 0.5f, 0.5f, 0.0f, 0.0f };
+//        float nice_color[] = new float[]{218f / 256f, 182f / 256f, 85f / 256f, 1.0f};
         float chimera_color[] = new float[]{229f / 256f, 196f / 256f, 153f / 256f, 1.0f};
-        float color[] = new float[]{0.0f, 0.4f, 0.0f, 1.0f};
-        float color_red[] = new float[]{0.6f, 0.0f, 0.0f, 1.0f};
-        float color_teapot_green[] = new float[]{0f, 0.3f, 0.0f, 1.0f};
-        float color_teapot_red[] = new float[]{0.3f, 0.0f, 0.0f, 1.0f};
+//        float color[] = new float[]{0.0f, 0.4f, 0.0f, 1.0f};
+//        float color_red[] = new float[]{0.6f, 0.0f, 0.0f, 1.0f};
+//        float color_teapot_green[] = new float[]{0f, 0.3f, 0.0f, 1.0f};
+//        float color_teapot_red[] = new float[]{0.3f, 0.0f, 0.0f, 1.0f};
 
+        /*
+         * create the toroid and buffer it
+         */
         mToroidHelix = new ToroidHelix(
                 mBufferManager,
                 chimera_color);
-        mBufferManager.transferToGl();
-
+        transferToGl();
 
         // Initialize the modifier matrices
         Matrix.setIdentityM(mAccumulatedRotation, 0);
@@ -340,10 +326,9 @@ public class RendererDisplayScaled implements GLSurfaceView.Renderer {
 
         Matrix.frustumM(mProjectionMatrix, 0, left, right, bottom, top, near, far);
 
-        int glError;
-        glError = GLES20.glGetError();
+        int glError = GLES20.glGetError();
         if (glError != GLES20.GL_NO_ERROR) {
-            Timber.e("GLERROR: " + glError);
+            Timber.e("GL error %d", glError);
         }
     }
 
@@ -451,10 +436,9 @@ public class RendererDisplayScaled implements GLSurfaceView.Renderer {
             );
         }
 
-        int glError;
-        glError = GLES20.glGetError();
+        int glError = GLES20.glGetError();
         if (glError != GLES20.GL_NO_ERROR) {
-            Timber.e("GLERROR: " + glError);
+            Timber.e("GL error was %d", glError);
         }
     }
 
@@ -543,10 +527,9 @@ public class RendererDisplayScaled implements GLSurfaceView.Renderer {
         // Pass in the light position in eye space.
         GLES20.glUniform3f(mLightPosHandle, mLightPosInEyeSpace[0], mLightPosInEyeSpace[1], mLightPosInEyeSpace[2]);
 
-        int glError;
-        glError = GLES20.glGetError();
+        int glError = GLES20.glGetError();
         if (glError != GLES20.GL_NO_ERROR) {
-            Timber.e("GLERROR: " + glError);
+            Timber.e("GL error was %d", glError);
         }
     }
 
