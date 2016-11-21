@@ -3,10 +3,11 @@ apply plugin: 'com.android.application'
 // versioning from stackoverflow and Jake Wharton
 // https://plus.google.com/+JakeWharton/posts/6f5TcVPRZij
 // http://stackoverflow.com/questions/4616095/how-to-get-the-build-version-number-of-your-android-application
+
 def versionMajor = 1
 def versionMinor = 0
-def versionPatch = 1
-def versionBuild = 5 // bump for dogfood builds, public betas, etc.
+def versionPatch = 6
+def versionBuild = 6 // bump for dogfood builds, public betas, etc.
 
 android {
     compileSdkVersion 25
@@ -21,13 +22,41 @@ android {
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
     }
 
+    signingConfigs {
+        release
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
         }
     }
 }
+
+// signing solution courtesy of http://gist.github.com/gabrielemariotti/6856974
+
+def Properties props = new Properties()
+def propFile = new File('gradle/signing.properties')
+if (propFile.canRead()) {
+    props.load(new FileInputStream(propFile))
+
+    if (props != null && props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
+            props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
+        android.signingConfigs.release.storeFile = file(props['STORE_FILE'])
+        android.signingConfigs.release.storePassword = props['STORE_PASSWORD']
+        android.signingConfigs.release.keyAlias = props['KEY_ALIAS']
+        android.signingConfigs.release.keyPassword = props['KEY_PASSWORD']
+    } else {
+        println 'gradle/signing.properties found but some entries are missing'
+        android.buildTypes.release.signingConfig = null
+    }
+} else {
+    println 'gradle/signing.properties not found'
+    android.buildTypes.release.signingConfig = null
+}
+
 dependencies {
     compile 'com.jakewharton.timber:timber:4.3.1'
     testCompile 'junit:junit:4.12'

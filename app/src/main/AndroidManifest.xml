@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.learnopengles.sandbox">
+    package="com.jimandreas.opengl">
 
-    <!-- We require OpenGL ES 2.0 -->
+    <!-- requires OpenGL ES 2.0 -->
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
@@ -18,56 +18,28 @@
         >
 
         <!--
-               Don't override application title. See http://stackoverflow.com/questions/3462431/how-to-name-android-application
-              We will set this in code instead.
+               Don't override application title.
+               See http://stackoverflow.com/questions/3462431/how-to-name-android-application
+
         -->
-        <activity android:name="com.learnopengles.sandbox.TableOfContents" >
+        <activity android:name="com.jimandreas.opengl.TableOfContents" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".displayobjects.ActivtyDisplayObjects"
+            android:name="com.jimandreas.opengl.displayobjects.ActivtyDisplayObjects"
             android:label="@string/objects_title" />
 
         <activity
-            android:name="com.learnopengles.sandbox.displayobjfile.ActivityDisplayObjFile"
+            android:name="com.jimandreas.opengl.displayobjfile.ActivityDisplayObjFile"
             android:label="@string/activity_load_obj_file_title" />
 
         <activity
-            android:name=".displayscaled.ActivtyDisplayScaled"
+            android:name="com.jimandreas.opengl.displayscaled.ActivtyDisplayScaled"
             android:label="@string/button_objects_multiple_more_triangles" />
 
-        <activity
-            android:name="com.learnopengles.sandbox.lesson1.LessonOneActivity"
-            android:label="@string/lesson_one" />
-        <activity
-            android:name="com.learnopengles.sandbox.lesson2.LessonTwoActivity"
-            android:label="@string/lesson_two" />
-        <activity
-            android:name="com.learnopengles.sandbox.lesson3.LessonThreeActivity"
-            android:label="@string/lesson_three" />
-        <activity
-            android:name="com.learnopengles.sandbox.lesson4.LessonFourActivity"
-            android:label="@string/lesson_four" />
-        <activity
-            android:name="com.learnopengles.sandbox.lesson5.LessonFiveActivity"
-            android:label="@string/lesson_five" />
-        <activity
-            android:name="com.learnopengles.sandbox.lesson6.LessonSixActivity"
-            android:label="@string/lesson_six" />
-        <activity
-            android:name="com.learnopengles.sandbox.lesson7.LessonSevenActivity"
-            android:label="@string/lesson_seven" />
-        <activity
-            android:name="com.learnopengles.sandbox.lesson8.LessonEightActivity"
-            android:label="@string/lesson_eight" />
-
-
-
     </application>
-
 </manifest>
