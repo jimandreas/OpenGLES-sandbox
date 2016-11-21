@@ -35,7 +35,7 @@ See LICENSE.TXT
 
 ## More Triangles
 
-<img src="Screenshots/Tris.png" width = 200>
+<img src="Screenshots/Tris.PNG" width = 200>
 
 # Acknowledgements
 
