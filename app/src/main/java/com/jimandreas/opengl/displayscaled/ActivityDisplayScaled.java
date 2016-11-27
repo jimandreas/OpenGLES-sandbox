@@ -13,7 +13,7 @@ import android.widget.Button;
 
 import com.jimandreas.opengl.R;
 
-public class ActivtyDisplayScaled extends Activity
+public class ActivityDisplayScaled extends Activity
 {
     private static String LOG_TAG = "activity";
 

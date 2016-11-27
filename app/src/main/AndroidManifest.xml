@@ -31,7 +31,7 @@
         </activity>
 
         <activity
-            android:name="com.jimandreas.opengl.displayobjects.ActivtyDisplayObjects"
+            android:name="com.jimandreas.opengl.displayobjects.ActivityDisplayObjects"
             android:label="@string/objects_title" />
 
         <activity
@@ -39,7 +39,7 @@
             android:label="@string/activity_load_obj_file_title" />
 
         <activity
-            android:name="com.jimandreas.opengl.displayscaled.ActivtyDisplayScaled"
+            android:name="com.jimandreas.opengl.displayscaled.ActivityDisplayScaled"
             android:label="@string/button_objects_multiple_more_triangles" />
 
     </application>

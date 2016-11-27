@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,8 +20,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SimpleAdapter;
 
 import com.jimandreas.opengl.displayobjfile.ActivityDisplayObjFile;
-import com.jimandreas.opengl.displayscaled.ActivtyDisplayScaled;
-import com.jimandreas.opengl.displayobjects.ActivtyDisplayObjects;
+import com.jimandreas.opengl.displayscaled.ActivityDisplayScaled;
+import com.jimandreas.opengl.displayobjects.ActivityDisplayObjects;
 
 import timber.log.Timber;
 
@@ -56,7 +55,7 @@ public class TableOfContents extends ListActivity
 			item.put(ITEM_TITLE, getText(R.string.objects_title));
 			item.put(ITEM_SUBTITLE, getText(R.string.objects_subtitle));
 			data.add(item);
-			activityMapping.put(i++, ActivtyDisplayObjects.class);
+			activityMapping.put(i++, ActivityDisplayObjects.class);
 		}
 
 		{
@@ -74,7 +73,7 @@ public class TableOfContents extends ListActivity
 			item.put(ITEM_TITLE, getText(R.string.objects_multiple_title));
 			item.put(ITEM_SUBTITLE, getText(R.string.objects_multiple_subtitle));
 			data.add(item);
-			activityMapping.put(i++, ActivtyDisplayScaled.class);
+			activityMapping.put(i++, ActivityDisplayScaled.class);
 		}
 
 		final SimpleAdapter dataAdapter = new SimpleAdapter(

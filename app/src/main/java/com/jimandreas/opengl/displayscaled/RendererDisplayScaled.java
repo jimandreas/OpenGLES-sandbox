@@ -7,17 +7,7 @@ import android.os.SystemClock;
 import timber.log.Timber;
 
 import com.jimandreas.opengl.objects.BufferManager;
-import com.jimandreas.opengl.objects.Cone;
-import com.jimandreas.opengl.objects.Cube;
-import com.jimandreas.opengl.objects.Cylinder;
-import com.jimandreas.opengl.objects.Ellipse;
-import com.jimandreas.opengl.objects.EllipseHelix;
-import com.jimandreas.opengl.objects.HeightMap;
-import com.jimandreas.opengl.objects.Sphere;
-import com.jimandreas.opengl.objects.Teapot;
-import com.jimandreas.opengl.objects.TeapotIBO;
 import com.jimandreas.opengl.objects.ToroidHelix;
-import com.jimandreas.opengl.objects.TriangleTest;
 import com.jimandreas.opengl.objects.XYZ;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -170,7 +160,7 @@ public class RendererDisplayScaled implements GLSurfaceView.Renderer {
     private int mPointProgramHandle;
 
 
-    private ActivtyDisplayScaled mLessonCylActivity;
+    private ActivityDisplayScaled mLessonCylActivity;
     private GLSurfaceView mGlSurfaceView;
     /**
      * A temporary matrix.
@@ -197,7 +187,7 @@ public class RendererDisplayScaled implements GLSurfaceView.Renderer {
     /*
      * Let's get started.
      */
-    public RendererDisplayScaled(final ActivtyDisplayScaled lessonCylActivity, final GLSurfaceView glSurfaceView) {
+    public RendererDisplayScaled(final ActivityDisplayScaled lessonCylActivity, final GLSurfaceView glSurfaceView) {
         mLessonCylActivity = lessonCylActivity;
         mGlSurfaceView = glSurfaceView;
         mBufferManager = BufferManager.getInstance(lessonCylActivity);

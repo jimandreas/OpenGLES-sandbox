@@ -13,7 +13,7 @@ import android.widget.Button;
 
 import com.jimandreas.opengl.R;
 
-public class ActivtyDisplayObjects extends Activity
+public class ActivityDisplayObjects extends Activity
 {
     private static String LOG_TAG = "activity";
 

@@ -171,7 +171,7 @@ public class RendererDisplayObjects implements GLSurfaceView.Renderer {
     private int mPointProgramHandle;
 
 
-    private ActivtyDisplayObjects mLessonCylActivity;
+    private ActivityDisplayObjects mLessonCylActivity;
     private GLSurfaceView mGlSurfaceView;
     /**
      * A temporary matrix.
@@ -209,7 +209,7 @@ public class RendererDisplayObjects implements GLSurfaceView.Renderer {
     /*
      * Let's get started.
      */
-    public RendererDisplayObjects(final ActivtyDisplayObjects lessonCylActivity, final GLSurfaceView glSurfaceView) {
+    public RendererDisplayObjects(final ActivityDisplayObjects lessonCylActivity, final GLSurfaceView glSurfaceView) {
         mLessonCylActivity = lessonCylActivity;
         mGlSurfaceView = glSurfaceView;
         mBufferManager = BufferManager.getInstance(lessonCylActivity);
