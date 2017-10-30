@@ -7,31 +7,36 @@
 		android:id="@+id/gl_surface_view"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent" />
-	<LinearLayout		
+	<LinearLayout
+		style="?android:attr/buttonBarStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom|center_horizontal"
 		android:orientation="horizontal">
 		<Button
 			android:id="@+id/button_fewer"
+			style="?android:attr/buttonBarButtonStyle"
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"					
 			android:text="@string/button_objects_multiple_fewer_triangles" />
 		<Button
 			android:id="@+id/button_more"
+			style="?android:attr/buttonBarButtonStyle"
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"					
 			android:text="@string/button_objects_multiple_more_triangles" />
 		<Button
 			android:id="@+id/button_switch_rendering_mode"
+			style="?android:attr/buttonBarButtonStyle"
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"					
 			android:text="@string/button_objects_using_wireframe_rendering" />
 		<Button
 			android:id="@+id/button_switch_shaders"
+			style="?android:attr/buttonBarButtonStyle"
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"					

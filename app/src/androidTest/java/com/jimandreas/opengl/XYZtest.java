@@ -66,6 +66,6 @@ public class XYZtest extends AndroidTestCase {
 
         }
         int foo = 1;
-        assertTrue("Unable to Insert MovieEntry into the Database", foo == 1);
+        assertTrue("random test", foo == 1);
     }
 }

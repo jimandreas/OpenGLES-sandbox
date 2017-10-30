@@ -1,41 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"	
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 	<com.jimandreas.opengl.displayobjfile.GLSurfaceViewDisplayObjFile
 		android:id="@+id/gl_surface_view"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent" />
-	<LinearLayout		
+	<LinearLayout
+		style="?android:attr/buttonBarStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom|center_horizontal"
 		android:orientation="horizontal">
 		<Button
 			android:id="@+id/button_prev_obj"
+			style="?android:attr/buttonBarButtonStyle"
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"					
 			android:text="@string/button_prev_obj" />
 		<Button
 			android:id="@+id/button_next_obj"
+			style="?android:attr/buttonBarButtonStyle"
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"					
 			android:text="@string/button_next_obj" />
 		<Button
 			android:id="@+id/button_switch_rendering_mode"
+			style="?android:attr/buttonBarButtonStyle"
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"					
 			android:text="@string/button_objects_using_wireframe_rendering" />
 		<Button
 			android:id="@+id/button_switch_shaders"
+			style="?android:attr/buttonBarButtonStyle"
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="match_parent"					
 			android:text="@string/button_objects_using_pixel_shading" />
 	</LinearLayout>
+
+	<EditText
+		android:id="@+id/obj_name"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:ems="10"
+		android:inputType="textPersonName"
+		tools:text="obj name here" />
 
 </FrameLayout>
