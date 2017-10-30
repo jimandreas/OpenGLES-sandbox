@@ -6,13 +6,16 @@
 	android:layout_height="wrap_content"
 	android:orientation="horizontal"
 	android:paddingTop="4dp"
-	android:paddingBottom="4dp">    
-   	<ImageView
-   		android:id="@+id/Image"
-   		android:layout_width="wrap_content"
-   		android:layout_height="wrap_content"
-   		android:layout_margin="8dp"
-   		android:background="@drawable/icon_border"/>
+	android:paddingBottom="4dp">
+
+	<ImageView
+		android:id="@+id/Image"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_margin="8dp"
+		android:background="@drawable/icon_border"
+		android:contentDescription="@string/toc"
+		/>
    	<LinearLayout
    		android:layout_width="0dp"
  		android:layout_height="wrap_content"

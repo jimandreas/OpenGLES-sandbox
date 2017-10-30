@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.jimandreas.opengl.R;
 
@@ -18,12 +19,11 @@ public class ActivityDisplayObjFile extends Activity
     /** Hold a reference to our GLSurfaceView */
 	private GLSurfaceViewDisplayObjFile mGLSurfaceView;
 	private RendererDisplayObjFile mRenderer;
-    private static int mCurrentObjFileIndex = 0;
-
     private int mNextNameIndex = -1;
+    private TextView objNameTextView;
     // wire in the names and display names
     private final String[] obj_file_names = new String[] {
-           // "cube",
+            "cube",
             "helixcoil",
             "teapot",
             "cow",
@@ -31,8 +31,7 @@ public class ActivityDisplayObjFile extends Activity
     };
 
     String[] obj_file_display_name = new String[] {
-
-           //  "Cube",
+            "Cube",
             "Coiled Helix",
             "Teapot",
             "Cow",
@@ -45,8 +44,8 @@ public class ActivityDisplayObjFile extends Activity
             mNextNameIndex = 0;
         }
         String name = obj_file_names[mNextNameIndex];
-        setTitle(obj_file_display_name[mNextNameIndex]);
         mRenderer.setObjFileName(name);
+        objNameTextView.setText(obj_file_display_name[mNextNameIndex]);
 
         mGLSurfaceView.queueEvent(new Runnable() {
             @Override
@@ -62,7 +61,7 @@ public class ActivityDisplayObjFile extends Activity
             mNextNameIndex = obj_file_names.length-1;
         }
         String name = obj_file_names[mNextNameIndex];
-        setTitle(obj_file_display_name[mNextNameIndex]);
+        objNameTextView.setText(obj_file_display_name[mNextNameIndex]);
         mRenderer.setObjFileName(name);
 
         mGLSurfaceView.queueEvent(new Runnable() {
@@ -79,7 +78,8 @@ public class ActivityDisplayObjFile extends Activity
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.display_obj_file);
 
-        mGLSurfaceView = (GLSurfaceViewDisplayObjFile) findViewById(R.id.gl_surface_view);
+        mGLSurfaceView = findViewById(R.id.gl_surface_view);
+        objNameTextView = findViewById(R.id.obj_name);
 
 		// Check if the system supports OpenGL ES 2.0.
 		final ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
