@@ -23,7 +23,8 @@ public class ActivityDisplayObjFile extends Activity
     private TextView objNameTextView;
     // wire in the names and display names
     private final String[] obj_file_names = new String[] {
-            "cube",
+            "triangletest",
+           // "cube",
             "helixcoil",
             "teapot",
             "cow",
@@ -31,7 +32,8 @@ public class ActivityDisplayObjFile extends Activity
     };
 
     String[] obj_file_display_name = new String[] {
-            "Cube",
+            "Triangle",
+           // "Cube",
             "Coiled Helix",
             "Teapot",
             "Cow",
