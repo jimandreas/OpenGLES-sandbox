@@ -495,7 +495,7 @@ public class ObjFile {
             boolean doWireframeRendering) {
 
         // Debug: disable culling to remove back faces.
-        GLES20.glDisable(GLES20.GL_CULL_FACE);
+        //GLES20.glDisable(GLES20.GL_CULL_FACE);
 
         // TODO : make sure the buffer is NOT released before the Indexes are bound!!
         /*
@@ -538,7 +538,7 @@ public class ObjFile {
                     todo, /* GLES20.GL_TRIANGLES, */
                     mTriangleIndexCount,
                     GLES20.GL_UNSIGNED_SHORT,
-                    1);
+                    0);
             GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, 0); // release
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);  // release
         }

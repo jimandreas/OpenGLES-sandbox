@@ -1,0 +1,22 @@
+# cube.obj
+#
+
+#
+# https://en.wikipedia.org/wiki/Wavefront_.obj_file
+g cube
+
+v  0.0  0.0  0.0
+v  1.0  0.0  0.0
+v  0.0  1.0  0.0
+
+
+# Vertex Normal Indices Without Texture Coordinate Indices
+
+# As texture coordinates are optional, one can define geometry without them, but one
+# must put two slashes after the vertex index before putting the normal index.
+
+#f v1//vn1 v2//vn2 v3//vn3 ...
+
+
+# f  1//2  7//2  5//2
+f  1 2 3
