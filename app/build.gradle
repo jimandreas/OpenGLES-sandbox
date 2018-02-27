@@ -6,17 +6,17 @@ apply plugin: 'com.android.application'
 
 def versionMajor = 1
 def versionMinor = 0
-def versionPatch = 7
-def versionBuild = 7 // bump for dogfood builds, public betas, etc.
+def versionPatch = 8
+def versionBuild = 8 // bump for dogfood builds, public betas, etc.
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "com.learnopengles.sandbox"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 27
 
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
@@ -58,13 +58,13 @@ if (propFile.canRead()) {
 }
 
 dependencies {
-    compile 'com.jakewharton.timber:timber:4.3.1'
-    testCompile 'junit:junit:4.12'
+    implementation 'com.jakewharton.timber:timber:4.6.1'
+    testImplementation 'junit:junit:4.12'
 
     // constraint layout - latest and greatest Android Studio helper
-    compile 'com.android.support.constraint:constraint-layout:1.1.0-beta3'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta5'
 
     // FAB button
-//    compile 'com.android.support:design:22.2.1'
-    compile 'com.android.support:design:26.1.0'
+//    implementation 'com.android.support:design:22.2.1'
+    implementation 'com.android.support:design:27.1.0'
 }
