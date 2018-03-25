@@ -1,4 +1,4 @@
-package com.jimandreas.opengl.displayobjects
+package com.jimandreas.opengl.displayobjfile
 
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
@@ -8,9 +8,6 @@ import timber.log.Timber
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
-/*
- * notes : the teapot needs fixing but the Kronos data also had issues with direct rendering...
- */
 /*
  *   Alt-Enter to disable annoying Lint warnings...
  *
@@ -24,22 +21,23 @@ import javax.microedition.khronos.opengles.GL10
  * This class implements our custom renderer. Note that the GL10 parameter passed in is unused for OpenGL ES 2.0
  * renderers -- the static class GLES20 is used instead.
  */
-class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView.Renderer {
+class RendererDisplayObjFile(activityIn: ActivityDisplayObjFile) : GLSurfaceView.Renderer {
 
-    var touchX = 300f
-    var touchY = 300f
-    var scaleCurrent = 0.5f
-    var scalePrevious = 0f
+    private val mXYZ = XYZ()
 
-    private lateinit var activity: ActivityDisplayObjects
+    private lateinit var objFileName: String
+    val activity = activityIn
 
     // update to add touch control - these are set by the SurfaceView class
     // These still work without volatile, but refreshes are not guaranteed to happen.
 
-    var deltaX = 0f
-    var deltaY = 0f
-    var deltaTranslateX = 0f
-    var deltaTranslateY = 0f
+    var scaleCurrent = 0.5f
+    var scalePrevious = 0f
+    var deltaX: Float = 0f
+    var deltaY: Float = 0f
+    var deltaTranslateX: Float = 0f
+    var deltaTranslateY: Float = 0f
+    var scaleDelta = 0f
 
     /**
      * Store the model matrix. This matrix is used to move models from object space (where each model can be thought
@@ -53,75 +51,58 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
      */
     private val viewMatrix = FloatArray(16)
 
-    /**
-     * Store the projection matrix. This is used to project the scene onto a 2D viewport.
-     */
+    /** Store the projection matrix. This is used to project the scene onto a 2D viewport.  */
     private val projectionMatrix = FloatArray(16)
 
-    /**
-     * Allocate storage for the final combined matrix. This will be passed into the shader program.
-     */
-    private val MVPMatrix = FloatArray(16)
+    /** Allocate storage for the final combined matrix. This will be passed into the shader program.  */
+    private val mMVPMatrix = FloatArray(16)
 
     /**
      * Stores a copy of the model matrix specifically for the light position.
      */
     private val lightModelMatrix = FloatArray(16)
-    // handles to the shader interface
-    private var MVPMatrixHandle: Int = 0
-    private var MVMatrixHandle: Int = 0
+    private var mMVPMatrixHandle: Int = 0
+    private var mMVMatrixHandle: Int = 0
     private var lightPosHandle: Int = 0
     private var positionHandle: Int = 0
     private var colorHandle: Int = 0
     private var normalHandle: Int = 0
 
-    /**
-     * Used to hold a light centered on the origin in model space. We need a 4th coordinate so we can get translations to work when
-     * we multiply this by our transformation matrices.
-     */
+    /** Used to hold a light centered on the origin in model space. We need a 4th coordinate so we can get translations to work when
+     * we multiply this by our transformation matrices.  */
     private val lightPosInModelSpace = floatArrayOf(0.0f, 0.0f, 0.0f, 1.0f)
 
-    /**
-     * Used to hold the current position of the light in world space (after transformation via model matrix).
-     */
+    /** Used to hold the current position of the light in world space (after transformation via model matrix).  */
     private val lightPosInWorldSpace = FloatArray(4)
 
-    /**
-     * Used to hold the transformed position of the light in eye space (after transformation via modelview matrix)
-     */
+    /** Used to hold the transformed position of the light in eye space (after transformation via modelview matrix)  */
     private val lightPosInEyeSpace = FloatArray(4)
 
-    private var useVertexShaderProgram = true
-    /**
-     * This is a handle to our per-vertex cube shading program.
-     */
-    private var perVertexProgramHandle: Int = 0
-    /**
-     * This is a handle to our per-pixel cube shading program.
-     */
-    private var perPixelProgramHandle: Int = 0
+    private var useVertexShaderProgram = false
+    /** This is a handle to our per-vertex cube shading program.  */
+    private var perVertexPrograhandle = -1
+    /** This is a handle to our per-pixel cube shading program.  */
+    private var perPixelPrograhandle: Int = 0
 
     private var selectedPrograhandle: Int = 0
 
     private var wireFrameRenderingFlag = false
     private var renderOnlyIBO = true
 
-    /**
-     * This is a handle to our light point program.
-     */
-    private var pointProgramHandle: Int = 0
-    /**
-     * A temporary matrix.
-     */
+    /** This is a handle to our light point program.  */
+    private var pointPrograhandle: Int = 0
+    /** A temporary matrix.  */
     private val temporaryMatrix = FloatArray(16)
 
-    /**
-     * Store the accumulated rotation.
-     */
+    /** Store the accumulated rotation.  */
     private val accumulatedRotation = FloatArray(16)
     private val accumulatedTranslation = FloatArray(16)
     private val accumulatedScaling = FloatArray(16)
+
+    /** Store the current rotation.  */
     private val incrementalRotation = FloatArray(16)
+    private val currentTranslation = FloatArray(16)
+    private val currentScaling = FloatArray(16)
 
     private var cube: Cube? = null
     private var teapot: Teapot? = null
@@ -129,21 +110,11 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
     private var heightMap: HeightMap? = null
     private var sphere: Sphere? = null
     private var cylinder: Cylinder? = null
-    private var ellipse: Ellipse? = null
-    private val ellipseHelix: EllipseHelix? = null
-    private var toroidHelix: ToroidHelix? = null
     private var cone: Cone? = null
     private var triangleTest: TriangleTest? = null
-
-    private val bufferManager: BufferManager = BufferManager.getInstance(activityIn)
-
-    init {
-        activity = activityIn
-        BufferManager.allocateInitialBuffer()
-    }
+    private val objFile: ObjFile = ObjFile(activityIn)
 
     override fun onSurfaceCreated(glUnused: GL10, config: EGLConfig) {
-
         // Set the background clear color to black.
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f)
 
@@ -153,11 +124,6 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
         // Enable depth testing
         GLES20.glEnable(GLES20.GL_DEPTH_TEST)
 
-        val glError: Int
-        glError = GLES20.glGetError()
-        if (glError != GLES20.GL_NO_ERROR) {
-            Timber.e("GLERROR: $glError")
-        }
         // Position the eye in front of the origin.
         val eyeX = 0.0f
         val eyeY = 0.0f
@@ -178,20 +144,20 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
         // view matrix. In OpenGL 2, we can keep track of these matrices separately if we choose.
         Matrix.setLookAtM(viewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ)
 
-        var vertexShader = XYZ().vertexShaderLesson2
-        var fragmentShader = XYZ().fragmentShaderLesson2
+        var vertexShader = mXYZ.vertexShaderLesson2
+        var fragmentShader = mXYZ.fragmentShaderLesson2
         var vertexShaderHandle = compileShader(GLES20.GL_VERTEX_SHADER, vertexShader)
         var fragmentShaderHandle = compileShader(GLES20.GL_FRAGMENT_SHADER, fragmentShader)
 
-        perVertexProgramHandle = createAndLinkProgram(vertexShaderHandle, fragmentShaderHandle,
+        perVertexPrograhandle = createAndLinkProgram(vertexShaderHandle, fragmentShaderHandle,
                 arrayOf("a_Position", "a_Color", "a_Normal"))
 
         /* add in a pixel shader from lesson 3 - switchable */
-        vertexShader = XYZ().vertexShaderLesson3
-        fragmentShader = XYZ().fragmentShaderLesson3
+        vertexShader = mXYZ.vertexShaderLesson3
+        fragmentShader = mXYZ.fragmentShaderLesson3
         vertexShaderHandle = compileShader(GLES20.GL_VERTEX_SHADER, vertexShader)
         fragmentShaderHandle = compileShader(GLES20.GL_FRAGMENT_SHADER, fragmentShader)
-        perPixelProgramHandle = createAndLinkProgram(vertexShaderHandle, fragmentShaderHandle,
+        perPixelPrograhandle = createAndLinkProgram(vertexShaderHandle, fragmentShaderHandle,
                 arrayOf("a_Position", "a_Color", "a_Normal"))
 
         // Define a simple shader program for our point (the orbiting light source)
@@ -213,7 +179,7 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
 
         val pointVertexShaderHandle = compileShader(GLES20.GL_VERTEX_SHADER, pointVertexShader)
         val pointFragmentShaderHandle = compileShader(GLES20.GL_FRAGMENT_SHADER, pointFragmentShader)
-        pointProgramHandle = createAndLinkProgram(pointVertexShaderHandle, pointFragmentShaderHandle,
+        pointPrograhandle = createAndLinkProgram(pointVertexShaderHandle, pointFragmentShaderHandle,
                 arrayOf("a_Position"))
 
         /*
@@ -225,7 +191,7 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
         val color_red = floatArrayOf(0.6f, 0.0f, 0.0f, 1.0f)
         val color_teapot_green = floatArrayOf(0f, 0.3f, 0.0f, 1.0f)
         val color_teapot_red = floatArrayOf(0.3f, 0.0f, 0.0f, 1.0f)
-        val chimera_color = floatArrayOf(229f / 256f, 196f / 256f, 153f / 256f, 1.0f)
+        val color_bright_white = floatArrayOf(0.8f, 0.8f, 0.8f, 1.0f)
 
         cube = Cube()
         teapot = Teapot(color_teapot_green)
@@ -245,36 +211,15 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
                 0.25f, // radius
                 .5f, // length
                 color)
-
-        ellipse = Ellipse(
-                30, // slices
-                0.25f, // radius
-                .5f, // length
-                color)
-
-        //        ellipseHelix = new EllipseHelix(
-        //                bufferManager,
-        //                10, // slices
-        //                .5f, // radius
-        //                .5f, // length
-        //                color);
-
-
-        toroidHelix = ToroidHelix(
-                bufferManager,
-                chimera_color)
-        BufferManager.transferToGl()
-
-        // commit the vertices
-
         cone = Cone(
                 50, // slices
                 0.25f, // radius
                 .5f, // length
                 nice_color,
                 color_red)
-
         triangleTest = TriangleTest()
+
+        objFile.build_buffers(color_bright_white)
 
         // Initialize the modifier matrices
         Matrix.setIdentityM(accumulatedRotation, 0)
@@ -296,13 +241,13 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
         val bottom = -1.0f * scaleCurrent
         val top = 1.0f * scaleCurrent
         val near = 1.0f
-        // final float far = 20.0f;
-        val far = 10.0f
+        val far = 20.0f
         // final float far = 5.0f;  nothing visible
 
         Matrix.frustumM(projectionMatrix, 0, left, right, bottom, top, near, far)
 
-        val glError: Int = GLES20.glGetError()
+        val glError: Int
+        glError = GLES20.glGetError()
         if (glError != GLES20.GL_NO_ERROR) {
             Timber.e("GLERROR: $glError")
         }
@@ -311,9 +256,43 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
     override fun onDrawFrame(glUnused: GL10) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT or GLES20.GL_DEPTH_BUFFER_BIT)
 
-        if (scaleCurrent != scalePrevious) {
-            onSurfaceChanged(null, width, height)
-            scalePrevious = scaleCurrent
+        // lightangleInDegrees = 0f;
+
+        // this does a nice job of rotating the camera slowly to the right
+        // (scene shifts circularly to the left)
+        // HACK:
+        // Matrix.rotateM(viewMatrix, 0, 0.1f, 0.0f, 1.0f, 0.0f);
+
+        // HACK: experiment with scaling
+        // results:  view matrix does move all objects forward / backward
+        //   in the view but they quickly run into the clip plane
+        // (2) simple scaling of the projection matrix does nothing the model view, but
+        // moves the clip plane toward the unchanged view of the model.
+        // (3) reworking the logic in onSurfaceChanged does a good job of zooming in and out
+        // (4) adding in a little translateM gives a good pan during the zoom
+        //      the inverse translate is tricky to scale to get back to the same point.
+        if (shrinking) {
+            // Matrix.translateM(viewMatrix, 0, -.011f, 0f, 0f);
+            scaleCurrent -= 0.01f
+            // onSurfaceChanged(null, width, height);
+            if (++scaleCount > 90) {
+                scaleCount = 0
+                shrinking = false
+            }
+        } else {
+            // Matrix.translateM(viewMatrix, 0, 1f / (989f / 1000f) * .01f, 0f, 0f);
+            scaleCurrent += 0.01f
+            // onSurfaceChanged(null, width, height);
+            if (++scaleCount > 90) {
+                scaleCount = 0
+                shrinking = true
+            }
+        }
+
+        if (scaleDelta != 0f) {
+            scaleCurrent += scaleDelta
+            onSurfaceChanged(null, width, height)  // adjusts view
+            scaleDelta = 0f
         }
 
         // move the view as necessary if the user has shifted it manually
@@ -323,113 +302,58 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
 
         // Set our per-vertex lighting program.
         if (useVertexShaderProgram) {
-            selectedPrograhandle = perVertexProgramHandle
+            selectedPrograhandle = perVertexPrograhandle
         } else {
-            selectedPrograhandle = perPixelProgramHandle
+            selectedPrograhandle = perPixelPrograhandle
         }
 
         GLES20.glUseProgram(selectedPrograhandle)
         // Set program handles for drawing.
-        MVPMatrixHandle = GLES20.glGetUniformLocation(selectedPrograhandle, "u_MVPMatrix")
-        MVMatrixHandle = GLES20.glGetUniformLocation(selectedPrograhandle, "u_MVMatrix")
+        mMVPMatrixHandle = GLES20.glGetUniformLocation(selectedPrograhandle, "u_MVPMatrix")
+        mMVMatrixHandle = GLES20.glGetUniformLocation(selectedPrograhandle, "u_MVMatrix")
         lightPosHandle = GLES20.glGetUniformLocation(selectedPrograhandle, "u_LightPos")
         positionHandle = GLES20.glGetAttribLocation(selectedPrograhandle, "a_Position")
         colorHandle = GLES20.glGetAttribLocation(selectedPrograhandle, "a_Color")
         normalHandle = GLES20.glGetAttribLocation(selectedPrograhandle, "a_Normal")
 
-        // Calculate position of the light. Push into the distance.
         Matrix.setIdentityM(lightModelMatrix, 0)
         Matrix.translateM(lightModelMatrix, 0, 0.0f, 0.0f, -1.0f)
 
         Matrix.multiplyMV(lightPosInWorldSpace, 0, lightModelMatrix, 0, lightPosInModelSpace, 0)
         Matrix.multiplyMV(lightPosInEyeSpace, 0, viewMatrix, 0, lightPosInWorldSpace, 0)
 
-        // GLES20.glClearDepth(1.0f);
 
-        // Obj #1 upper left
-        Matrix.setIdentityM(modelMatrix, 0)
-        Matrix.translateM(modelMatrix, 0, -.75f, 1.0f, -2.5f)
-        Matrix.scaleM(modelMatrix, 0, 1.0f, 1.0f, 1.0f)
-        doMatrixSetup()
-        cylinder!!.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
-
-        // Obj #5 center
-        Matrix.setIdentityM(modelMatrix, 0)
-        Matrix.translateM(modelMatrix, 0, 0.0f, 1.0f, -2.5f)
-        Matrix.scaleM(modelMatrix, 0, .6f, .6f, .6f)
-        doMatrixSetup()
-        sphere!!.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
-
-        // Obj #3 upper right
-        Matrix.setIdentityM(modelMatrix, 0)
-        Matrix.translateM(modelMatrix, 0, 1.0f, .75f, -2.5f)
-        Matrix.scaleM(modelMatrix, 0, 3.5f, 3.5f, 3.5f)
-        doMatrixSetup()
-        teapotIBO!!.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
-
-        // Obj #4 mid left
-        Matrix.setIdentityM(modelMatrix, 0)
-        Matrix.translateM(modelMatrix, 0, -1.0f, 0.0f, -2.5f)
-        Matrix.scaleM(modelMatrix, 0, .25f, .25f, .25f)
-        doMatrixSetup()
-        cube!!.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
-
-        //        // Obj #5 center
+        //        // Obj #1 upper left
         //        Matrix.setIdentityM(modelMatrix, 0);
-        //        Matrix.translateM(modelMatrix, 0, 0.0f, 0.0f, -2.5f);
-        //        Matrix.scaleM(modelMatrix, 0, .6f, .6f, .6f);
-        //        doMatrixSetup();
-        //        // sphere.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag);
-        //
-        // Obj #5 center
+        //        Matrix.translateM(modelMatrix, 0, -.75f, 1.0f, -2.5f);
+        //        Matrix.scaleM(modelMatrix, 0, 1.0f, 1.0f, 1.0f);
+        //        do_matrix_setup();
+        //        drawCylinder();
+
+        // autoscale for the AssetObj
+        val maxX = objFile.maxX
+        val maxY = objFile.maxY
+        val maxZ = objFile.maxZ
+        val aveMax = (maxX + maxY + maxZ) / 2.0f
+        val scaleF = 1.0f / aveMax
+        // Obj #2 center
         Matrix.setIdentityM(modelMatrix, 0)
         Matrix.translateM(modelMatrix, 0, 0.0f, 0.0f, -2.5f)
-        Matrix.scaleM(modelMatrix, 0, .05f, .05f, .05f)
-        // 5X large version - usefule for debugging
-        // Matrix.scaleM(modelMatrix, 0, .25f, .25f, .25f);
-        doMatrixSetup()
-        bufferManager.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
+        Matrix.scaleM(modelMatrix, 0, scaleF, scaleF, scaleF)
+        do_matrix_setup()
+        drawAssetObj()
 
-
-        // Obj #6 mid right
-        Matrix.setIdentityM(modelMatrix, 0)
-        Matrix.translateM(modelMatrix, 0, 1.0f, -0.25f, -2.5f)
-        Matrix.scaleM(modelMatrix, 0, 3.5f, 3.5f, 3.5f)
-        doMatrixSetup()
-        if (!renderOnlyIBO) {
-            teapot!!.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)  // direct rendering
-        }
-
-        // Obj #7 bottom left
-        Matrix.setIdentityM(modelMatrix, 0)
-        Matrix.translateM(modelMatrix, 0, -1.0f, -1.0f, -2.5f)
-        Matrix.scaleM(modelMatrix, 0, .05f, .05f, .05f)
-        doMatrixSetup()
-        heightMap!!.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
-
-        // Obj #2 middle
-        Matrix.setIdentityM(modelMatrix, 0)
-        Matrix.translateM(modelMatrix, 0, 0.0f, -1.0f, -2.5f)
-        Matrix.scaleM(modelMatrix, 0, 1.0f, 1.0f, 1.0f)
-        doMatrixSetup()
-        // triangleTest.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag);
-        ellipse!!.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
 
         // Obj #9 bottom right
         Matrix.setIdentityM(modelMatrix, 0)
         Matrix.translateM(modelMatrix, 0, 1.0f, -1.0f, -2.5f)
         Matrix.scaleM(modelMatrix, 0, 0.9f, 0.9f, 0.9f)
-        doMatrixSetup()
+        do_matrix_setup()
         cone!!.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
-
-        val glError: Int = GLES20.glGetError()
-        if (glError != GLES20.GL_NO_ERROR) {
-            Timber.e("GLERROR: $glError")
-        }
     }
 
 
-    private fun doMatrixSetup() {
+    private fun do_matrix_setup() {
         /*
          * Set a matrix that contains the additional *incremental* rotation
          * as indicated by the user touching the screen
@@ -451,24 +375,25 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
         // This multiplies the view matrix by the model matrix, and stores
         // the result in the MVP matrix
         // (which currently contains model * view).
-        Matrix.multiplyMM(MVPMatrix, 0, viewMatrix, 0, modelMatrix, 0)
+        Matrix.multiplyMM(mMVPMatrix, 0, viewMatrix, 0, modelMatrix, 0)
 
         // Pass in the modelview matrix.
-        GLES20.glUniformMatrix4fv(MVMatrixHandle, 1, false, MVPMatrix, 0)
+        GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mMVPMatrix, 0)
 
         // This multiplies the modelview matrix by the projection matrix,
         // and stores the result in the MVP matrix
         // (which now contains model * view * projection).
-        Matrix.multiplyMM(temporaryMatrix, 0, projectionMatrix, 0, MVPMatrix, 0)
-        System.arraycopy(temporaryMatrix, 0, MVPMatrix, 0, 16)
+        Matrix.multiplyMM(temporaryMatrix, 0, projectionMatrix, 0, mMVPMatrix, 0)
+        System.arraycopy(temporaryMatrix, 0, mMVPMatrix, 0, 16)
 
         // Pass in the combined matrix.
-        GLES20.glUniformMatrix4fv(MVPMatrixHandle, 1, false, MVPMatrix, 0)
+        GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0)
 
         // Pass in the light position in eye space.
         GLES20.glUniform3f(lightPosHandle, lightPosInEyeSpace[0], lightPosInEyeSpace[1], lightPosInEyeSpace[2])
 
-        val glError: Int = GLES20.glGetError()
+        val glError: Int
+        glError = GLES20.glGetError()
         if (glError != GLES20.GL_NO_ERROR) {
             Timber.e("GLERROR: $glError")
         }
@@ -478,8 +403,8 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
      * Draws a point representing the position of the light.
      */
     private fun drawLight() {
-        val pointMVPMatrixHandle = GLES20.glGetUniformLocation(pointProgramHandle, "u_MVPMatrix")
-        val pointPositionHandle = GLES20.glGetAttribLocation(pointProgramHandle, "a_Position")
+        val pointMVPMatrixHandle = GLES20.glGetUniformLocation(pointPrograhandle, "u_MVPMatrix")
+        val pointPositionHandle = GLES20.glGetAttribLocation(pointPrograhandle, "a_Position")
 
         // Pass in the position.
         GLES20.glVertexAttrib3f(pointPositionHandle, lightPosInModelSpace[0], lightPosInModelSpace[1], lightPosInModelSpace[2])
@@ -488,9 +413,9 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
         GLES20.glDisableVertexAttribArray(pointPositionHandle)
 
         // Pass in the transformation matrix.
-        Matrix.multiplyMM(MVPMatrix, 0, viewMatrix, 0, lightModelMatrix, 0)
-        Matrix.multiplyMM(MVPMatrix, 0, projectionMatrix, 0, MVPMatrix, 0)
-        GLES20.glUniformMatrix4fv(pointMVPMatrixHandle, 1, false, MVPMatrix, 0)
+        Matrix.multiplyMM(mMVPMatrix, 0, viewMatrix, 0, lightModelMatrix, 0)
+        Matrix.multiplyMM(mMVPMatrix, 0, projectionMatrix, 0, mMVPMatrix, 0)
+        GLES20.glUniformMatrix4fv(pointMVPMatrixHandle, 1, false, mMVPMatrix, 0)
 
         // Draw the point.
         GLES20.glDrawArrays(GLES20.GL_POINTS, 0, 1)
@@ -499,7 +424,7 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
     /**
      * Helper function to compile a shader.
      *
-     * @param shaderType   The shader type.
+     * @param shaderType The shader type.
      * @param shaderSource The shader source code.
      * @return An OpenGL handle to the shader.
      */
@@ -519,7 +444,7 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
 
             // If the compilation failed, delete the shader.
             if (compileStatus[0] == 0) {
-                Timber.e("Error compiling shader: %s", GLES20.glGetShaderInfoLog(shaderHandle))
+                Timber.e("Error compiling shader: " + GLES20.glGetShaderInfoLog(shaderHandle))
                 GLES20.glDeleteShader(shaderHandle)
                 shaderHandle = 0
             }
@@ -535,49 +460,59 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
     /**
      * Helper function to compile and link a program.
      *
-     * @param vertexShaderHandle   An OpenGL handle to an already-compiled vertex shader.
+     * @param vertexShaderHandle An OpenGL handle to an already-compiled vertex shader.
      * @param fragmentShaderHandle An OpenGL handle to an already-compiled fragment shader.
-     * @param attributes           Attributes that need to be bound to the program.
+     * @param attributes Attributes that need to be bound to the program.
      * @return An OpenGL handle to the program.
      */
     private fun createAndLinkProgram(vertexShaderHandle: Int, fragmentShaderHandle: Int, attributes: Array<String>?): Int {
-        var programHandle = GLES20.glCreateProgram()
+        var prograhandle = GLES20.glCreateProgram()
 
-        if (programHandle != 0) {
+        if (prograhandle != 0) {
             // Bind the vertex shader to the program.
-            GLES20.glAttachShader(programHandle, vertexShaderHandle)
+            GLES20.glAttachShader(prograhandle, vertexShaderHandle)
 
             // Bind the fragment shader to the program.
-            GLES20.glAttachShader(programHandle, fragmentShaderHandle)
+            GLES20.glAttachShader(prograhandle, fragmentShaderHandle)
 
             // Bind attributes
             if (attributes != null) {
                 val size = attributes.size
                 for (i in 0 until size) {
-                    GLES20.glBindAttribLocation(programHandle, i, attributes[i])
+                    GLES20.glBindAttribLocation(prograhandle, i, attributes[i])
                 }
             }
 
             // Link the two shaders together into a program.
-            GLES20.glLinkProgram(programHandle)
+            GLES20.glLinkProgram(prograhandle)
 
             // Get the link status.
             val linkStatus = IntArray(1)
-            GLES20.glGetProgramiv(programHandle, GLES20.GL_LINK_STATUS, linkStatus, 0)
+            GLES20.glGetProgramiv(prograhandle, GLES20.GL_LINK_STATUS, linkStatus, 0)
 
             // If the link failed, delete the program.
             if (linkStatus[0] == 0) {
-                Timber.e("Error compiling program: %s", GLES20.glGetProgramInfoLog(programHandle))
-                GLES20.glDeleteProgram(programHandle)
-                programHandle = 0
+                Timber.e("Error compiling program: " + GLES20.glGetProgramInfoLog(prograhandle))
+                GLES20.glDeleteProgram(prograhandle)
+                prograhandle = 0
             }
         }
 
-        if (programHandle == 0) {
+        if (prograhandle == 0) {
             throw RuntimeException("Error creating program.")
         }
 
-        return programHandle
+        return prograhandle
+    }
+
+    /* asset obj */
+    private fun drawAssetObj() {
+        // Pass in the position information
+        objFile.render(positionHandle,
+                colorHandle,
+                normalHandle,
+                wireFrameRenderingFlag
+        )
     }
 
     fun toggleShader() {
@@ -608,6 +543,19 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
             renderOnlyIBO = true
             activity.updateRenderOnlyIBOStatus(true)
         }
+    }
+
+    fun loadObjFile() {
+        objFile.parse(objFileName)
+        // TODO: fix this hack on detecting when OPENGL is up and running
+        if (perVertexPrograhandle != -1) {
+            val color_bright_white = floatArrayOf(0.8f, 0.8f, 0.8f, 1.0f)
+            objFile.build_buffers(color_bright_white)
+        }
+    }
+
+    fun setObjFileName(name: String) {
+        objFileName = name
     }
 
     companion object {

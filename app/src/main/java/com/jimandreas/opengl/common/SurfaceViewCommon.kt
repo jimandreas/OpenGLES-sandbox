@@ -2,6 +2,7 @@ package com.jimandreas.opengl.common
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.graphics.PointF
 import android.opengl.GLSurfaceView
@@ -9,14 +10,14 @@ import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.widget.Scroller
-import com.jimandreas.opengl.displayobjects.RendererDisplayObjects
+
 
 class SurfaceViewCommon : GLSurfaceView {
 
-    var selectMode = false
+    private var selectMode = false
     private var lastTouchState = NO_FINGER_DOWN
 
-    private var renderer: RendererDisplayObjects? = null
+    private lateinit var renderer: Activity
 
     private var scroller: Scroller? = null
     private var scrollAnimator: ValueAnimator? = null
@@ -30,8 +31,8 @@ class SurfaceViewCommon : GLSurfaceView {
     private var initialSpacing: Float = 0.toFloat()
     private var currentSpacing: Float = 0.toFloat()
 
-    internal var oldX = 0f
-    internal var oldY = 0f
+    private var oldX = 0f
+    private var oldY = 0f
 
     private val isAnimationRunning: Boolean
         get() = !scroller!!.isFinished
@@ -44,7 +45,7 @@ class SurfaceViewCommon : GLSurfaceView {
         init(contextIn)
     }
 
-    fun setRenderer(rendererIn: RendererDisplayObjects, densityIn: Float) {
+    fun setRenderer(rendererIn: Activity, densityIn: Float) {
         renderer = rendererIn
         density = densityIn
         super.setRenderer(renderer)
@@ -64,7 +65,6 @@ class SurfaceViewCommon : GLSurfaceView {
         scrollAnimator!!.addUpdateListener {
             // tickScrollAnimation();
         }
-
 
         // Create a gesture detector to handle onTouch messages
         gestureDetector = GestureDetector(contextInternal, GestureListener())
@@ -101,132 +101,131 @@ class SurfaceViewCommon : GLSurfaceView {
         }
         if (hack) renderMode = GLSurfaceView.RENDERMODE_CONTINUOUSLY
 
-
         //Number of touches
         val pointerCount = m.pointerCount
-        if (pointerCount > 2) {
-            lastTouchState = MORE_FINGERS
-            return true
-        } else if (pointerCount == 2) {
-            if (selectMode) return true
-            val action = m.actionMasked
-            val actionIndex = m.actionIndex
-            if (lastTouchState == MORE_FINGERS) {
-                x1 = m.getX(0)
-                y1 = m.getY(0)
-                x2 = m.getX(1)
-                y2 = m.getY(1)
+        when {
+            pointerCount > 2 -> {
+                lastTouchState = MORE_FINGERS
+                return true
+            }
+            pointerCount == 2 -> {
+                if (selectMode) return true
+                val action = m.actionMasked
+                if (lastTouchState == MORE_FINGERS) {
+                    x1 = m.getX(0)
+                    y1 = m.getY(0)
+                    x2 = m.getX(1)
+                    y2 = m.getY(1)
 
-                renderer!!.touchX = m.x
-                renderer!!.touchY = m.y
+                    renderer.touchX = m.x
+                    renderer.touchY = m.y
 
-                oldX = (x1 + x2) / 2.0f
-                oldY = (y1 + y2) / 2.0f
+                    oldX = (x1 + x2) / 2.0f
+                    oldY = (y1 + y2) / 2.0f
+                    lastTouchState = TWO_FINGERS_DOWN
+                    return true
+                }
+                when (action) {
+                    MotionEvent.ACTION_MOVE -> {
+
+                        x1 = m.getX(0)
+                        y1 = m.getY(0)
+                        x2 = m.getX(1)
+                        y2 = m.getY(1)
+
+                        renderer.touchX = m.x
+                        renderer.touchY = m.y
+
+                        deltax = (x1 + x2) / 2.0f
+                        deltax -= oldX
+                        deltay = (y1 + y2) / 2.0f
+                        deltay -= oldY
+
+                        renderer.deltaTranslateX += deltax / (density * 300f)
+                        renderer.deltaTranslateY -= deltay / (density * 300f)
+
+                        oldX = (x1 + x2) / 2.0f
+                        oldY = (y1 + y2) / 2.0f
+
+                        currentSpacing = spacing(m)
+
+                        if (lastTouchState != TWO_FINGERS_DOWN) {
+                            initialSpacing = spacing(m)
+                        } else {
+                            deltaSpacing = currentSpacing - initialSpacing
+                            deltaSpacing /= initialSpacing
+
+                            // TODO: adjust this exponent.
+                            //   for now, hack into buckets
+                            if (renderer.scaleCurrent < 0.1f) {
+                                renderer.scaleCurrent += -deltaSpacing / 1000f
+                            } else if (renderer.scaleCurrent < 0.1f) {
+                                renderer.scaleCurrent += -deltaSpacing / 500f
+                            } else if (renderer.scaleCurrent < 0.5f) {
+                                renderer.scaleCurrent += -deltaSpacing / 200f
+                            } else if (renderer.scaleCurrent < 1f) {
+                                renderer.scaleCurrent += -deltaSpacing / 50f
+                            } else if (renderer.scaleCurrent < 2f) {
+                                renderer.scaleCurrent += -deltaSpacing / 10f
+                            } else if (renderer.scaleCurrent < 5f) {
+                                renderer.scaleCurrent += -deltaSpacing / 10f
+                            } else if (renderer.scaleCurrent > 5f) {
+                                if (deltaSpacing > 0) {
+                                    renderer.scaleCurrent += -deltaSpacing / 10f
+                                }
+                            }
+                            // Log.w("Move", "Spacing is " + renderer.scaleCurrent + " spacing = " + deltaSpacing);
+                        }
+                    }
+                    MotionEvent.ACTION_POINTER_DOWN -> {
+                        // Log.w("touch POINTER DOWN", "");
+
+                        x1 = m.getX(0)
+                        y1 = m.getY(0)
+                        x2 = m.getX(1)
+                        y2 = m.getY(1)
+
+                        renderer.touchX = m.x
+                        renderer.touchY = m.y
+
+                        oldX = (x1 + x2) / 2.0f
+                        oldY = (y1 + y2) / 2.0f
+                        initialSpacing = spacing(m)
+                    }
+                    MotionEvent.ACTION_POINTER_UP -> if (hack) renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
+                }// Log.w("Down", "touch DOWN, initialSpacing is " + initialSpacing);
                 lastTouchState = TWO_FINGERS_DOWN
                 return true
             }
-            when (action) {
-                MotionEvent.ACTION_MOVE -> {
+            pointerCount == 1 -> {
+                /*
+                 * handle single finger swipe - rotate each item
+                 */
+                val x = m.x
+                val y = m.y
 
-                    x1 = m.getX(0)
-                    y1 = m.getY(0)
-                    x2 = m.getX(1)
-                    y2 = m.getY(1)
+                renderer.touchX = m.x
+                renderer.touchY = m.y
 
-                    renderer!!.touchX = m.x
-                    renderer!!.touchY = m.y
+                if (m.action == MotionEvent.ACTION_MOVE) {
+                    if (lastTouchState != ONE_FINGER_DOWN) {  // handle anything to one finger interaction
+                        lastTouchState = ONE_FINGER_DOWN
+                    } else if (renderer != null) {
+                        val deltaX = (x - previousX) / density / 2f
+                        val deltaY = (y - previousY) / density / 2f
 
-                    deltax = (x1 + x2) / 2.0f
-                    deltax -= oldX
-                    deltay = (y1 + y2) / 2.0f
-                    deltay -= oldY
-
-                    renderer!!.deltaTranslateX += deltax / (density * 300f)
-                    renderer!!.deltaTranslateY -= deltay / (density * 300f)
-
-                    oldX = (x1 + x2) / 2.0f
-                    oldY = (y1 + y2) / 2.0f
-
-                    currentSpacing = spacing(m)
-
-                    if (lastTouchState != TWO_FINGERS_DOWN) {
-                        initialSpacing = spacing(m)
-                    } else {
-                        deltaSpacing = currentSpacing - initialSpacing
-                        deltaSpacing = deltaSpacing / initialSpacing
-
-
-                        // TODO: adjust this exponent.
-                        //   for now, hack into buckets
-                        if (renderer!!.scaleCurrentF < 0.1f) {
-                            renderer!!.scaleCurrentF += -deltaSpacing / 1000f
-                        } else if (renderer!!.scaleCurrentF < 0.1f) {
-                            renderer!!.scaleCurrentF += -deltaSpacing / 500f
-                        } else if (renderer!!.scaleCurrentF < 0.5f) {
-                            renderer!!.scaleCurrentF += -deltaSpacing / 200f
-                        } else if (renderer!!.scaleCurrentF < 1f) {
-                            renderer!!.scaleCurrentF += -deltaSpacing / 50f
-                        } else if (renderer!!.scaleCurrentF < 2f) {
-                            renderer!!.scaleCurrentF += -deltaSpacing / 10f
-                        } else if (renderer!!.scaleCurrentF < 5f) {
-                            renderer!!.scaleCurrentF += -deltaSpacing / 10f
-                        } else if (renderer!!.scaleCurrentF > 5f) {
-                            if (deltaSpacing > 0) {
-                                renderer!!.scaleCurrentF += -deltaSpacing / 10f
-                            }
-                        }
-                        //                        Log.w("Move", "Spacing is " + renderer.scaleCurrentF + " spacing = " + deltaSpacing);
-
-
+                        renderer.deltaX += deltaX
+                        renderer.deltaY += deltaY
+                        // Log.w("touch", ": dX = " + renderer.deltaX + " dY = " + renderer.deltaY);
                     }
                 }
-                MotionEvent.ACTION_POINTER_DOWN -> {
-                    // Log.w("touch POINTER DOWN", "");
+                previousX = x
+                previousY = y
 
-                    x1 = m.getX(0)
-                    y1 = m.getY(0)
-                    x2 = m.getX(1)
-                    y2 = m.getY(1)
-
-                    renderer!!.touchX = m.x
-                    renderer!!.touchY = m.y
-
-                    oldX = (x1 + x2) / 2.0f
-                    oldY = (y1 + y2) / 2.0f
-                    initialSpacing = spacing(m)
-                }
-                MotionEvent.ACTION_POINTER_UP -> if (hack) renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
-            }// Log.w("Down", "touch DOWN, initialSpacing is " + initialSpacing);
-            lastTouchState = TWO_FINGERS_DOWN
-            return true
-        } else if (pointerCount == 1) {
-            /*
-             * handle single finger swipe - rotate each item
-             */
-            val x = m.x
-            val y = m.y
-
-            renderer!!.touchX = m.x
-            renderer!!.touchY = m.y
-
-            if (m.action == MotionEvent.ACTION_MOVE) {
-                if (lastTouchState != ONE_FINGER_DOWN) {  // handle anything to one finger interaction
-                    lastTouchState = ONE_FINGER_DOWN
-                } else if (renderer != null) {
-                    val deltaX = (x - previousX) / density / 2f
-                    val deltaY = (y - previousY) / density / 2f
-
-                    renderer!!.deltaX += deltaX
-                    renderer!!.deltaY += deltaY
-                    // Log.w("touch", ": dX = " + renderer.deltaX + " dY = " + renderer.deltaY);
-                }
+                return true
             }
-            previousX = x
-            previousY = y
-
-            return true
+            hack -> renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
         }
-        if (hack) renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
         return super.onTouchEvent(m)
     }
 
@@ -260,8 +259,6 @@ class SurfaceViewCommon : GLSurfaceView {
         val radians = Math.atan2(deltay, deltax)
         return Math.toDegrees(radians).toFloat()
     }
-
-
 
     /**
      * Extends [GestureDetector.SimpleOnGestureListener] to provide custom gesture
@@ -312,12 +309,8 @@ class SurfaceViewCommon : GLSurfaceView {
         }
     }
 
-    /**
-     * Force a stop to all pie motion. Called when the user taps during a fling.
-     */
     private fun stopScrolling() {
         scroller!!.forceFinished(true)
-
         onScrollFinished()
     }
 
