@@ -1,6 +1,7 @@
 package com.jimandreas.opengl.common
 
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PointF
 import android.opengl.GLSurfaceView
@@ -12,66 +13,66 @@ import com.jimandreas.opengl.displayobjects.RendererDisplayObjects
 
 class SurfaceViewCommon : GLSurfaceView {
 
-    var mSelectMode = false
-    private var mLastTouchState = NO_FINGER_DOWN
+    var selectMode = false
+    private var lastTouchState = NO_FINGER_DOWN
 
-    private var mRenderer: RendererDisplayObjects? = null
+    private var renderer: RendererDisplayObjects? = null
 
-    private var mScroller: Scroller? = null
-    private var mScrollAnimator: ValueAnimator? = null
-    private var mGestureDetector: GestureDetector? = null
-    private var mContext: Context? = null
+    private var scroller: Scroller? = null
+    private var scrollAnimator: ValueAnimator? = null
+    private var gestureDetector: GestureDetector? = null
+    private lateinit var contextInternal: Context
 
     // Offsets for touch events
-    private var mPreviousX: Float = 0.toFloat()
-    private var mPreviousY: Float = 0.toFloat()
-    private var mDensity: Float = 0.toFloat()
-    private var mInitialSpacing: Float = 0.toFloat()
-    private var mCurrentSpacing: Float = 0.toFloat()
+    private var previousX: Float = 0.toFloat()
+    private var previousY: Float = 0.toFloat()
+    private var density: Float = 0.toFloat()
+    private var initialSpacing: Float = 0.toFloat()
+    private var currentSpacing: Float = 0.toFloat()
 
-    internal var mOldX = 0f
-    internal var mOldY = 0f
+    internal var oldX = 0f
+    internal var oldY = 0f
 
     private val isAnimationRunning: Boolean
-        get() = !mScroller!!.isFinished
+        get() = !scroller!!.isFinished
 
-    constructor(context: Context) : super(context) {
-        init(context)
+    constructor(contextIn: Context) : super(contextIn) {
+        init(contextIn)
     }
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        init(context)
+    constructor(contextIn: Context, attrs: AttributeSet) : super(contextIn, attrs) {
+        init(contextIn)
     }
 
-    fun setRenderer(renderer: RendererDisplayObjects, density: Float) {
-        mRenderer = renderer
-        mDensity = density
+    fun setRenderer(rendererIn: RendererDisplayObjects, densityIn: Float) {
+        renderer = rendererIn
+        density = densityIn
         super.setRenderer(renderer)
     }
 
-    private fun init(context: Context) {
+    private fun init(contextIn: Context) {
 
-        mContext = context
-        mScroller = Scroller(context, null, true)
+        contextInternal = contextIn
+        scroller = Scroller(contextInternal, null, true)
 
         // The scroller doesn't have any built-in animation functions--it just supplies
         // values when we ask it to. So we have to have a way to call it every frame
         // until the fling ends. This code (ab)uses a ValueAnimator object to generate
         // a callback on every animation frame. We don't use the animated value at all.
 
-        mScrollAnimator = ValueAnimator.ofFloat(0f, 1f)
-        mScrollAnimator!!.addUpdateListener {
+        scrollAnimator = ValueAnimator.ofFloat(0f, 1f)
+        scrollAnimator!!.addUpdateListener {
             // tickScrollAnimation();
         }
 
 
         // Create a gesture detector to handle onTouch messages
-        mGestureDetector = GestureDetector(context, GestureListener())
+        gestureDetector = GestureDetector(contextInternal, GestureListener())
 
         // Turn off long press--this control doesn't use it, and if long press is enabled,
         // you can't scroll for a bit, pause, then scroll some more (the pause is interpreted
         // as a long press, apparently)
-        mGestureDetector!!.setIsLongpressEnabled(false)
+        gestureDetector!!.setIsLongpressEnabled(false)
     }
 
     // with h/t to :
@@ -80,6 +81,7 @@ class SurfaceViewCommon : GLSurfaceView {
     // and:
     // http://judepereira.com/blog/multi-touch-in-android-translate-scale-and-rotate/
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(m: MotionEvent?): Boolean {
         val x1: Float
         val x2: Float
@@ -92,7 +94,7 @@ class SurfaceViewCommon : GLSurfaceView {
         // hand the event to the GestureDetector
         // ignore the result for now.
         // TODO:  hook up fling logic
-        val result = mGestureDetector!!.onTouchEvent(m)
+        val result = gestureDetector!!.onTouchEvent(m)
 
         if (m == null) {
             return true
@@ -103,24 +105,24 @@ class SurfaceViewCommon : GLSurfaceView {
         //Number of touches
         val pointerCount = m.pointerCount
         if (pointerCount > 2) {
-            mLastTouchState = MORE_FINGERS
+            lastTouchState = MORE_FINGERS
             return true
         } else if (pointerCount == 2) {
-            if (mSelectMode) return true
+            if (selectMode) return true
             val action = m.actionMasked
             val actionIndex = m.actionIndex
-            if (mLastTouchState == MORE_FINGERS) {
+            if (lastTouchState == MORE_FINGERS) {
                 x1 = m.getX(0)
                 y1 = m.getY(0)
                 x2 = m.getX(1)
                 y2 = m.getY(1)
 
-                mRenderer!!.mTouchX = m.x
-                mRenderer!!.mTouchY = m.y
+                renderer!!.touchX = m.x
+                renderer!!.touchY = m.y
 
-                mOldX = (x1 + x2) / 2.0f
-                mOldY = (y1 + y2) / 2.0f
-                mLastTouchState = TWO_FINGERS_DOWN
+                oldX = (x1 + x2) / 2.0f
+                oldY = (y1 + y2) / 2.0f
+                lastTouchState = TWO_FINGERS_DOWN
                 return true
             }
             when (action) {
@@ -131,49 +133,49 @@ class SurfaceViewCommon : GLSurfaceView {
                     x2 = m.getX(1)
                     y2 = m.getY(1)
 
-                    mRenderer!!.mTouchX = m.x
-                    mRenderer!!.mTouchY = m.y
+                    renderer!!.touchX = m.x
+                    renderer!!.touchY = m.y
 
                     deltax = (x1 + x2) / 2.0f
-                    deltax -= mOldX
+                    deltax -= oldX
                     deltay = (y1 + y2) / 2.0f
-                    deltay -= mOldY
+                    deltay -= oldY
 
-                    mRenderer!!.mDeltaTranslateX += deltax / (mDensity * 300f)
-                    mRenderer!!.mDeltaTranslateY -= deltay / (mDensity * 300f)
+                    renderer!!.deltaTranslateX += deltax / (density * 300f)
+                    renderer!!.deltaTranslateY -= deltay / (density * 300f)
 
-                    mOldX = (x1 + x2) / 2.0f
-                    mOldY = (y1 + y2) / 2.0f
+                    oldX = (x1 + x2) / 2.0f
+                    oldY = (y1 + y2) / 2.0f
 
-                    mCurrentSpacing = spacing(m)
+                    currentSpacing = spacing(m)
 
-                    if (mLastTouchState != TWO_FINGERS_DOWN) {
-                        mInitialSpacing = spacing(m)
+                    if (lastTouchState != TWO_FINGERS_DOWN) {
+                        initialSpacing = spacing(m)
                     } else {
-                        deltaSpacing = mCurrentSpacing - mInitialSpacing
-                        deltaSpacing = deltaSpacing / mInitialSpacing
+                        deltaSpacing = currentSpacing - initialSpacing
+                        deltaSpacing = deltaSpacing / initialSpacing
 
 
                         // TODO: adjust this exponent.
                         //   for now, hack into buckets
-                        if (mRenderer!!.mScaleCurrentF < 0.1f) {
-                            mRenderer!!.mScaleCurrentF += -deltaSpacing / 1000f
-                        } else if (mRenderer!!.mScaleCurrentF < 0.1f) {
-                            mRenderer!!.mScaleCurrentF += -deltaSpacing / 500f
-                        } else if (mRenderer!!.mScaleCurrentF < 0.5f) {
-                            mRenderer!!.mScaleCurrentF += -deltaSpacing / 200f
-                        } else if (mRenderer!!.mScaleCurrentF < 1f) {
-                            mRenderer!!.mScaleCurrentF += -deltaSpacing / 50f
-                        } else if (mRenderer!!.mScaleCurrentF < 2f) {
-                            mRenderer!!.mScaleCurrentF += -deltaSpacing / 10f
-                        } else if (mRenderer!!.mScaleCurrentF < 5f) {
-                            mRenderer!!.mScaleCurrentF += -deltaSpacing / 10f
-                        } else if (mRenderer!!.mScaleCurrentF > 5f) {
+                        if (renderer!!.scaleCurrentF < 0.1f) {
+                            renderer!!.scaleCurrentF += -deltaSpacing / 1000f
+                        } else if (renderer!!.scaleCurrentF < 0.1f) {
+                            renderer!!.scaleCurrentF += -deltaSpacing / 500f
+                        } else if (renderer!!.scaleCurrentF < 0.5f) {
+                            renderer!!.scaleCurrentF += -deltaSpacing / 200f
+                        } else if (renderer!!.scaleCurrentF < 1f) {
+                            renderer!!.scaleCurrentF += -deltaSpacing / 50f
+                        } else if (renderer!!.scaleCurrentF < 2f) {
+                            renderer!!.scaleCurrentF += -deltaSpacing / 10f
+                        } else if (renderer!!.scaleCurrentF < 5f) {
+                            renderer!!.scaleCurrentF += -deltaSpacing / 10f
+                        } else if (renderer!!.scaleCurrentF > 5f) {
                             if (deltaSpacing > 0) {
-                                mRenderer!!.mScaleCurrentF += -deltaSpacing / 10f
+                                renderer!!.scaleCurrentF += -deltaSpacing / 10f
                             }
                         }
-                        //                        Log.w("Move", "Spacing is " + mRenderer.mScaleCurrentF + " spacing = " + deltaSpacing);
+                        //                        Log.w("Move", "Spacing is " + renderer.scaleCurrentF + " spacing = " + deltaSpacing);
 
 
                     }
@@ -186,16 +188,16 @@ class SurfaceViewCommon : GLSurfaceView {
                     x2 = m.getX(1)
                     y2 = m.getY(1)
 
-                    mRenderer!!.mTouchX = m.x
-                    mRenderer!!.mTouchY = m.y
+                    renderer!!.touchX = m.x
+                    renderer!!.touchY = m.y
 
-                    mOldX = (x1 + x2) / 2.0f
-                    mOldY = (y1 + y2) / 2.0f
-                    mInitialSpacing = spacing(m)
+                    oldX = (x1 + x2) / 2.0f
+                    oldY = (y1 + y2) / 2.0f
+                    initialSpacing = spacing(m)
                 }
                 MotionEvent.ACTION_POINTER_UP -> if (hack) renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
-            }// Log.w("Down", "touch DOWN, mInitialSpacing is " + mInitialSpacing);
-            mLastTouchState = TWO_FINGERS_DOWN
+            }// Log.w("Down", "touch DOWN, initialSpacing is " + initialSpacing);
+            lastTouchState = TWO_FINGERS_DOWN
             return true
         } else if (pointerCount == 1) {
             /*
@@ -204,23 +206,23 @@ class SurfaceViewCommon : GLSurfaceView {
             val x = m.x
             val y = m.y
 
-            mRenderer!!.mTouchX = m.x
-            mRenderer!!.mTouchY = m.y
+            renderer!!.touchX = m.x
+            renderer!!.touchY = m.y
 
             if (m.action == MotionEvent.ACTION_MOVE) {
-                if (mLastTouchState != ONE_FINGER_DOWN) {  // handle anything to one finger interaction
-                    mLastTouchState = ONE_FINGER_DOWN
-                } else if (mRenderer != null) {
-                    val deltaX = (x - mPreviousX) / mDensity / 2f
-                    val deltaY = (y - mPreviousY) / mDensity / 2f
+                if (lastTouchState != ONE_FINGER_DOWN) {  // handle anything to one finger interaction
+                    lastTouchState = ONE_FINGER_DOWN
+                } else if (renderer != null) {
+                    val deltaX = (x - previousX) / density / 2f
+                    val deltaY = (y - previousY) / density / 2f
 
-                    mRenderer!!.mDeltaX += deltaX
-                    mRenderer!!.mDeltaY += deltaY
-                    // Log.w("touch", ": mDX = " + mRenderer.mDeltaX + " mDY = " + mRenderer.mDeltaY);
+                    renderer!!.deltaX += deltaX
+                    renderer!!.deltaY += deltaY
+                    // Log.w("touch", ": dX = " + renderer.deltaX + " dY = " + renderer.deltaY);
                 }
             }
-            mPreviousX = x
-            mPreviousY = y
+            previousX = x
+            previousY = y
 
             return true
         }
@@ -253,9 +255,9 @@ class SurfaceViewCommon : GLSurfaceView {
      * @return Degrees
      */
     private fun rotation(event: MotionEvent): Float {
-        val delta_x = (event.getX(0) - event.getX(1)).toDouble()
-        val delta_y = (event.getY(0) - event.getY(1)).toDouble()
-        val radians = Math.atan2(delta_y, delta_x)
+        val deltax = (event.getX(0) - event.getX(1)).toDouble()
+        val deltay = (event.getY(0) - event.getY(1)).toDouble()
+        val radians = Math.atan2(deltay, deltax)
         return Math.toDegrees(radians).toFloat()
     }
 
@@ -281,9 +283,9 @@ class SurfaceViewCommon : GLSurfaceView {
             //            float scrollTheta = vectorToScalarScroll(
             //                    velocityX,
             //                    velocityY,
-            //                    e2.getX() - mPieBounds.centerX(),
-            //                    e2.getY() - mPieBounds.centerY());
-            //            mScroller.fling(
+            //                    e2.getX() - pieBounds.centerX(),
+            //                    e2.getY() - pieBounds.centerY());
+            //            scroller.fling(
             //                    0,
             //                    (int) getPieRotation(),
             //                    0,
@@ -295,8 +297,8 @@ class SurfaceViewCommon : GLSurfaceView {
             //
             //            // Start the animator and tell it to animate for the expected duration of the fling.
             //            if (Build.VERSION.SDK_INT >= 11) {
-            //                mScrollAnimator.setDuration(mScroller.getDuration());
-            //                mScrollAnimator.start();
+            //                scrollAnimator.setDuration(scroller.getDuration());
+            //                scrollAnimator.start();
             //            }
             return true
         }
@@ -314,7 +316,7 @@ class SurfaceViewCommon : GLSurfaceView {
      * Force a stop to all pie motion. Called when the user taps during a fling.
      */
     private fun stopScrolling() {
-        mScroller!!.forceFinished(true)
+        scroller!!.forceFinished(true)
 
         onScrollFinished()
     }
@@ -328,11 +330,11 @@ class SurfaceViewCommon : GLSurfaceView {
 
     companion object {
 
-        private val NO_FINGER_DOWN = 0
-        private val ONE_FINGER_DOWN = 1
-        private val TWO_FINGERS_DOWN = 2
-        private val MORE_FINGERS = 3
+        private const val NO_FINGER_DOWN = 0
+        private const val ONE_FINGER_DOWN = 1
+        private const val TWO_FINGERS_DOWN = 2
+        private const val MORE_FINGERS = 3
 
-        private val hack = true   // play with Rendermode
+        private const val hack = true   // play with Rendermode
     }
 }

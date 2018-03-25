@@ -65,8 +65,8 @@ class GLSurfaceViewDisplayObjects : GLSurfaceView {
                         deltay = (y1 + y2) / 2.0f
                         deltay -= mOldY
 
-                        mRenderer!!.mDeltaTranslateX += deltax / (mDensity * 300f)
-                        mRenderer!!.mDeltaTranslateY -= deltay / (mDensity * 300f)
+                        mRenderer!!.deltaTranslateX += deltax / (mDensity * 300f)
+                        mRenderer!!.deltaTranslateY -= deltay / (mDensity * 300f)
 
                         mOldX = (x1 + x2) / 2.0f
                         mOldY = (y1 + y2) / 2.0f
@@ -111,9 +111,9 @@ class GLSurfaceViewDisplayObjects : GLSurfaceView {
                         val deltaX = (x - mPreviousX) / mDensity / 2f
                         val deltaY = (y - mPreviousY) / mDensity / 2f
 
-                        mRenderer!!.mDeltaX += deltaX
-                        mRenderer!!.mDeltaY += deltaY
-                        // Timber.i("touch", ": mDX = " + mRenderer.mDeltaX + " mDY = " + mRenderer.mDeltaY);
+                        mRenderer!!.deltaX += deltaX
+                        mRenderer!!.deltaY += deltaY
+                        // Timber.i("touch", ": mDX = " + mRenderer.deltaX + " mDY = " + mRenderer.deltaY);
                     }
                 }
                 mPreviousX = x
