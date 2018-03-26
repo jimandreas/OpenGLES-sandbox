@@ -3,6 +3,9 @@ package com.jimandreas.opengl.displayobjects
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
+import android.app.Activity
+import com.jimandreas.opengl.common.RendererCommon
+import com.jimandreas.opengl.common.SurfaceViewCommon
 import com.jimandreas.opengl.objects.*
 import timber.log.Timber
 import javax.microedition.khronos.egl.EGLConfig
@@ -24,22 +27,31 @@ import javax.microedition.khronos.opengles.GL10
  * This class implements our custom renderer. Note that the GL10 parameter passed in is unused for OpenGL ES 2.0
  * renderers -- the static class GLES20 is used instead.
  */
-class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView.Renderer {
+class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDisplayObjects)
+    : RendererCommon(activityIn, surfaceViewIn), GLSurfaceView.Renderer {
 
-    var touchX = 300f
+/*    var touchX = 300f
     var touchY = 300f
     var scaleCurrent = 0.5f
     var scalePrevious = 0f
-
-    private lateinit var activity: ActivityDisplayObjects
-
     // update to add touch control - these are set by the SurfaceView class
     // These still work without volatile, but refreshes are not guaranteed to happen.
 
     var deltaX = 0f
     var deltaY = 0f
     var deltaTranslateX = 0f
-    var deltaTranslateY = 0f
+    var deltaTranslateY = 0f*/
+
+    private lateinit var activity: ActivityDisplayObjects
+
+    init {
+        if (activityIn is ActivityDisplayObjects) {
+            activity = activityIn
+        } else {
+            throw(RuntimeException("Expect ActivityDisplayObjects as parameter"))
+        }
+        BufferManager.allocateInitialBuffer()
+    }
 
     /**
      * Store the model matrix. This matrix is used to move models from object space (where each model can be thought
@@ -137,10 +149,6 @@ class RendererDisplayObjects(activityIn: ActivityDisplayObjects) : GLSurfaceView
 
     private val bufferManager: BufferManager = BufferManager.getInstance(activityIn)
 
-    init {
-        activity = activityIn
-        BufferManager.allocateInitialBuffer()
-    }
 
     override fun onSurfaceCreated(glUnused: GL10, config: EGLConfig) {
 

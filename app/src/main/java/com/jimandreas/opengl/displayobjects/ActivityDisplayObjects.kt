@@ -14,7 +14,7 @@ import com.jimandreas.opengl.common.SurfaceViewCommon
 class ActivityDisplayObjects : Activity() {
 
     lateinit var mRenderer: RendererDisplayObjects
-    lateinit var surfaceView: SurfaceViewCommon
+    lateinit var surfaceView: SurfaceViewDisplayObjects
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +38,7 @@ class ActivityDisplayObjects : Activity() {
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
 
-        mRenderer = RendererDisplayObjects( this )
+        mRenderer = RendererDisplayObjects( this, surfaceView )
         surfaceView.setRenderer(mRenderer, displayMetrics.density)
 
         findViewById<View>(R.id.button_only_ibo).setOnClickListener { toggleIBO() }
@@ -112,3 +112,13 @@ class ActivityDisplayObjects : Activity() {
         }
     }
 }
+
+/*
+class SurfaceViewDisplayObjects(contextIn: Context) : SurfaceViewCommon(contextIn) {
+    fun setRenderer(rendererIn: RendererDisplayObjects, densityIn: Float) {
+        renderer = rendererIn
+        density = densityIn
+        super.setRenderer(rendererIn)
+    }
+}
+*/

@@ -9,13 +9,12 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.jimandreas.opengl.R
-import com.jimandreas.opengl.common.SurfaceViewCommon
-
 
 class ActivityDisplayObjFile : Activity() {
-    /** Hold a reference to our GLSurfaceView  */
-    private lateinit var surfaceView: SurfaceViewCommon
+
     private lateinit var mRenderer: RendererDisplayObjFile
+    private lateinit var surfaceView: SurfaceViewObjFile
+
     private var mNextNameIndex = -1
     private lateinit var objNameTextView: TextView
     
@@ -62,7 +61,7 @@ class ActivityDisplayObjFile : Activity() {
             val displayMetrics = DisplayMetrics()
             windowManager.defaultDisplay.getMetrics(displayMetrics)
 
-            mRenderer = RendererDisplayObjFile(this)
+            mRenderer = RendererDisplayObjFile(this, surfaceView)
             surfaceView.setRenderer(mRenderer, displayMetrics.density)
         } else {
             // This is where you could create an OpenGL ES 1.x compatible
@@ -153,3 +152,12 @@ class ActivityDisplayObjFile : Activity() {
                 "Coiled Helix", "Teapot", "Cow", "Teddy Bear")
     }
 }
+
+/*
+class SurfaceViewObjFile(contextIn: Context) : SurfaceViewCommon(contextIn) {
+    fun setRenderer(rendererIn: RendererDisplayObjFile, densityIn: Float) {
+        renderer = rendererIn
+        density = densityIn
+        super.setRenderer(rendererIn)
+    }
+}*/

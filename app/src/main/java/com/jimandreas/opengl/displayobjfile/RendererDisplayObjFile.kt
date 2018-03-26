@@ -1,8 +1,10 @@
 package com.jimandreas.opengl.displayobjfile
 
+import android.app.Activity
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
+import com.jimandreas.opengl.common.RendererCommon
 import com.jimandreas.opengl.objects.*
 import timber.log.Timber
 import javax.microedition.khronos.egl.EGLConfig
@@ -21,23 +23,36 @@ import javax.microedition.khronos.opengles.GL10
  * This class implements our custom renderer. Note that the GL10 parameter passed in is unused for OpenGL ES 2.0
  * renderers -- the static class GLES20 is used instead.
  */
-class RendererDisplayObjFile(activityIn: ActivityDisplayObjFile) : GLSurfaceView.Renderer {
+class RendererDisplayObjFile(activityIn: Activity, surfaceViewIn: SurfaceViewObjFile)
+    : RendererCommon(activityIn, surfaceViewIn), GLSurfaceView.Renderer {
 
+    /*
+    class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDisplayObjects)
+    : RendererCommon(activityIn, surfaceViewIn), GLSurfaceView.Renderer {
+     */
     private val mXYZ = XYZ()
 
     private lateinit var objFileName: String
-    val activity = activityIn
 
     // update to add touch control - these are set by the SurfaceView class
     // These still work without volatile, but refreshes are not guaranteed to happen.
 
-    var scaleCurrent = 0.5f
+    /*var scaleCurrent = 0.5f
     var scalePrevious = 0f
     var deltaX: Float = 0f
     var deltaY: Float = 0f
     var deltaTranslateX: Float = 0f
     var deltaTranslateY: Float = 0f
-    var scaleDelta = 0f
+    var scaleDelta = 0f*/
+
+    private lateinit var activity : ActivityDisplayObjFile
+    init {
+        if (activityIn is ActivityDisplayObjFile) {
+            activity = activityIn
+        } else {
+            throw(RuntimeException("Expect ActivityDisplayObjects as parameter"))
+        }
+    }
 
     /**
      * Store the model matrix. This matrix is used to move models from object space (where each model can be thought
@@ -112,7 +127,7 @@ class RendererDisplayObjFile(activityIn: ActivityDisplayObjFile) : GLSurfaceView
     private var cylinder: Cylinder? = null
     private var cone: Cone? = null
     private var triangleTest: TriangleTest? = null
-    private val objFile: ObjFile = ObjFile(activityIn)
+    private val objFile: ObjFile = ObjFile(activity)
 
     override fun onSurfaceCreated(glUnused: GL10, config: EGLConfig) {
         // Set the background clear color to black.
@@ -256,43 +271,9 @@ class RendererDisplayObjFile(activityIn: ActivityDisplayObjFile) : GLSurfaceView
     override fun onDrawFrame(glUnused: GL10) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT or GLES20.GL_DEPTH_BUFFER_BIT)
 
-        // lightangleInDegrees = 0f;
-
-        // this does a nice job of rotating the camera slowly to the right
-        // (scene shifts circularly to the left)
-        // HACK:
-        // Matrix.rotateM(viewMatrix, 0, 0.1f, 0.0f, 1.0f, 0.0f);
-
-        // HACK: experiment with scaling
-        // results:  view matrix does move all objects forward / backward
-        //   in the view but they quickly run into the clip plane
-        // (2) simple scaling of the projection matrix does nothing the model view, but
-        // moves the clip plane toward the unchanged view of the model.
-        // (3) reworking the logic in onSurfaceChanged does a good job of zooming in and out
-        // (4) adding in a little translateM gives a good pan during the zoom
-        //      the inverse translate is tricky to scale to get back to the same point.
-        if (shrinking) {
-            // Matrix.translateM(viewMatrix, 0, -.011f, 0f, 0f);
-            scaleCurrent -= 0.01f
-            // onSurfaceChanged(null, width, height);
-            if (++scaleCount > 90) {
-                scaleCount = 0
-                shrinking = false
-            }
-        } else {
-            // Matrix.translateM(viewMatrix, 0, 1f / (989f / 1000f) * .01f, 0f, 0f);
-            scaleCurrent += 0.01f
-            // onSurfaceChanged(null, width, height);
-            if (++scaleCount > 90) {
-                scaleCount = 0
-                shrinking = true
-            }
-        }
-
-        if (scaleDelta != 0f) {
-            scaleCurrent += scaleDelta
-            onSurfaceChanged(null, width, height)  // adjusts view
-            scaleDelta = 0f
+        if (scaleCurrent != scalePrevious) {
+            onSurfaceChanged(null, width, height)
+            scalePrevious = scaleCurrent
         }
 
         // move the view as necessary if the user has shifted it manually

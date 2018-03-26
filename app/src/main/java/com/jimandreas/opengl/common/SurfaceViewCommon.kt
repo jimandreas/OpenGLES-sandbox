@@ -2,7 +2,6 @@ package com.jimandreas.opengl.common
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.graphics.PointF
 import android.opengl.GLSurfaceView
@@ -12,12 +11,12 @@ import android.view.MotionEvent
 import android.widget.Scroller
 
 
-class SurfaceViewCommon : GLSurfaceView {
+open class SurfaceViewCommon : GLSurfaceView {
 
     private var selectMode = false
     private var lastTouchState = NO_FINGER_DOWN
 
-    private lateinit var renderer: Activity
+    lateinit var renderer: RendererCommon
 
     private var scroller: Scroller? = null
     private var scrollAnimator: ValueAnimator? = null
@@ -25,11 +24,11 @@ class SurfaceViewCommon : GLSurfaceView {
     private lateinit var contextInternal: Context
 
     // Offsets for touch events
-    private var previousX: Float = 0.toFloat()
-    private var previousY: Float = 0.toFloat()
-    private var density: Float = 0.toFloat()
-    private var initialSpacing: Float = 0.toFloat()
-    private var currentSpacing: Float = 0.toFloat()
+    private var previousX: Float = 0f
+    private var previousY: Float = 0f
+    var density: Float = 0f
+    private var initialSpacing: Float = 0f
+    private var currentSpacing: Float = 0f
 
     private var oldX = 0f
     private var oldY = 0f
@@ -45,11 +44,11 @@ class SurfaceViewCommon : GLSurfaceView {
         init(contextIn)
     }
 
-    fun setRenderer(rendererIn: Activity, densityIn: Float) {
-        renderer = rendererIn
-        density = densityIn
-        super.setRenderer(renderer)
-    }
+//    fun setRenderer(rendererIn: RendererDisplayObjects, densityIn: Float) {
+//        renderer = rendererIn
+//        density = densityIn
+//        super.setRenderer(renderer)
+//    }
 
     private fun init(contextIn: Context) {
 
