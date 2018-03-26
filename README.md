@@ -9,15 +9,13 @@ Android OpenGL test repo
 
 3) The ToroidHelix object can be duplicated in a scene to study the performance of Android graphics.
 
-Have fun looking at these if you like.
-
-:sweat_smile:  - jim a
+Update: this project has been converted to Kotlin
 
 <b>Play store</b> - downloadable test app - try it here:
 
 http://play.google.com/store/apps/details?id=com.learnopengles.sandbox&hl=en
 
-<b>Current Studio level:</b> (Nov 2016) - Android Studio 2.2.2
+<b>Current Studio level:</b> (Mar 2018) - Android Studio 3.0.1
 
 <b>License:</b> See LICENSE.TXT in repo
 
@@ -37,6 +35,3 @@ https://github.com/learnopengles/Learn-OpenGLES-Tutorials
 <br>
 VIM conversion note: :%s/\<m\([A-Z][a-z]\)/\L\1/g
 <br>
-
-
-
