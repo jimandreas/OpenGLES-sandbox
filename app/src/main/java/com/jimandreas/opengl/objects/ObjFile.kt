@@ -52,8 +52,8 @@ class ObjFile(activity: ActivityDisplayObjFile) {
         val pretty_print = String.format("%6.2f", elapsed_time)
 
         Timber.i("finished parsing in $pretty_print seconds.")
-        Timber.i("max xyz min xyz" + maxX + " " + maxY + " " + maxZ + " and "
-                + minX + " " + minY + " " + minZ)
+        Timber.i("max xyz min xyz %7.2f %7.2f %7.2f and %7.2f %7.2f %7.2f",
+                maxX, maxY, maxZ, minX, minY, minZ)
     }
 
     private fun inputMaterialTemplateLibrary(objFileName: String) {

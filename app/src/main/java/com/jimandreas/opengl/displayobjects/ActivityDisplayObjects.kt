@@ -47,7 +47,7 @@ class ActivityDisplayObjects : Activity() {
 
         val ibo: View = findViewById(R.id.button_only_ibo)
         ibo.setOnClickListener {
-            surfaceView.queueEvent { mRenderer!!.toggleRenderIBOFlag() }
+            surfaceView.queueEvent { mRenderer.toggleRenderIBOFlag() }
 
         }
     }

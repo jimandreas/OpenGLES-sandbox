@@ -206,7 +206,7 @@ object BufferManager {
 
     private var sFloatArrayAlloatedAlready = false
     lateinit var sFloatArray: FloatArray
-    private val sFloatArraySize = INITIAL_FLOAT_BUFFER_SIZE
+    private const val sFloatArraySize = INITIAL_FLOAT_BUFFER_SIZE
 
     
     private lateinit var sVertexDataFloatBuffer: FloatBuffer

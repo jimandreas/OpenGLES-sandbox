@@ -11,8 +11,6 @@ import android.test.AndroidTestCase;
 
 public class XYZtest extends AndroidTestCase {
 
-    private static final String LOG_TAG = XYZtest.class.getSimpleName();
-
     public void testGetNormal() {
         int numTests = 6;
         float p1_tests[][] = {
