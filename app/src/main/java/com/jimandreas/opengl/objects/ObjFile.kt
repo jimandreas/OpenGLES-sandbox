@@ -17,7 +17,7 @@ import java.util.*
 
 @SuppressLint("DefaultLocale")
 class ObjFile(activity: ActivityDisplayObjFile) {
-    private val assetManager: AssetManager
+    private val assetManager: AssetManager = activity.assets
     private var haveMaterialColor = false
     private var materialColor = FloatArray(3)
     private var material = Bundle()
@@ -39,10 +39,6 @@ class ObjFile(activity: ActivityDisplayObjFile) {
     private var indices: MutableList<Int> = ArrayList()
     private var normalIndex: MutableList<Int> = ArrayList()
     private var textureIndex: MutableList<Int> = ArrayList()
-
-    init {
-        assetManager = activity.assets
-    }
 
     fun parse(objFileName: String) {
         // Timber.i("start parsing files = " + objFileName);
@@ -346,7 +342,7 @@ class ObjFile(activity: ActivityDisplayObjFile) {
      *   for normals.
      */
     fun build_buffers(color: FloatArray /*RGBA*/) {
-        var i: Int
+        var i = 0
         var offset = 0
         val vertexData = FloatArray(
                 vertices.size / 3 * STRIDE_IN_FLOATS)
@@ -354,7 +350,6 @@ class ObjFile(activity: ActivityDisplayObjFile) {
         /*
          * loop to generate vertices.
          */
-        i = 0
         while (i < vertices.size) {
 
             vertexData[offset++] = vertices[i + 0]
@@ -608,10 +603,10 @@ class ObjFile(activity: ActivityDisplayObjFile) {
 
         private const val NORMAL_BRIGHTNESS_FACTOR = 7f
 
-        internal var v1 = FloatArray(3)
-        internal var v2 = FloatArray(3)
-        internal var v3 = FloatArray(3)
-        internal var n = FloatArray(3)
+        private var v1 = FloatArray(3)
+        private var v2 = FloatArray(3)
+        private var v3 = FloatArray(3)
+        private var n = FloatArray(3)
     }
 
 }

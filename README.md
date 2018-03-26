@@ -35,7 +35,7 @@ This Android OpenGL study used this Repo as a base for initial coding:
 https://github.com/learnopengles/Learn-OpenGLES-Tutorials
 
 <br>
-VIM conversion note: :%s/m\([A-Z][a-z]\)/\L\1/g
+VIM conversion note: :%s/\<m\([A-Z][a-z]\)/\L\1/g
 <br>
 
 

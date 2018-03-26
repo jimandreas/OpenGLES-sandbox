@@ -46,7 +46,7 @@ public class XYZtest extends AndroidTestCase {
         float vx, vy, vz;
 
         for (int i = 0; i < numTests; i++ ) {
-            result = XYZ.getNormal(
+            result = XYZ.Companion.getNormal(
                     p1_tests[i],
                     p2_tests[i],
                     p3_tests[i]
