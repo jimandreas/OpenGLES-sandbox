@@ -26,7 +26,6 @@ import android.os.SystemClock
 import timber.log.Timber
 
 class ToroidHelix(
-        private val mBufMgr: BufferManager,
         private var mColor: FloatArray /*RGBA*/) {
 
     private var mNumIndices = 0
@@ -43,7 +42,7 @@ class ToroidHelix(
         sCount = 0   // 12288 is normal count
 
         vertexData = BufferManager.getFloatArray(12288 * STRIDE_IN_FLOATS)
-        offset = mBufMgr.floatArrayIndex
+        offset = BufferManager.sFloatArrayIndex
 
         val start_time = SystemClock.uptimeMillis().toFloat()
         Timber.i("start calculation")
@@ -231,7 +230,7 @@ class ToroidHelix(
         Timber.i("end calculating in $pretty_print seconds, count is $sCount")
 
         mNumIndices = offset
-        BufferManager.setFloatArrayIndex(offset)
+        BufferManager.sFloatArrayIndex = offset
     }
 
     private fun triangle(t1_indexIn: Int, t2_indexIn: Int, t3_indexIn: Int, blocking: Int) {

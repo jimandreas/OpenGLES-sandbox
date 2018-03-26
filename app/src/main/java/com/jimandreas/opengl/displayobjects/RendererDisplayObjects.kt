@@ -147,9 +147,6 @@ class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDis
     private var cone: Cone? = null
     private var triangleTest: TriangleTest? = null
 
-    private val bufferManager: BufferManager = BufferManager.getInstance(activityIn)
-
-
     override fun onSurfaceCreated(glUnused: GL10, config: EGLConfig) {
 
         // Set the background clear color to black.
@@ -269,7 +266,6 @@ class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDis
 
 
         toroidHelix = ToroidHelix(
-                bufferManager,
                 chimera_color)
         BufferManager.transferToGl()
 
@@ -396,7 +392,7 @@ class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDis
         // 5X large version - usefule for debugging
         // Matrix.scaleM(modelMatrix, 0, .25f, .25f, .25f);
         doMatrixSetup()
-        bufferManager.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
+        BufferManager.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
 
 
         // Obj #6 mid right

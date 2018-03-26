@@ -31,7 +31,7 @@ class EllipseCalculator(
         // TODO: the calculation for how many triangles
         // TODO: separate out the generation of ends from the body
         val vertexData = BufferManager.getFloatArray(6 * numSlices + 1 * STRIDE_IN_FLOATS)
-        var offset = mBufMgr.floatArrayIndex
+        var offset = BufferManager.sFloatArrayIndex
 
         // 6 * numSlices+1 * STRIDE
 
@@ -159,7 +159,7 @@ class EllipseCalculator(
         }  // end for loop for body
 
         mNumIndices = offset
-        BufferManager.setFloatArrayIndex(offset)
+        BufferManager.sFloatArrayIndex = offset
 
         /*
          * DEBUG:

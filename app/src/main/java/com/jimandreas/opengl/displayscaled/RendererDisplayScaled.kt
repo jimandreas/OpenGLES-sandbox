@@ -32,7 +32,6 @@ class RendererDisplayScaled(activityIn: Activity, surfaceViewIn: SurfaceViewDisp
     private val mXYZ = XYZ()
 
     private var activity: ActivityDisplayScaled
-    private val bufferManager: BufferManager
 
     init {
         if (activityIn is ActivityDisplayScaled) {
@@ -40,7 +39,6 @@ class RendererDisplayScaled(activityIn: Activity, surfaceViewIn: SurfaceViewDisp
         } else {
             throw(RuntimeException("Expect ActivityDisplayScaled as parameter"))
         }
-        bufferManager = BufferManager.getInstance(activityIn)
         BufferManager.allocateInitialBuffer()
 
     }
@@ -215,7 +213,6 @@ class RendererDisplayScaled(activityIn: Activity, surfaceViewIn: SurfaceViewDisp
          * create the toroid and buffer it
          */
         toroidHelix = ToroidHelix(
-                bufferManager,
                 chimera_color)
         transferToGl()
 
@@ -343,7 +340,7 @@ class RendererDisplayScaled(activityIn: Activity, surfaceViewIn: SurfaceViewDisp
             Matrix.scaleM(modelMatrix,
                     0, .03f, .03f, .03f)
             do_matrix_setup()
-            bufferManager.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
+            BufferManager.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
         }
     }
 
