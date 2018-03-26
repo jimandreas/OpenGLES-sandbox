@@ -11,8 +11,6 @@ import android.test.AndroidTestCase;
 
 public class XYZtest extends AndroidTestCase {
 
-    private static final String LOG_TAG = XYZtest.class.getSimpleName();
-
     public void testGetNormal() {
         int numTests = 6;
         float p1_tests[][] = {
@@ -46,7 +44,7 @@ public class XYZtest extends AndroidTestCase {
         float vx, vy, vz;
 
         for (int i = 0; i < numTests; i++ ) {
-            result = XYZ.getNormal(
+            result = XYZ.Companion.getNormal(
                     p1_tests[i],
                     p2_tests[i],
                     p3_tests[i]
