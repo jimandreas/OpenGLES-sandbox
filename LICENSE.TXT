@@ -1,5 +1,5 @@
 
- Copyright {2016} {Jim Andreas}
+ Copyright 2016-2018 Jim Andreas
  Copyright 2011-2012 Learn OpenGL ES
 
                                  Apache License
