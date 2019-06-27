@@ -1,4 +1,4 @@
-@file:Suppress("ConstantConditionIf")
+@file:Suppress("ConstantConditionIf", "unused")
 
 package com.jimandreas.opengl.common
 

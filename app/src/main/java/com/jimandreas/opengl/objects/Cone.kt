@@ -170,10 +170,10 @@ class Cone(numSlices: Int,
 
         // Draw
         var todo: Int
-        if (doWireframeRendering) {
-            todo = GLES20.GL_LINES
+        todo = if (doWireframeRendering) {
+            GLES20.GL_LINES
         } else {
-            todo = GLES20.GL_TRIANGLE_FAN
+            GLES20.GL_TRIANGLE_FAN
         }
 
         if (vbo_bottom[0] > 0) {
@@ -198,10 +198,10 @@ class Cone(numSlices: Int,
 
         }
 
-        if (doWireframeRendering) {
-            todo = GLES20.GL_LINES
+        todo = if (doWireframeRendering) {
+            GLES20.GL_LINES
         } else {
-            todo = GLES20.GL_TRIANGLE_FAN
+            GLES20.GL_TRIANGLE_FAN
         }
         if (vbo_top[0] > 0) {
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vbo_top[0])

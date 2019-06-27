@@ -84,8 +84,3 @@ dependencies {
     implementation deps.android.x.coreKtx
 }
 
-kotlin {
-    experimental {
-        coroutines 'enable'
-    }
-}

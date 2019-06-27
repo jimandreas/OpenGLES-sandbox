@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.jimandreas.opengl.displayobjfile
 
 import android.app.Activity

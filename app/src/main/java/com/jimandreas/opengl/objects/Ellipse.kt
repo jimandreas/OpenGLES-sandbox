@@ -1,3 +1,5 @@
+@file:Suppress("PrivatePropertyName")
+
 package com.jimandreas.opengl.objects
 
 import android.opengl.GLES20
@@ -281,10 +283,10 @@ class Ellipse(numSlices: Int, radius: Float, height: Float, color: FloatArray /*
 
         // Draw
         var todo: Int
-        if (doWireframeRendering) {
-            todo = GLES20.GL_LINES
+        todo = if (doWireframeRendering) {
+            GLES20.GL_LINES
         } else {
-            todo = GLES20.GL_TRIANGLE_FAN
+            GLES20.GL_TRIANGLE_FAN
         }
 
         // Debug: disable culling to remove back faces.
@@ -352,10 +354,10 @@ class Ellipse(numSlices: Int, radius: Float, height: Float, color: FloatArray /*
                     STRIDE_IN_BYTES, (POSITION_DATA_SIZE_IN_ELEMENTS + NORMAL_DATA_SIZE_IN_ELEMENTS) * BYTES_PER_FLOAT)
             GLES20.glEnableVertexAttribArray(colorAttribute)
 
-            if (doWireframeRendering) {
-                todo = GLES20.GL_LINE_STRIP
+            todo = if (doWireframeRendering) {
+                GLES20.GL_LINE_STRIP
             } else {
-                todo = GLES20.GL_TRIANGLE_STRIP
+                GLES20.GL_TRIANGLE_STRIP
             }
 
             /*

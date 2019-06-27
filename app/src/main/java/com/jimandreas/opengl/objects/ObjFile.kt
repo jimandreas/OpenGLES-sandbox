@@ -314,20 +314,20 @@ class ObjFile(activity: ActivityDisplayObjFile) {
     }
 
     private fun parseFloat(s: String): Float {
-        try {
-            return java.lang.Float.parseFloat(s)
+        return try {
+            java.lang.Float.parseFloat(s)
         } catch (e: RuntimeException) {
-            return 0f
+            0f
         }
 
     }
 
     private fun parseInteger(s: String): Int {
-        try {
-            return Integer.parseInt(s)
+        return try {
+            Integer.parseInt(s)
         } catch (e: RuntimeException) {
             Timber.e("Bad Integer : $s")
-            return 0
+            0
         }
 
     }
@@ -543,10 +543,10 @@ class ObjFile(activity: ActivityDisplayObjFile) {
 
             // Draw
             val todo: Int
-            if (doWireframeRendering) {
-                todo = GLES20.GL_LINES
+            todo = if (doWireframeRendering) {
+                GLES20.GL_LINES
             } else {
-                todo = GLES20.GL_TRIANGLES
+                GLES20.GL_TRIANGLES
             }
 
             /*

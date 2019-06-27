@@ -1,4 +1,4 @@
-@file:Suppress("FunctionName", "LocalVariableName")
+@file:Suppress("FunctionName", "LocalVariableName", "unused")
 
 package com.jimandreas.opengl.objects
 
@@ -58,7 +58,7 @@ class ToroidHelix(
 
         var phi: Float
         var theta: Float
-        var phi1: Float
+        var phi1: Float = 0.0f
         var theta1: Float
         var i: Int = 0
         var j: Int
@@ -108,7 +108,6 @@ class ToroidHelix(
         /* loop around toride at radius r2, around that at r2 */
         /* this makes x1+x2, the center of the generated figure */
 
-        phi1 = 0.0f
         while (i < nx) {
             phi = phi1
             phi1 += phi_step

@@ -1,3 +1,5 @@
+@file:Suppress("PrivatePropertyName")
+
 package com.jimandreas.opengl.objects
 
 import android.opengl.GLES20
@@ -276,10 +278,10 @@ class Cylinder(numSlices: Int, radius: Float, height: Float, color: FloatArray /
 
         // Draw
         var todo: Int
-        if (doWireframeRendering) {
-            todo = GLES20.GL_LINES
+        todo = if (doWireframeRendering) {
+            GLES20.GL_LINES
         } else {
-            todo = GLES20.GL_TRIANGLE_FAN
+            GLES20.GL_TRIANGLE_FAN
         }
 
         // Debug: disable culling to remove back faces.
@@ -315,10 +317,10 @@ class Cylinder(numSlices: Int, radius: Float, height: Float, color: FloatArray /
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0)  // release
         }
 
-        if (doWireframeRendering) {
-            todo = GLES20.GL_LINE_STRIP
+        todo = if (doWireframeRendering) {
+            GLES20.GL_LINE_STRIP
         } else {
-            todo = GLES20.GL_TRIANGLE_STRIP
+            GLES20.GL_TRIANGLE_STRIP
         }
 
         /*

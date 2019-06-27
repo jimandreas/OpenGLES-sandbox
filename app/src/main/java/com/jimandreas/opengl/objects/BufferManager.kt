@@ -137,10 +137,10 @@ object BufferManager {
 
                 // Draw
                 val todo: Int
-                if (doWireframeRendering) {
-                    todo = GLES20.GL_LINES
+                todo = if (doWireframeRendering) {
+                    GLES20.GL_LINES
                 } else {
-                    todo = GLES20.GL_TRIANGLES
+                    GLES20.GL_TRIANGLES
                 }
 
                 GLES20.glDrawArrays(todo, 0, ae.numVertices)

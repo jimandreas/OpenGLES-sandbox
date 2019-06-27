@@ -1,4 +1,4 @@
-@file:Suppress("LocalVariableName")
+@file:Suppress("LocalVariableName", "PrivatePropertyName", "unused")
 
 package com.jimandreas.opengl.displayobjects
 
@@ -326,10 +326,10 @@ class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDis
         deltaTranslateY = 0.0f
 
         // Set our per-vertex lighting program.
-        if (useVertexShaderProgram) {
-            selectedPrograhandle = perVertexProgramHandle
+        selectedPrograhandle = if (useVertexShaderProgram) {
+            perVertexProgramHandle
         } else {
-            selectedPrograhandle = perPixelProgramHandle
+            perPixelProgramHandle
         }
 
         GLES20.glUseProgram(selectedPrograhandle)

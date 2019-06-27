@@ -1,3 +1,5 @@
+@file:Suppress("PrivatePropertyName", "unused")
+
 package com.jimandreas.opengl.objects
 
 import android.opengl.GLES20

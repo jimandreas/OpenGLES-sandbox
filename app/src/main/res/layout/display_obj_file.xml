@@ -44,12 +44,11 @@
 			android:text="@string/button_objects_using_pixel_shading" />
 	</LinearLayout>
 
-	<EditText
+	<TextView
 		android:id="@+id/obj_name"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:ems="10"
-		android:inputType="textPersonName"
 		tools:text="obj name here"
 		 />
 

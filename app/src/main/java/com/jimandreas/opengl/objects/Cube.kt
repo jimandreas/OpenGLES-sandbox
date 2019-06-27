@@ -114,10 +114,10 @@ class Cube {
 
         // Draw
         val todo: Int
-        if (doWireframeRendering) {
-            todo = GLES20.GL_LINES
+        todo = if (doWireframeRendering) {
+            GLES20.GL_LINES
         } else {
-            todo = GLES20.GL_TRIANGLES
+            GLES20.GL_TRIANGLES
         }
 
         // Pass in the position information

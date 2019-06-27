@@ -1,3 +1,5 @@
+@file:Suppress("LocalVariableName", "unused")
+
 package com.jimandreas.opengl.objects
 
 import android.opengl.GLES20
@@ -156,10 +158,10 @@ class Teapot(color: FloatArray) {
 
         // Draw
         val todo: Int
-        if (doWireframeRendering) {
-            todo = GLES20.GL_LINE_STRIP
+        todo = if (doWireframeRendering) {
+            GLES20.GL_LINE_STRIP
         } else {
-            todo = GLES20.GL_TRIANGLE_STRIP
+            GLES20.GL_TRIANGLE_STRIP
         }
 
         var i = 0
