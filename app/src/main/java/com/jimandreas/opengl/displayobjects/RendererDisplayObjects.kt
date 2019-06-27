@@ -142,7 +142,7 @@ class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDis
     private var sphere: Sphere? = null
     private var cylinder: Cylinder? = null
     private var ellipse: Ellipse? = null
-    private val ellipseHelix: EllipseHelix? = null
+    // private val ellipseHelix: EllipseHelix? = null
     private var toroidHelix: ToroidHelix? = null
     private var cone: Cone? = null
     private var triangleTest: TriangleTest? = null
