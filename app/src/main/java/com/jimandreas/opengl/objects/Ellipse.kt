@@ -1,11 +1,10 @@
 package com.jimandreas.opengl.objects
 
 import android.opengl.GLES20
-
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.nio.FloatBuffer
-import java.nio.ShortBuffer
+import kotlin.math.cos
+import kotlin.math.sin
 
 class Ellipse(numSlices: Int, radius: Float, height: Float, color: FloatArray /*RGBA*/) {
 
@@ -44,9 +43,9 @@ class Ellipse(numSlices: Int, radius: Float, height: Float, color: FloatArray /*
         while (i <= numSlices) {
             val angleInRadians = i.toFloat() / numSlices.toFloat() * (Math.PI.toFloat() * 2f)
 
-            vertexData[offset++] = radius * Math.cos(angleInRadians.toDouble()).toFloat() * ELLIPSE_X_FACTOR
+            vertexData[offset++] = radius * cos(angleInRadians.toDouble()).toFloat() * ELLIPSE_X_FACTOR
             vertexData[offset++] = height / 2.0f
-            vertexData[offset++] = radius * -Math.sin(angleInRadians.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
+            vertexData[offset++] = radius * -sin(angleInRadians.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
 
             // normal vector
             vertexData[offset++] = 0f
@@ -80,9 +79,9 @@ class Ellipse(numSlices: Int, radius: Float, height: Float, color: FloatArray /*
         while (i <= numSlices) {
             val angleInRadians = i.toFloat() / numSlices.toFloat() * (Math.PI.toFloat() * 2f)
 
-            vertexData[offset++] = radius * Math.cos(angleInRadians.toDouble()).toFloat() * ELLIPSE_X_FACTOR
+            vertexData[offset++] = radius * cos(angleInRadians.toDouble()).toFloat() * ELLIPSE_X_FACTOR
             vertexData[offset++] = -height / 2.0f
-            vertexData[offset++] = radius * Math.sin(angleInRadians.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
+            vertexData[offset++] = radius * sin(angleInRadians.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
             // normal vector
             vertexData[offset++] = 0f
             vertexData[offset++] = -3f
@@ -165,9 +164,9 @@ class Ellipse(numSlices: Int, radius: Float, height: Float, color: FloatArray /*
             //            vertexData[offset++] = 0f;
             //            vertexData[offset++] = normalZ * NORMAL_BRIGHTNESS_FACTOR;
             // normals were getting scaled by ellipse compression, fix this
-            vertexData[offset++] = radius * Math.cos(angleInRadians.toDouble()).toFloat() * NORMAL_BRIGHTNESS_FACTOR
+            vertexData[offset++] = radius * cos(angleInRadians.toDouble()).toFloat() * NORMAL_BRIGHTNESS_FACTOR
             vertexData[offset++] = 0f
-            vertexData[offset++] = radius * Math.sin(angleInRadians.toDouble()).toFloat() * NORMAL_BRIGHTNESS_FACTOR
+            vertexData[offset++] = radius * sin(angleInRadians.toDouble()).toFloat() * NORMAL_BRIGHTNESS_FACTOR
 
             // skip over color value
             offset += COLOR_DATA_SIZE_IN_ELEMENTS

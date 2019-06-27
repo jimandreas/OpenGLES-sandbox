@@ -1,8 +1,12 @@
+@file:Suppress("PrivatePropertyName")
+
 package com.jimandreas.opengl.objects
 
 import android.opengl.GLES20
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.math.cos
+import kotlin.math.sin
 
 class Cone(numSlices: Int,
            radius: Float, length: Float,
@@ -37,13 +41,13 @@ class Cone(numSlices: Int,
         while (i <= numSlices + 1) {
             val angleInRadians = i.toFloat() / numSlices.toFloat() * (Math.PI.toFloat() * 2f)
 
-            vertexData[offset++] = radius * Math.cos(angleInRadians.toDouble()).toFloat()
+            vertexData[offset++] = radius * cos(angleInRadians.toDouble()).toFloat()
             vertexData[offset++] = -length / 2.0f
-            vertexData[offset++] = radius * Math.sin(angleInRadians.toDouble()).toFloat()
+            vertexData[offset++] = radius * sin(angleInRadians.toDouble()).toFloat()
             // normal vector
-            vertexData[offset++] = -Math.cos(angleInRadians.toDouble()).toFloat() / radius
+            vertexData[offset++] = -cos(angleInRadians.toDouble()).toFloat() / radius
             vertexData[offset++] = 0f
-            vertexData[offset++] = -Math.sin(angleInRadians.toDouble()).toFloat() / radius
+            vertexData[offset++] = -sin(angleInRadians.toDouble()).toFloat() / radius
             // color value
             vertexData[offset++] = color[0]
             vertexData[offset++] = color[1]
@@ -108,9 +112,9 @@ class Cone(numSlices: Int,
         while (i <= numSlices + 1) {
             val angleInRadians = i.toFloat() / numSlices.toFloat() * (Math.PI.toFloat() * 2f)
 
-            vertexData[offset++] = radius * Math.cos(angleInRadians.toDouble()).toFloat()
+            vertexData[offset++] = radius * cos(angleInRadians.toDouble()).toFloat()
             vertexData[offset++] = -length / 2.0f
-            vertexData[offset++] = radius * -Math.sin(angleInRadians.toDouble()).toFloat()
+            vertexData[offset++] = radius * -sin(angleInRadians.toDouble()).toFloat()
             // normal vector
             vertexData[offset++] = 0f
             vertexData[offset++] = 3f

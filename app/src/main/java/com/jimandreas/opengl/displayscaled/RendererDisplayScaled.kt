@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName", "LocalVariableName")
+
 package com.jimandreas.opengl.displayscaled
 
 import android.app.Activity
@@ -12,6 +14,8 @@ import com.jimandreas.opengl.objects.XYZ
 import timber.log.Timber
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
+import kotlin.math.cos
+import kotlin.math.sin
 
 /*
  *   Alt-Enter to disable annoying Lint warnings...
@@ -135,8 +139,7 @@ class RendererDisplayScaled(activityIn: Activity, surfaceViewIn: SurfaceViewDisp
         // Enable depth testing
         GLES20.glEnable(GLES20.GL_DEPTH_TEST)
 
-        val glError: Int
-        glError = GLES20.glGetError()
+        val glError: Int = GLES20.glGetError()
         if (glError != GLES20.GL_NO_ERROR) {
             Timber.e("GLERROR: $glError")
         }
@@ -318,8 +321,8 @@ class RendererDisplayScaled(activityIn: Activity, surfaceViewIn: SurfaceViewDisp
         val center_spiral_y: Float
         val angle = levels_back.toFloat() / 7.0f * 2.0f * Math.PI.toFloat()
 
-        center_spiral_x = Math.sin(angle.toDouble()).toFloat() * levels_back.toFloat() * 0.5f
-        center_spiral_y = Math.cos(angle.toDouble()).toFloat() * levels_back.toFloat() * 0.5f
+        center_spiral_x = sin(angle.toDouble()).toFloat() * levels_back.toFloat() * 0.5f
+        center_spiral_y = cos(angle.toDouble()).toFloat() * levels_back.toFloat() * 0.5f
 
         for (i in 0 until num) {
 

@@ -99,11 +99,11 @@ class ActivityDisplayObjFile : Activity() {
         surfaceView.queueEvent { mRenderer.toggleRenderIBOFlag() }
     }
 
-    fun toggleShader() {
+    private fun toggleShader() {
         surfaceView.queueEvent { mRenderer.toggleShader() }
     }
 
-    fun toggleWireframe() {
+    private fun toggleWireframe() {
         surfaceView.queueEvent { mRenderer.toggleWireframeFlag() }
     }
 

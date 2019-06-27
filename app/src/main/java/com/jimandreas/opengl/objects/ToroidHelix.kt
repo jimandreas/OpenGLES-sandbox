@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName", "LocalVariableName")
+
 package com.jimandreas.opengl.objects
 
 
@@ -24,6 +26,9 @@ package com.jimandreas.opengl.objects
 
 import android.os.SystemClock
 import timber.log.Timber
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 class ToroidHelix(
         private var mColor: FloatArray /*RGBA*/) {
@@ -55,10 +60,10 @@ class ToroidHelix(
         var theta: Float
         var phi1: Float
         var theta1: Float
-        var i: Int
+        var i: Int = 0
         var j: Int
-        var points: Int
-        var polys: Int
+        var points: Int = 1
+        var polys: Int = 0
         var x1: Float
         var y1: Float
         var z1: Float
@@ -98,35 +103,34 @@ class ToroidHelix(
         val theta_step = pi / 8.0f
         val ny = 17
 
-        points = 1 /* that is the standard */
+        /* that is the standard */
 
         /* loop around toride at radius r2, around that at r2 */
         /* this makes x1+x2, the center of the generated figure */
 
         phi1 = 0.0f
-        i = 0
         while (i < nx) {
             phi = phi1
-            phi1 = phi1 + phi_step
-            x1 = r1 * Math.sin(phi.toDouble()).toFloat()
-            y1 = r1 * Math.cos(phi.toDouble()).toFloat()
+            phi1 += phi_step
+            x1 = r1 * sin(phi.toDouble()).toFloat()
+            y1 = r1 * cos(phi.toDouble()).toFloat()
             z1 = 0.0f
 
-            x2 = x1 + r2 * Math.sin(phi.toDouble()).toFloat() * Math.cos((phi * F).toDouble()).toFloat() /* F is number of helix loops */
-            y2 = y1 + r2 * Math.cos(phi.toDouble()).toFloat() * Math.cos((phi * F).toDouble()).toFloat()
-            z2 = z1 + r2 * Math.sin((phi * F).toDouble()).toFloat()
+            x2 = x1 + r2 * sin(phi.toDouble()).toFloat() * cos((phi * F).toDouble()).toFloat() /* F is number of helix loops */
+            y2 = y1 + r2 * cos(phi.toDouble()).toFloat() * cos((phi * F).toDouble()).toFloat()
+            z2 = z1 + r2 * sin((phi * F).toDouble()).toFloat()
 
             /* the derivative of x1+x2 to get velocity vector direction */
-            x2d = r1 * Math.cos(phi.toDouble()).toFloat() + r2 * Math.cos(phi.toDouble()).toFloat() * Math.cos((phi * F).toDouble()).toFloat() - F * r2 * Math.sin(phi.toDouble()).toFloat() * Math.sin((phi * F).toDouble()).toFloat()
-            y2d = -r1 * Math.sin(phi.toDouble()).toFloat() - r2 * Math.sin(phi.toDouble()).toFloat() * Math.cos((phi * F).toDouble()).toFloat() - F * r2 * Math.cos(phi.toDouble()).toFloat() * Math.sin((phi * F).toDouble()).toFloat()
-            z2d = F * r2 * Math.cos((phi * F).toDouble()).toFloat()
-            r2d = Math.sqrt((x2d * x2d + y2d * y2d + z2d * z2d).toDouble()).toFloat() /* normalize */
-            x2d = x2d / r2d
-            y2d = y2d / r2d
-            z2d = z2d / r2d
+            x2d = r1 * cos(phi.toDouble()).toFloat() + r2 * cos(phi.toDouble()).toFloat() * cos((phi * F).toDouble()).toFloat() - F * r2 * sin(phi.toDouble()).toFloat() * sin((phi * F).toDouble()).toFloat()
+            y2d = -r1 * sin(phi.toDouble()).toFloat() - r2 * sin(phi.toDouble()).toFloat() * cos((phi * F).toDouble()).toFloat() - F * r2 * cos(phi.toDouble()).toFloat() * sin((phi * F).toDouble()).toFloat()
+            z2d = F * r2 * cos((phi * F).toDouble()).toFloat()
+            r2d = sqrt((x2d * x2d + y2d * y2d + z2d * z2d).toDouble()).toFloat() /* normalize */
+            x2d /= r2d
+            y2d /= r2d
+            z2d /= r2d
 
             /* r2,x2,y2,z2 only, thus subtract out r1,x1,y1,z1 */
-            r2n = Math.sqrt(((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1)).toDouble()).toFloat()
+            r2n = sqrt(((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1)).toDouble()).toFloat()
             rx2 = (x2 - x1) / r2n
             ry2 = (y2 - y1) / r2n
             rz2 = (z2 - z1) / r2n /* now have r2 vector, normal to velocity */
@@ -140,10 +144,10 @@ class ToroidHelix(
             while (j < ny)
             /* walk around cross section generating skin */ {
                 theta = theta1
-                theta1 = theta1 + theta_step
-                x3 = r3 * (rx2 * Math.cos(theta.toDouble()).toFloat() + vx2 * Math.sin(theta.toDouble()).toFloat())
-                y3 = r3 * (ry2 * Math.cos(theta.toDouble()).toFloat() + vy2 * Math.sin(theta.toDouble()).toFloat())
-                z3 = r3 * (rz2 * Math.cos(theta.toDouble()).toFloat() + vz2 * Math.sin(theta.toDouble()).toFloat())
+                theta1 += theta_step
+                x3 = r3 * (rx2 * cos(theta.toDouble()).toFloat() + vx2 * sin(theta.toDouble()).toFloat())
+                y3 = r3 * (ry2 * cos(theta.toDouble()).toFloat() + vy2 * sin(theta.toDouble()).toFloat())
+                z3 = r3 * (rz2 * cos(theta.toDouble()).toFloat() + vz2 * sin(theta.toDouble()).toFloat())
 
                 raw_x[i][j] = x2 + x3  /* actually sum of x1+x2+x3, the final point on surface */
                 raw_y[i][j] = y2 + y3
@@ -158,7 +162,7 @@ class ToroidHelix(
         points--
 
 
-        polys = 0             /* now build set of points defining surface */
+        /* now build set of points defining surface */
         //        for (i = 0; i < (nx - 1); i++) {
         ///* reuse last point of i and j as first point */
         //            for (j = 0; j < (ny - 1); j++) {

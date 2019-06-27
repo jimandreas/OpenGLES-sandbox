@@ -1,11 +1,12 @@
+@file:Suppress("LocalVariableName")
+
 package com.jimandreas.opengl.displayobjects
 
+import android.app.Activity
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
-import android.app.Activity
 import com.jimandreas.opengl.common.RendererCommon
-import com.jimandreas.opengl.common.SurfaceViewCommon
 import com.jimandreas.opengl.objects.*
 import timber.log.Timber
 import javax.microedition.khronos.egl.EGLConfig
@@ -158,8 +159,7 @@ class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDis
         // Enable depth testing
         GLES20.glEnable(GLES20.GL_DEPTH_TEST)
 
-        val glError: Int
-        glError = GLES20.glGetError()
+        val glError: Int = GLES20.glGetError()
         if (glError != GLES20.GL_NO_ERROR) {
             Timber.e("GLERROR: $glError")
         }

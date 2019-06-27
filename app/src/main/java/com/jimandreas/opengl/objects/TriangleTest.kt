@@ -1,3 +1,5 @@
+@file:Suppress("LocalVariableName")
+
 package com.jimandreas.opengl.objects
 
 

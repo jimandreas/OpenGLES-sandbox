@@ -1,12 +1,11 @@
+@file:Suppress("LocalVariableName")
+
 package com.jimandreas.opengl.objects
 
 import android.opengl.GLES20
 import timber.log.Timber
-
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.nio.FloatBuffer
-import java.nio.ShortBuffer
 
 class TeapotIBO(color: FloatArray) {
 

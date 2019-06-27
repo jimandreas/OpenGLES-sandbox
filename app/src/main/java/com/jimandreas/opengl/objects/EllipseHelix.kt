@@ -1,6 +1,8 @@
 package com.jimandreas.opengl.objects
 
 import android.opengl.GLES20
+import kotlin.math.cos
+import kotlin.math.sin
 
 class EllipseHelix {
 
@@ -33,14 +35,14 @@ class EllipseHelix {
             val angleInRadians2 = (i + 1).toFloat() / numSlices.toFloat() * (Math.PI.toFloat() * 2f)
             run {
                 // first top point
-                vertexData[offset++] = radius * Math.cos(angleInRadians1.toDouble()).toFloat() * ELLIPSE_X_FACTOR
+                vertexData[offset++] = radius * cos(angleInRadians1.toDouble()).toFloat() * ELLIPSE_X_FACTOR
                 vertexData[offset++] = height / 2.0f
-                vertexData[offset++] = radius * -Math.sin(angleInRadians1.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
+                vertexData[offset++] = radius * -sin(angleInRadians1.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
 
                 // normal vector
-                vertexData[offset++] = radius * Math.cos(angleInRadians1.toDouble()).toFloat() * ELLIPSE_X_FACTOR
+                vertexData[offset++] = radius * cos(angleInRadians1.toDouble()).toFloat() * ELLIPSE_X_FACTOR
                 vertexData[offset++] = 0.0f
-                vertexData[offset++] = radius * -Math.sin(angleInRadians1.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
+                vertexData[offset++] = radius * -sin(angleInRadians1.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
                 // color value
                 vertexData[offset++] = color[0]
                 vertexData[offset++] = color[1]
@@ -51,14 +53,14 @@ class EllipseHelix {
 
             run {
                 // first bottom point
-                vertexData[offset++] = radius * Math.cos(angleInRadians1.toDouble()).toFloat() * ELLIPSE_X_FACTOR
+                vertexData[offset++] = radius * cos(angleInRadians1.toDouble()).toFloat() * ELLIPSE_X_FACTOR
                 vertexData[offset++] = -height / 2.0f
-                vertexData[offset++] = radius * -Math.sin(angleInRadians1.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
+                vertexData[offset++] = radius * -sin(angleInRadians1.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
 
                 // normal vector
-                vertexData[offset++] = radius * Math.cos(angleInRadians1.toDouble()).toFloat() * ELLIPSE_X_FACTOR
+                vertexData[offset++] = radius * cos(angleInRadians1.toDouble()).toFloat() * ELLIPSE_X_FACTOR
                 vertexData[offset++] = 0.0f
-                vertexData[offset++] = radius * -Math.sin(angleInRadians1.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
+                vertexData[offset++] = radius * -sin(angleInRadians1.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
 
                 // color value
                 vertexData[offset++] = color[0]
@@ -70,14 +72,14 @@ class EllipseHelix {
 
             run {
                 // SECOND BOTTOM point
-                vertexData[offset++] = radius * Math.cos(angleInRadians2.toDouble()).toFloat() * ELLIPSE_X_FACTOR
+                vertexData[offset++] = radius * cos(angleInRadians2.toDouble()).toFloat() * ELLIPSE_X_FACTOR
                 vertexData[offset++] = -height / 2.0f
-                vertexData[offset++] = radius * -Math.sin(angleInRadians2.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
+                vertexData[offset++] = radius * -sin(angleInRadians2.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
 
                 // normal vector
-                vertexData[offset++] = radius * Math.cos(angleInRadians2.toDouble()).toFloat() * ELLIPSE_X_FACTOR
+                vertexData[offset++] = radius * cos(angleInRadians2.toDouble()).toFloat() * ELLIPSE_X_FACTOR
                 vertexData[offset++] = 0.0f
-                vertexData[offset++] = radius * -Math.sin(angleInRadians2.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
+                vertexData[offset++] = radius * -sin(angleInRadians2.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
                 // color value
                 vertexData[offset++] = color[0]
                 vertexData[offset++] = color[1]
@@ -89,14 +91,14 @@ class EllipseHelix {
 
             run {
                 // first top point
-                vertexData[offset++] = radius * Math.cos(angleInRadians1.toDouble()).toFloat() * ELLIPSE_X_FACTOR
+                vertexData[offset++] = radius * cos(angleInRadians1.toDouble()).toFloat() * ELLIPSE_X_FACTOR
                 vertexData[offset++] = height / 2.0f
-                vertexData[offset++] = radius * -Math.sin(angleInRadians1.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
+                vertexData[offset++] = radius * -sin(angleInRadians1.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
 
                 // normal vector
-                vertexData[offset++] = radius * Math.cos(angleInRadians1.toDouble()).toFloat() * ELLIPSE_X_FACTOR
+                vertexData[offset++] = radius * cos(angleInRadians1.toDouble()).toFloat() * ELLIPSE_X_FACTOR
                 vertexData[offset++] = 0.0f
-                vertexData[offset++] = radius * -Math.sin(angleInRadians1.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
+                vertexData[offset++] = radius * -sin(angleInRadians1.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
                 // color value
                 vertexData[offset++] = color[0]
                 vertexData[offset++] = color[1]
@@ -106,14 +108,14 @@ class EllipseHelix {
 
             run {
                 // SECOND BOTTOM point
-                vertexData[offset++] = radius * Math.cos(angleInRadians2.toDouble()).toFloat() * ELLIPSE_X_FACTOR
+                vertexData[offset++] = radius * cos(angleInRadians2.toDouble()).toFloat() * ELLIPSE_X_FACTOR
                 vertexData[offset++] = -height / 2.0f
-                vertexData[offset++] = radius * -Math.sin(angleInRadians2.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
+                vertexData[offset++] = radius * -sin(angleInRadians2.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
 
                 // normal vector
-                vertexData[offset++] = radius * Math.cos(angleInRadians2.toDouble()).toFloat() * ELLIPSE_X_FACTOR
+                vertexData[offset++] = radius * cos(angleInRadians2.toDouble()).toFloat() * ELLIPSE_X_FACTOR
                 vertexData[offset++] = 0.0f
-                vertexData[offset++] = radius * -Math.sin(angleInRadians2.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
+                vertexData[offset++] = radius * -sin(angleInRadians2.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
 
                 // color value
                 vertexData[offset++] = color[0]
@@ -124,14 +126,14 @@ class EllipseHelix {
 
             run {
                 // SECOND TOP point
-                vertexData[offset++] = radius * Math.cos(angleInRadians2.toDouble()).toFloat() * ELLIPSE_X_FACTOR
+                vertexData[offset++] = radius * cos(angleInRadians2.toDouble()).toFloat() * ELLIPSE_X_FACTOR
                 vertexData[offset++] = height / 2.0f
-                vertexData[offset++] = radius * -Math.sin(angleInRadians2.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
+                vertexData[offset++] = radius * -sin(angleInRadians2.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
 
                 // normal vector
-                vertexData[offset++] = radius * Math.cos(angleInRadians2.toDouble()).toFloat() * ELLIPSE_X_FACTOR
+                vertexData[offset++] = radius * cos(angleInRadians2.toDouble()).toFloat() * ELLIPSE_X_FACTOR
                 vertexData[offset++] = 0.0f
-                vertexData[offset++] = radius * -Math.sin(angleInRadians2.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
+                vertexData[offset++] = radius * -sin(angleInRadians2.toDouble()).toFloat() * ELLIPSE_Z_FACTOR
                 // color value
                 vertexData[offset++] = color[0]
                 vertexData[offset++] = color[1]

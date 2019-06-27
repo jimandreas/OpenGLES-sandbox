@@ -3,6 +3,8 @@ package com.jimandreas.opengl.objects
 import android.opengl.GLES20
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.math.cos
+import kotlin.math.sin
 
 class Cylinder(numSlices: Int, radius: Float, height: Float, color: FloatArray /*RGBA*/) {
 
@@ -41,9 +43,9 @@ class Cylinder(numSlices: Int, radius: Float, height: Float, color: FloatArray /
         while (i <= numSlices) {
             val angleInRadians = i.toFloat() / numSlices.toFloat() * (Math.PI.toFloat() * 2f)
 
-            vertexData[offset++] = radius * Math.cos(angleInRadians.toDouble()).toFloat()
+            vertexData[offset++] = radius * cos(angleInRadians.toDouble()).toFloat()
             vertexData[offset++] = height / 2.0f
-            vertexData[offset++] = radius * -Math.sin(angleInRadians.toDouble()).toFloat()
+            vertexData[offset++] = radius * -sin(angleInRadians.toDouble()).toFloat()
 
             // normal vector
             vertexData[offset++] = 0f // normal is wierd??
@@ -77,9 +79,9 @@ class Cylinder(numSlices: Int, radius: Float, height: Float, color: FloatArray /
         while (i <= numSlices) {
             val angleInRadians = i.toFloat() / numSlices.toFloat() * (Math.PI.toFloat() * 2f)
 
-            vertexData[offset++] = radius * Math.cos(angleInRadians.toDouble()).toFloat()
+            vertexData[offset++] = radius * cos(angleInRadians.toDouble()).toFloat()
             vertexData[offset++] = -height / 2.0f
-            vertexData[offset++] = radius * Math.sin(angleInRadians.toDouble()).toFloat()
+            vertexData[offset++] = radius * sin(angleInRadians.toDouble()).toFloat()
             // normal vector
             vertexData[offset++] = 0f
             vertexData[offset++] = -3f

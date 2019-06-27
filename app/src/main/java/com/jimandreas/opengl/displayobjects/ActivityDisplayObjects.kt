@@ -7,14 +7,12 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
 import android.widget.Button
-
 import com.jimandreas.opengl.R
-import com.jimandreas.opengl.common.SurfaceViewCommon
 
 class ActivityDisplayObjects : Activity() {
 
-    lateinit var mRenderer: RendererDisplayObjects
-    lateinit var surfaceView: SurfaceViewDisplayObjects
+    private lateinit var mRenderer: RendererDisplayObjects
+    private lateinit var surfaceView: SurfaceViewDisplayObjects
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,15 +64,15 @@ class ActivityDisplayObjects : Activity() {
         surfaceView.onPause()
     }
 
-    fun toggleIBO() {
+    private fun toggleIBO() {
         surfaceView.queueEvent { mRenderer.toggleRenderIBOFlag() }
     }
 
-    fun toggleShader() {
+    private fun toggleShader() {
         surfaceView.queueEvent { mRenderer.toggleShader() }
     }
 
-    fun toggleWireframe() {
+    private fun toggleWireframe() {
         surfaceView.queueEvent { mRenderer.toggleWireframeFlag() }
     }
 

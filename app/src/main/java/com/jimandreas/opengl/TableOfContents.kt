@@ -1,27 +1,19 @@
 package com.jimandreas.opengl
 
-import java.util.ArrayList
-import java.util.HashMap
-
 import android.app.Activity
 import android.app.ListActivity
 import android.content.Intent
-
 import android.net.Uri
 import android.os.Bundle
-
 import android.support.design.widget.FloatingActionButton
 import android.util.SparseArray
-import android.view.View
-import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.SimpleAdapter
-
+import com.jimandreas.opengl.displayobjects.ActivityDisplayObjects
 import com.jimandreas.opengl.displayobjfile.ActivityDisplayObjFile
 import com.jimandreas.opengl.displayscaled.ActivityDisplayScaled
-import com.jimandreas.opengl.displayobjects.ActivityDisplayObjects
-
 import timber.log.Timber
+import java.util.*
 
 class TableOfContents : ListActivity() {
 

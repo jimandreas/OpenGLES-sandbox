@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName", "LocalVariableName")
+
 package com.jimandreas.opengl.objects
 
 import android.annotation.SuppressLint
@@ -14,6 +16,8 @@ import java.io.InputStreamReader
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.*
+import kotlin.math.max
+import kotlin.math.min
 
 @SuppressLint("DefaultLocale")
 class ObjFile(activity: ActivityDisplayObjFile) {
@@ -28,9 +32,9 @@ class ObjFile(activity: ActivityDisplayObjFile) {
     var maxX = 0f
     var maxY = 0f
     var maxZ = 0f
-    var minX = 1e6f
-    var minY = 1e6f
-    var minZ = 1e6f
+    private var minX = 1e6f
+    private var minY = 1e6f
+    private var minZ = 1e6f
     private var lastVertexNumber = 0
 
     private var vertices: MutableList<Float> = ArrayList()
@@ -289,13 +293,13 @@ class ObjFile(activity: ActivityDisplayObjFile) {
         val vy = parseFloat(second_float.substring(0, third_space_index - 1))
         val vz = parseFloat(third_float)
 
-        maxX = Math.max(maxX, vx)
-        maxY = Math.max(maxY, vy)
-        maxZ = Math.max(maxZ, vz)
+        maxX = max(maxX, vx)
+        maxY = max(maxY, vy)
+        maxZ = max(maxZ, vz)
 
-        minX = Math.min(minX, vx)
-        minY = Math.min(minY, vy)
-        minZ = Math.min(minZ, vz)
+        minX = min(minX, vx)
+        minY = min(minY, vy)
+        minZ = min(minZ, vz)
 
         vertices.add(vx)
         vertices.add(vy)
@@ -459,9 +463,8 @@ class ObjFile(activity: ActivityDisplayObjFile) {
          * create the buffer for the indices
          */
         offset = 0
-        var x: Int
+        var x: Int = 0
         val indexData = ShortArray(indices.size)
-        x = 0
         while (x < indices.size) {
 
             var index = indices[x].toShort()

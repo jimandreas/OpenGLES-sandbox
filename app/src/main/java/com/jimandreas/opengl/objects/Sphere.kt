@@ -3,6 +3,8 @@ package com.jimandreas.opengl.objects
 import android.opengl.GLES20
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.math.cos
+import kotlin.math.sin
 
 class Sphere(numSlices: Int, radius: Float, color: FloatArray /*RGBA*/) {
     private val mNumIndices: Int
@@ -30,12 +32,12 @@ class Sphere(numSlices: Int, radius: Float, color: FloatArray /*RGBA*/) {
             j = 0
             while (j <= numSlices) {
                 vx = (radius.toDouble()
-                        * Math.sin((angleStep / 2.0f * i.toFloat()).toDouble())
-                        * Math.sin((angleStep * j.toFloat()).toDouble())).toFloat()
-                vy = (radius * Math.cos((angleStep / 2.0f * i.toFloat()).toDouble())).toFloat()
+                        * sin((angleStep / 2.0f * i.toFloat()).toDouble())
+                        * sin((angleStep * j.toFloat()).toDouble())).toFloat()
+                vy = (radius * cos((angleStep / 2.0f * i.toFloat()).toDouble())).toFloat()
                 vz = (radius.toDouble()
-                        * Math.sin((angleStep / 2.0f * i.toFloat()).toDouble())
-                        * Math.cos((angleStep * j.toFloat()).toDouble())).toFloat()
+                        * sin((angleStep / 2.0f * i.toFloat()).toDouble())
+                        * cos((angleStep * j.toFloat()).toDouble())).toFloat()
 
                 vertexData[offset++] = vx
                 vertexData[offset++] = vy

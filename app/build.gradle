@@ -35,6 +35,19 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    lintOptions {
+        textReport true
+        textOutput 'stdout'
+        lintConfig rootProject.file('lint.xml')
+
+        checkDependencies true
+        checkTestSources true
+        explainIssues false
+
+        // [Jake Wharton] We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
+        checkReleaseBuilds false
+    }
 }
 
 // signing solution courtesy of http://gist.github.com/gabrielemariotti/6856974

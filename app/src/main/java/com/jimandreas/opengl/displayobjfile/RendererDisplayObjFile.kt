@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName", "LocalVariableName")
+
 package com.jimandreas.opengl.displayobjfile
 
 import android.app.Activity
@@ -261,8 +263,7 @@ class RendererDisplayObjFile(activityIn: Activity, surfaceViewIn: SurfaceViewObj
 
         Matrix.frustumM(projectionMatrix, 0, left, right, bottom, top, near, far)
 
-        val glError: Int
-        glError = GLES20.glGetError()
+        val glError: Int = GLES20.glGetError()
         if (glError != GLES20.GL_NO_ERROR) {
             Timber.e("GLERROR: $glError")
         }
@@ -373,8 +374,7 @@ class RendererDisplayObjFile(activityIn: Activity, surfaceViewIn: SurfaceViewObj
         // Pass in the light position in eye space.
         GLES20.glUniform3f(lightPosHandle, lightPosInEyeSpace[0], lightPosInEyeSpace[1], lightPosInEyeSpace[2])
 
-        val glError: Int
-        glError = GLES20.glGetError()
+        val glError: Int = GLES20.glGetError()
         if (glError != GLES20.GL_NO_ERROR) {
             Timber.e("GLERROR: $glError")
         }

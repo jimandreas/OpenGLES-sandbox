@@ -60,19 +60,19 @@ class ActivityDisplayScaled : Activity() {
         surfaceView.onPause()
     }
 
-    fun fewerTris() {
+    private fun fewerTris() {
         surfaceView.queueEvent { mRenderer.fewerTris() }
     }
 
-    fun moreTris() {
+    private fun moreTris() {
         surfaceView.queueEvent { mRenderer.moreTris() }
     }
 
-    fun toggleShader() {
+    private fun toggleShader() {
         surfaceView.queueEvent { mRenderer.toggleShader() }
     }
 
-    fun toggleWireframe() {
+    private fun toggleWireframe() {
         surfaceView.queueEvent { mRenderer.toggleWireframeFlag() }
     }
 

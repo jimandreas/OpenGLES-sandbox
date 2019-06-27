@@ -1,5 +1,7 @@
 package com.jimandreas.opengl.objects
 
+import kotlin.math.sqrt
+
 /*
  * needed methods
  */
@@ -200,8 +202,7 @@ End Function
         }
 
         private fun normalize(p1: FloatArray): FloatArray {
-            val mag = Math.sqrt(
-                    (p1[0] * p1[0] +
+            val mag = sqrt((p1[0] * p1[0] +
                             p1[1] * p1[1] +
                             p1[2] * p1[2]).toDouble()).toFloat()
             T[0] = p1[0] / mag

@@ -1,7 +1,6 @@
 package com.jimandreas.opengl.common
 
 import android.app.Activity
-import android.opengl.GLSurfaceView
 
 abstract class RendererCommon(activityIn: Activity, surfaceViewIn: SurfaceViewCommon) {
     var scaleCurrent = 0.5f

@@ -1,3 +1,5 @@
+@file:Suppress("ConstantConditionIf")
+
 package com.jimandreas.opengl.common
 
 import android.animation.ValueAnimator
@@ -9,6 +11,8 @@ import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.widget.Scroller
+import kotlin.math.atan2
+import kotlin.math.sqrt
 
 
 open class SurfaceViewCommon : GLSurfaceView {
@@ -98,7 +102,7 @@ open class SurfaceViewCommon : GLSurfaceView {
         if (m == null) {
             return true
         }
-        if (hack) renderMode = GLSurfaceView.RENDERMODE_CONTINUOUSLY
+        if (hack) renderMode = RENDERMODE_CONTINUOUSLY
 
         //Number of touches
         val pointerCount = m.pointerCount
@@ -191,7 +195,7 @@ open class SurfaceViewCommon : GLSurfaceView {
                         oldY = (y1 + y2) / 2.0f
                         initialSpacing = spacing(m)
                     }
-                    MotionEvent.ACTION_POINTER_UP -> if (hack) renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
+                    MotionEvent.ACTION_POINTER_UP -> if (hack) renderMode = RENDERMODE_WHEN_DIRTY
                 }// Log.w("Down", "touch DOWN, initialSpacing is " + initialSpacing);
                 lastTouchState = TWO_FINGERS_DOWN
                 return true
@@ -223,7 +227,7 @@ open class SurfaceViewCommon : GLSurfaceView {
 
                 return true
             }
-            hack -> renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
+            hack -> renderMode = RENDERMODE_WHEN_DIRTY
         }
         return super.onTouchEvent(m)
     }
@@ -234,7 +238,7 @@ open class SurfaceViewCommon : GLSurfaceView {
     private fun spacing(event: MotionEvent): Float {
         val x = event.getX(0) - event.getX(1)
         val y = event.getY(0) - event.getY(1)
-        return Math.sqrt((x * x + y * y).toDouble()).toFloat()
+        return sqrt((x * x + y * y).toDouble()).toFloat()
     }
 
     /**
@@ -255,7 +259,7 @@ open class SurfaceViewCommon : GLSurfaceView {
     private fun rotation(event: MotionEvent): Float {
         val deltax = (event.getX(0) - event.getX(1)).toDouble()
         val deltay = (event.getY(0) - event.getY(1)).toDouble()
-        val radians = Math.atan2(deltay, deltax)
+        val radians = atan2(deltay, deltax)
         return Math.toDegrees(radians).toFloat()
     }
 

@@ -113,7 +113,7 @@ object BufferManager {
         for (i in mGLarrayList.indices) {
             ae = mGLarrayList[i]
 
-            if (ae.buffer_allocated == false) {
+            if (!ae.buffer_allocated) {
                 continue
             }
             if (ae.gl_buf[0] > 0) {
@@ -205,7 +205,7 @@ object BufferManager {
     private const val STRIDE_IN_BYTES = STRIDE_IN_FLOATS * BYTES_PER_FLOAT
 
     private var sFloatArrayAlloatedAlready = false
-    lateinit var sFloatArray: FloatArray
+    private lateinit var sFloatArray: FloatArray
     private const val sFloatArraySize = INITIAL_FLOAT_BUFFER_SIZE
 
     
