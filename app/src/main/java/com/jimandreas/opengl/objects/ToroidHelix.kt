@@ -30,9 +30,8 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-class ToroidHelix(
-        private var mColor: FloatArray /*RGBA*/) {
-
+class ToroidHelix(val mColor: FloatArray /*RGBA*/)
+{
     private var mNumIndices = 0
 
     private var raw_x = Array(LINES) { FloatArray(POINTS) }

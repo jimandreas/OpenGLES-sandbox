@@ -1,144 +1,43 @@
-// leveraged (plagarized) from https://github.com/JakeWharton/SdkSearch/blob/master/build.gradle
 buildscript {
-    ext.buildConfig = [
-            'compileSdk': 28,
-            'minSdk': 17,
-            'targetSdk': 28,
+    ext {
+        version_android_gradle_plugin = '3.4.2'
 
-            'version': [
-                    'major': 1,
-                    'minor': 0,
-                    'patch': 9,
-                    'build': 9,
-            ],
-    ]
-    ext.buildConfig.version['name'] = "${buildConfig.version.major}.${buildConfig.version.minor}.${buildConfig.version.patch}"
-    ext.buildConfig.version['code'] = buildConfig.version.major * 1000000 + buildConfig.version.minor * 10000 + buildConfig.version.patch * 100 + buildConfig.version.build
+        version_core = '1.0.2'
 
-    ext.versions = [
-//            'supportLibrary': '27.1.0',
-            'supportLibrary': '28.0.0',
-            'atsl': '1.0.1',
-//            'kotlin': '1.2.31',
-            'kotlin': '1.3.40',
-            'kotlinCoroutines': '0.22.5',
-            'okhttp': '3.10.0',
-    ]
+        version_constraint_layout = '1.1.3'
+        version_kotlin = "1.3.41"
+        version_kotlin_coroutines = "1.1.1"
 
-    ext.deps = [
-            'kotlin': [
-                    'stdlib': [
-                            'common': "org.jetbrains.kotlin:kotlin-stdlib-common:${versions.kotlin}",
-                            'jdk': "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
-                    ],
-                    'test': [
-                            'common': "org.jetbrains.kotlin:kotlin-test-common:${versions.kotlin}",
-                            'annotations': "org.jetbrains.kotlin:kotlin-test-annotations-common:${versions.kotlin}",
-                            'jdk': "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}",
-                    ],
-                    'coroutines': [
-                            'common': "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${versions.kotlinCoroutines}",
-                            'jdk': "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}",
-                            'js': "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${versions.kotlinCoroutines}",
-                            'android': "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinCoroutines}",
-                            'rx2': "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:${versions.kotlinCoroutines}",
-                    ],
-            ],
-            'android': [
-                    'arch': [
-                            'dbFramework': 'android.arch.persistence:db-framework:1.0.0',
-                    ],
-                    'support': [
-                            'annotations': "com.android.support:support-annotations:${versions.supportLibrary}",
-                            'coreUtils': "com.android.support:support-core-utils:${versions.supportLibrary}",
-                            'compat': "com.android.support:support-compat:${versions.supportLibrary}",
-                            'recyclerView': "com.android.support:recyclerview-v7:${versions.supportLibrary}",
-                            'customTabs': "com.android.support:customtabs:${versions.supportLibrary}",
-                            'appCompat': "com.android.support:appcompat-v7:${versions.supportLibrary}",
-                            'design': "com.android.support:design:${versions.supportLibrary}",
-                            'preference': "com.android.support:preference-v14:${versions.supportLibrary}",
-                            'cardview': "com.android.support:cardview-v7:${versions.supportLibrary}",
-                            'constraintLayout': 'com.android.support.constraint:constraint-layout:1.1.0-beta5',
-                    ],
-                    'x': [
-                            'coreKtx': 'androidx.core:core-ktx:0.2',
-                    ],
-                    'test': [
-                            'runner': "com.android.support.test:runner:${versions.atsl}",
-                            'rules': "com.android.support.test:rules${versions.atsl}",
-                    ],
-            ],
-            'okhttp': [
-                    'client': "com.squareup.okhttp3:okhttp:${versions.okhttp}",
-                    'logging': "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
-                    'mockWebServer': "com.squareup.okhttp3:mockwebserver:${versions.okhttp}",
-            ],
-            'retrofit': [
-                    'client': "com.squareup.retrofit2:retrofit:${versions.retrofit}",
-                    'adapterKotlinCoroutines': 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:1.0.0',
-                    'converterKotlinxSerialization': 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.0.1',
-                    'converterMoshi': "com.squareup.retrofit2:converter-moshi:${versions.retrofit}",
-            ],
-            'rx': [
-                    'java': 'io.reactivex.rxjava2:rxjava:2.1.9',
-                    'relay': 'com.jakewharton.rxrelay2:rxrelay:2.0.0',
-            ],
-            'kotshi': [
-                    'api': "se.ansman.kotshi:api:${versions.kotshi}",
-                    'compiler': "se.ansman.kotshi:compiler:${versions.kotshi}",
-            ],
-            'dagger': [
-                    'runtime': "com.google.dagger:dagger:${versions.dagger}",
-                    'compiler': "com.google.dagger:dagger-compiler:${versions.dagger}",
-            ],
-            'okio': 'com.squareup.okio:okio:1.14.0',
-            'moshi': 'com.squareup.moshi:moshi:1.5.0',
-            'timber': 'com.jakewharton.timber:timber:4.6.1',
-            'junit': 'junit:junit:4.12',
-            'truth': 'com.google.truth:truth:0.39',
-            'sqlBrite': 'com.squareup.sqlbrite3:sqlbrite-kotlin:3.2.0',
-            'bugsnag': 'com.bugsnag:bugsnag-android:4.2.2',
-            'argparser': 'com.xenomachina:kotlin-argparser:2.0.4',
-            'byteunits': 'com.jakewharton.byteunits:byteunits:0.9.1',
-            'leakcanary': 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    ]
+        version_lifecycle_extensions = '2.0.0'
+        version_navigation = "1.0.0"
 
-    ext.isCiBuild = System.getenv('CI') == 'true'
-
-    repositories {
-        jcenter()
-        google()
-        maven { url "https://kotlin.bintray.com/kotlinx" }
+        androidXTestVersion = '1.3.0-alpha02'
+        espressoVersion = '3.1.0-alpha4'
+        junitVersion = '4.13-beta-3'
+        hamcrestVersion = '1.3'
+        runnerExtVersion = '1.1.0'
+        rulesVersion = '1.0.1'
     }
 
+    repositories {
+        google()
+        jcenter()
+    }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+        classpath "com.android.tools.build:gradle:$version_android_gradle_plugin"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$version_kotlin"
 
     }
 }
 
 allprojects {
     repositories {
-        jcenter()
         google()
-        maven { url "https://kotlin.bintray.com/kotlinx" }
-    }
-
-    // Force all of the primary support libraries to use the same version.
-    configurations.all {
-        resolutionStrategy {
-            eachDependency { details ->
-                if (details.requested.group == 'com.android.support') {
-                    details.useVersion versions.supportLibrary
-                }
-            }
-        }
-    }
-
-    tasks.withType(Test) {
-        testLogging {
-            events "skipped", "failed", "passed"
-        }
+        jcenter()
     }
 }
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+

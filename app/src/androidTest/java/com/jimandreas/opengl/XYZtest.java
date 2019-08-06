@@ -7,9 +7,15 @@ package com.jimandreas.opengl;
 
 import android.util.Log;
 import com.jimandreas.opengl.objects.XYZ;
-import android.test.AndroidTestCase;
 
-public class XYZtest extends AndroidTestCase {
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+import static org.junit.Assert.assertEquals;
+
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest=Config.NONE)
+public final class XYZtest {
 
     public void testGetNormal() {
         int numTests = 6;
@@ -64,6 +70,6 @@ public class XYZtest extends AndroidTestCase {
 
         }
         int foo = 1;
-        assertTrue("random test", foo == 1);
+        assertEquals("random test", "random test");
     }
 }
