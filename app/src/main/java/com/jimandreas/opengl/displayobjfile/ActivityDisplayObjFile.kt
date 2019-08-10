@@ -145,21 +145,23 @@ class ActivityDisplayObjFile : Activity() {
 
     companion object {
         // wire in the names and display names
-        private val obj_file_names = arrayOf("triangletest",
+        private val obj_file_names = arrayOf(
+//                "triangletest",
                 // "cube",
-                "helixcoil",
-                "teapot",
-                "cow",
-                "teddybear",
+//                "helixcoil",
+//                "teapot",
+//                "cow",
+//                "teddybear",
                 "planet",
                 "rock")
 
-        private val obj_file_display_name = arrayOf("Triangle",
+        private val obj_file_display_name = arrayOf(
+//                "Triangle",
                 // "Cube",
-                "Coiled Helix",
-                "Teapot",
-                "Cow",
-                "Teddy Bear",
+//                "Coiled Helix",
+//                "Teapot",
+//                "Cow",
+//                "Teddy Bear",
                 "planet",
                 "rock")
     }
