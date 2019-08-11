@@ -1,10 +1,26 @@
-@file:Suppress("FunctionName", "LocalVariableName")
+/**
+ * For code leveraged from LoaderOBJ.java in Rajawali:
+ * Copyright 2013 Dennis Ippel
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ */
 
+@file:Suppress("FunctionName", "LocalVariableName")
 package com.jimandreas.opengl.objects
 
 import android.annotation.SuppressLint
 import android.content.res.AssetManager
+import android.opengl.GLES10
 import android.opengl.GLES20
+import android.opengl.GLES20.GL_FRONT_AND_BACK
+import android.opengl.GLES30
 import android.os.Bundle
 import android.os.SystemClock
 import com.jimandreas.opengl.displayobjfile.ActivityDisplayObjFile
@@ -22,6 +38,19 @@ import kotlin.math.min
 @SuppressLint("DefaultLocale")
 class ObjFile(activity: ActivityDisplayObjFile) {
     private val assetManager: AssetManager = activity.assets
+
+    private var v1 = FloatArray(3)
+    private var v2 = FloatArray(3)
+    private var v3 = FloatArray(3)
+    private var n = FloatArray(3)
+
+    private var vertices: MutableList<Float> = ArrayList()
+    private var normals: MutableList<Float> = ArrayList()
+    private var colors: MutableList<Float> = ArrayList()
+    private var indices: MutableList<Int> = ArrayList()
+    private var normalIndex: MutableList<Int> = ArrayList()
+    private var textureIndex: MutableList<Int> = ArrayList()
+
     private var haveMaterialColor = false
     private var materialColor = FloatArray(3)
     private var material = Bundle()
@@ -37,12 +66,7 @@ class ObjFile(activity: ActivityDisplayObjFile) {
     private var minZ = 1e6f
     private var lastVertexNumber = 0
 
-    private var vertices: MutableList<Float> = ArrayList()
-    private var normals: MutableList<Float> = ArrayList()
-    private var colors: MutableList<Float> = ArrayList()
-    private var indices: MutableList<Int> = ArrayList()
-    private var normalIndex: MutableList<Int> = ArrayList()
-    private var textureIndex: MutableList<Int> = ArrayList()
+
 
     fun parse(objFileName: String) {
         // Timber.i("start parsing files = " + objFileName);
@@ -202,53 +226,86 @@ class ObjFile(activity: ActivityDisplayObjFile) {
      *   Assumptions:
      *     exactly one space between the 'v' and the integer
      *     exactly one space between integer
+     *
+     *     UPDATE : leverages a code snippet from Rajawali
      */
-    private fun parseTriangle(line: String) {
-        var first_integer = line.substring(2)
-        first_integer = first_integer.trim { it <= ' ' }
-        val second_space_index = first_integer.indexOf(' ') + 1
-        var second_integer = first_integer.substring(second_space_index)
-        second_integer = second_integer.trim { it <= ' ' }
-        val third_space_index = second_integer.indexOf(' ') + 1
-        var third_integer = second_integer.substring(third_space_index)
-        third_integer = third_integer.trim { it <= ' ' }
+    private fun parseTriangle(lineIn: String) {
+        var line = lineIn
+        var parts = StringTokenizer(line, " ")
+        val numTokens = parts.countTokens()
 
-        parseTriplet(first_integer.substring(0, second_space_index - 1))
-        parseTriplet(second_integer.substring(0, third_space_index - 1))
-        parseTriplet(third_integer)
-    }
+        if (numTokens == 0)
+            return
+        val type = parts.nextToken()
 
-    private fun parseTriplet(item: String) {
+        val isQuad = numTokens == 5
+        val quadvids = IntArray(4)
+        val quadtids = IntArray(4)
+        val quadnids = IntArray(4)
 
-        // TODO: handle negative indexing of normal and texture indices
-        var vertex: Int
+        val emptyVt = line.indexOf("//") > -1
+        if (emptyVt) line = line.replace("//", "/")
 
-        val first_slash = item.indexOf('/')
-        if (first_slash == -1) {
-            vertex = parseInteger(item)
-            if (vertex < 0) {
-                vertex += lastVertexNumber
+        parts = StringTokenizer(line)
+
+        parts.nextToken()
+        var subParts = StringTokenizer(parts.nextToken(), "/")
+        val partLength = subParts.countTokens()
+
+        val hasuv = partLength >= 2 && !emptyVt
+        val hasn = partLength == 3 || partLength == 2 && emptyVt
+        var idx: Int
+
+        for (i in 1 until numTokens) {
+            if (i > 1)
+                subParts = StringTokenizer(parts.nextToken(), "/")
+            idx = Integer.parseInt(subParts.nextToken())
+
+            if (idx < 0)
+                idx += vertices.size / 3
+            else
+                idx -= 1
+            if (!isQuad)
+                indices.add(idx)
+            else
+                quadvids[i - 1] = idx
+            if (hasuv) {
+                idx = Integer.parseInt(subParts.nextToken())
+                if (idx < 0) {
+                    idx += textureIndex.size / 2
+                } else {
+                    idx -= 1
+                }
+                if (!isQuad)
+                    textureIndex.add(idx)
+                else
+                    quadtids[i - 1] = idx
             }
-            indices.add(vertex)
-            return
+            if (hasn) {
+                idx = Integer.parseInt(subParts.nextToken())
+                if (idx < 0) {
+                    idx += normals.size / 3
+                } else
+                    idx -= 1
+                if (!isQuad)
+                    normalIndex.add(idx)
+                else
+                    quadnids[i - 1] = idx
+            }
         }
-        // wait wait there are more indices in this line
-        vertex = parseInteger(item.substring(0, first_slash))
-        if (vertex < 0) {
-            vertex += lastVertexNumber
-        }
-        indices.add(vertex)
-        val leftover = item.substring(first_slash + 1, item.length)
-        val second_slash = leftover.indexOf('/')
-        if (second_slash == -1) {
-            textureIndex.add(parseInteger(leftover))
-            return
-        }
-        if (second_slash == 0) {
-            normalIndex.add(parseInteger(leftover.substring(1, leftover.length)))
-        }
-    }
 
+        if (isQuad) {
+            val indices = intArrayOf(0, 1, 2, 0, 2, 3)
+
+            for (i in 0..5) {
+                val index = indices[i]
+                vertices.add(quadvids[index].toFloat())
+                textureIndex.add(quadtids[index])
+                normalIndex.add(quadnids[index])
+            }
+        }
+
+    }
 
     /**
      * ParseNormal
@@ -388,9 +445,15 @@ class ObjFile(activity: ActivityDisplayObjFile) {
         var v3i: Int
         i = 0
         while (i < indices.size) {
-            v1i = indices[i + 0] - 1
-            v2i = indices[i + 1] - 1
-            v3i = indices[i + 2] - 1
+            v1i = indices[i + 0]
+            v2i = indices[i + 1]
+            v3i = indices[i + 2]
+
+            if (v1i < 0 || v2i < 0 || v3i < 0) {
+                Timber.e("v1i is negative!! %d", v1i)
+                i+= 3
+                continue
+            }
 
             v1[0] = vertices[v1i * 3 + 0]
             v1[1] = vertices[v1i * 3 + 1]
@@ -437,6 +500,14 @@ class ObjFile(activity: ActivityDisplayObjFile) {
         //                    + vertexData[i + 6] + " " + vertexData[i + 7] + " " + vertexData[i + 8]);
         //        }
 
+//        for (i in 0 until vertexData.size step STRIDE_IN_FLOATS)
+//        {
+//            val vx = vertexData[i]
+//            val vy = vertexData[i+1]
+//            val vz = vertexData[i+2]
+//            Timber.i("data(%5d) %16.8f %16.8f %16.8f", i/ STRIDE_IN_FLOATS, vx, vy, vz)
+//        }
+
         val vertexDataBuffer = ByteBuffer
                 .allocateDirect(vertexData.size * BYTES_PER_FLOAT)
                 .order(ByteOrder.nativeOrder())
@@ -468,7 +539,8 @@ class ObjFile(activity: ActivityDisplayObjFile) {
         while (x < indices.size) {
 
             var index = indices[x].toShort()
-            indexData[offset++] = --index
+            //indexData[offset++] = --index
+            indexData[offset++] = index
             x++
         }
         triangleIndexCount = indexData.size
@@ -476,15 +548,16 @@ class ObjFile(activity: ActivityDisplayObjFile) {
         /*
          * debug - print out list of formated vertex data
          */
-        //        short ix, iy, iz;
-        //        for (i = 0; i < indexData.length; i += 3) {
-        //            ix = indexData[i + 0];
-        //            iy = indexData[i + 1];
-        //            iz = indexData[i + 2];
-        //
-        //            Timber("data ", i + " i1 i2 i3 "
-        //                    + ix + " " + iy + " " + iz );
-        //        }
+
+//                //for (i = 0; i < indexData.length; i += 3) {
+//                for (i in 0 until indexData.size step 3) {
+//                    val ix = indexData[i + 0]
+//                    val iy = indexData[i + 1]
+//                    val iz = indexData[i + 2]
+//
+//                    Timber.i("vno %4d %4d %4d %4d", i, ix, iy, iz)
+//
+//                }
 
         val indexDataBuffer = ByteBuffer
                 .allocateDirect(indexData.size * BYTES_PER_SHORT).order(ByteOrder.nativeOrder())
@@ -542,8 +615,7 @@ class ObjFile(activity: ActivityDisplayObjFile) {
             GLES20.glEnableVertexAttribArray(colorAttribute)
 
             // Draw
-            val todo: Int
-            todo = if (doWireframeRendering) {
+            val todo = if (doWireframeRendering) {
                 GLES20.GL_LINES
             } else {
                 GLES20.GL_TRIANGLES
@@ -606,10 +678,7 @@ class ObjFile(activity: ActivityDisplayObjFile) {
 
         private const val NORMAL_BRIGHTNESS_FACTOR = 7f
 
-        private var v1 = FloatArray(3)
-        private var v2 = FloatArray(3)
-        private var v3 = FloatArray(3)
-        private var n = FloatArray(3)
+
     }
 
 }
