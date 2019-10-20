@@ -11,13 +11,7 @@ Android OpenGL test repo
 
 Update: this project has been converted to Kotlin
 
-<b>Play store</b> - downloadable test app - try it here:
-
-http://play.google.com/store/apps/details?id=com.learnopengles.sandbox&hl=en
-
-<b>Current Studio level:</b> (Mar 2018) - Android Studio 3.0.1
-
-<b>License:</b> See LICENSE.TXT in repo
+<b>Current Studio level:</b> (Mar 2018) - Android Studio 3.5+
 
 Gif movie
 ---------
@@ -31,4 +25,10 @@ Note: gif movie made with the following tool:  http://image.online-convert.com/c
 This Android OpenGL study used this Repo as a base for initial coding:
 
 https://github.com/learnopengles/Learn-OpenGLES-Tutorials
+
+See also this web resource for more OpenGL ES2 information:
+
+https://www.learnopengles.com
+
+
 
