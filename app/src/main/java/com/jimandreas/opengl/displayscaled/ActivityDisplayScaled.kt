@@ -98,7 +98,7 @@ class ActivityDisplayScaled : Activity() {
         }
     }
 
-    fun updateRenderOnlyIBOStatus(renderOnlyIBO: Boolean) {
+/*    fun updateRenderOnlyIBOStatus(renderOnlyIBO: Boolean) {
         runOnUiThread {
             if (renderOnlyIBO) {
                 (findViewById<View>(
@@ -108,5 +108,5 @@ class ActivityDisplayScaled : Activity() {
                         R.id.button_only_ibo) as Button).setText(R.string.button_objects_only_ibo)
             }
         }
-    }
+    }*/
 }

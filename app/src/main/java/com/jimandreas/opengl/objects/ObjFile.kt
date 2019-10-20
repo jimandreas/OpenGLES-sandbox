@@ -17,10 +17,7 @@ package com.jimandreas.opengl.objects
 
 import android.annotation.SuppressLint
 import android.content.res.AssetManager
-import android.opengl.GLES10
 import android.opengl.GLES20
-import android.opengl.GLES20.GL_FRONT_AND_BACK
-import android.opengl.GLES30
 import android.os.Bundle
 import android.os.SystemClock
 import com.jimandreas.opengl.displayobjfile.ActivityDisplayObjFile
@@ -379,7 +376,7 @@ class ObjFile(activity: ActivityDisplayObjFile) {
 
     }
 
-    private fun parseInteger(s: String): Int {
+/*    private fun parseInteger(s: String): Int {
         return try {
             Integer.parseInt(s)
         } catch (e: RuntimeException) {
@@ -387,7 +384,7 @@ class ObjFile(activity: ActivityDisplayObjFile) {
             0
         }
 
-    }
+    }*/
 
     /*
      * pull the data from the buffers and assemble

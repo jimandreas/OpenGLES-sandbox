@@ -106,8 +106,6 @@ class RendererDisplayObjFile(activityIn: Activity, surfaceViewIn: SurfaceViewObj
     private var wireFrameRenderingFlag = false
     private var renderOnlyIBO = true
 
-    /** This is a handle to our light point program.  */
-    private var pointPrograhandle: Int = 0
     /** A temporary matrix.  */
     private val temporaryMatrix = FloatArray(16)
 
@@ -176,28 +174,6 @@ class RendererDisplayObjFile(activityIn: Activity, surfaceViewIn: SurfaceViewObj
         fragmentShaderHandle = compileShader(GLES20.GL_FRAGMENT_SHADER, fragmentShader)
         perPixelProgramHandle = createAndLinkProgram(vertexShaderHandle, fragmentShaderHandle,
                 arrayOf("a_Position", "a_Color", "a_Normal"))
-
-        // Define a simple shader program for our point (the orbiting light source)
-        val pointVertexShader = ("uniform mat4 u_MVPMatrix;      \n"
-                + "attribute vec4 a_Position;     \n"
-                + "void main()                    \n"
-                + "{                              \n"
-                + "   gl_Position = u_MVPMatrix   \n"
-                + "               * a_Position;   \n"
-                + "   gl_PointSize = 5.0;         \n"
-                + "}                              \n")
-
-        val pointFragmentShader = ("precision mediump float;       \n"
-                + "void main()                    \n"
-                + "{                              \n"
-                + "   gl_FragColor = vec4(1.0,    \n"
-                + "   1.0, 1.0, 1.0);             \n"
-                + "}                              \n")
-
-        val pointVertexShaderHandle = compileShader(GLES20.GL_VERTEX_SHADER, pointVertexShader)
-        val pointFragmentShaderHandle = compileShader(GLES20.GL_FRAGMENT_SHADER, pointFragmentShader)
-        pointPrograhandle = createAndLinkProgram(pointVertexShaderHandle, pointFragmentShaderHandle,
-                arrayOf("a_Position"))
 
         /*
          * begin the geometry assortment allocations
