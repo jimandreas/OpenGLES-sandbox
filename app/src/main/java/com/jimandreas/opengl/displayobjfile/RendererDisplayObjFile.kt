@@ -1,4 +1,4 @@
-@file:Suppress("FunctionName", "LocalVariableName", "unused")
+@file:Suppress("FunctionName", "LocalVariableName"/*, "unused"*/)
 
 package com.jimandreas.opengl.displayobjfile
 
@@ -26,7 +26,7 @@ import javax.microedition.khronos.opengles.GL10
  * renderers -- the static class GLES20 is used instead.
  */
 class RendererDisplayObjFile(activityIn: Activity, surfaceViewIn: SurfaceViewObjFile)
-    : RendererCommon(activityIn, surfaceViewIn), GLSurfaceView.Renderer {
+    : RendererCommon(surfaceViewIn), GLSurfaceView.Renderer {
 
     /*
     class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDisplayObjects)
@@ -118,17 +118,17 @@ class RendererDisplayObjFile(activityIn: Activity, surfaceViewIn: SurfaceViewObj
 
     /** Store the current rotation.  */
     private val incrementalRotation = FloatArray(16)
-    private val currentTranslation = FloatArray(16)
-    private val currentScaling = FloatArray(16)
+/*    private val currentTranslation = FloatArray(16)
+    private val currentScaling = FloatArray(16)*/
 
-    private var cube: Cube? = null
-    private var teapot: Teapot? = null
-    private var teapotIBO: TeapotIBO? = null
-    private var heightMap: HeightMap? = null
-    private var sphere: Sphere? = null
-    private var cylinder: Cylinder? = null
-    private var cone: Cone? = null
-    private var triangleTest: TriangleTest? = null
+    private lateinit var cube: Cube
+    private lateinit var teapot: Teapot
+    private lateinit var teapotIBO: TeapotIBO
+    private lateinit var heightMap: HeightMap
+    private lateinit var sphere: Sphere
+    private lateinit var cylinder: Cylinder
+    private lateinit var cone: Cone
+    private lateinit var triangleTest: TriangleTest
     private val objFile: ObjFile = ObjFile(activity)
 
     override fun onSurfaceCreated(glUnused: GL10, config: EGLConfig) {
@@ -331,7 +331,7 @@ class RendererDisplayObjFile(activityIn: Activity, surfaceViewIn: SurfaceViewObj
         Matrix.translateM(modelMatrix, 0, 1.0f, -1.0f, -2.5f)
         Matrix.scaleM(modelMatrix, 0, 0.9f, 0.9f, 0.9f)
         do_matrix_setup()
-        cone!!.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
+        cone.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
     }
 
 
@@ -403,7 +403,7 @@ class RendererDisplayObjFile(activityIn: Activity, surfaceViewIn: SurfaceViewObj
 
             // If the compilation failed, delete the shader.
             if (compileStatus[0] == 0) {
-                Timber.e("Error compiling shader: " + GLES20.glGetShaderInfoLog(shaderHandle))
+                Timber.e("Error compiling shader: %s", GLES20.glGetShaderInfoLog(shaderHandle))
                 GLES20.glDeleteShader(shaderHandle)
                 shaderHandle = 0
             }
@@ -425,43 +425,43 @@ class RendererDisplayObjFile(activityIn: Activity, surfaceViewIn: SurfaceViewObj
      * @return An OpenGL handle to the program.
      */
     private fun createAndLinkProgram(vertexShaderHandle: Int, fragmentShaderHandle: Int, attributes: Array<String>?): Int {
-        var prograhandle = GLES20.glCreateProgram()
+        var programhandle = GLES20.glCreateProgram()
 
-        if (prograhandle != 0) {
+        if (programhandle != 0) {
             // Bind the vertex shader to the program.
-            GLES20.glAttachShader(prograhandle, vertexShaderHandle)
+            GLES20.glAttachShader(programhandle, vertexShaderHandle)
 
             // Bind the fragment shader to the program.
-            GLES20.glAttachShader(prograhandle, fragmentShaderHandle)
+            GLES20.glAttachShader(programhandle, fragmentShaderHandle)
 
             // Bind attributes
             if (attributes != null) {
                 val size = attributes.size
                 for (i in 0 until size) {
-                    GLES20.glBindAttribLocation(prograhandle, i, attributes[i])
+                    GLES20.glBindAttribLocation(programhandle, i, attributes[i])
                 }
             }
 
             // Link the two shaders together into a program.
-            GLES20.glLinkProgram(prograhandle)
+            GLES20.glLinkProgram(programhandle)
 
             // Get the link status.
             val linkStatus = IntArray(1)
-            GLES20.glGetProgramiv(prograhandle, GLES20.GL_LINK_STATUS, linkStatus, 0)
+            GLES20.glGetProgramiv(programhandle, GLES20.GL_LINK_STATUS, linkStatus, 0)
 
             // If the link failed, delete the program.
             if (linkStatus[0] == 0) {
-                Timber.e("Error compiling program: " + GLES20.glGetProgramInfoLog(prograhandle))
-                GLES20.glDeleteProgram(prograhandle)
-                prograhandle = 0
+                Timber.e("Error compiling program: %s", GLES20.glGetProgramInfoLog(programhandle))
+                GLES20.glDeleteProgram(programhandle)
+                programhandle = 0
             }
         }
 
-        if (prograhandle == 0) {
+        if (programhandle == 0) {
             throw RuntimeException("Error creating program.")
         }
 
-        return prograhandle
+        return programhandle
     }
 
     /* asset obj */
@@ -518,8 +518,8 @@ class RendererDisplayObjFile(activityIn: Activity, surfaceViewIn: SurfaceViewObj
     }
 
     companion object {
-        private var scaleCount = 0
-        private var shrinking = true
+/*        private var scaleCount = 0
+        private var shrinking = true*/
         private var height: Int = 0
         private var width: Int = 0
     }

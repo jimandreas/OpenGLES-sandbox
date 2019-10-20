@@ -31,7 +31,7 @@ import kotlin.math.sin
  * renderers -- the static class GLES20 is used instead.
  */
 class RendererDisplayScaled(activityIn: Activity, surfaceViewIn: SurfaceViewDisplayScaled)
-    : RendererCommon(activityIn, surfaceViewIn), GLSurfaceView.Renderer {
+    : RendererCommon(surfaceViewIn), GLSurfaceView.Renderer {
 
     private val mXYZ = XYZ()
 
