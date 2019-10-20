@@ -34,10 +34,10 @@ class ToroidHelix(val mColor: FloatArray /*RGBA*/)
 {
     private var mNumIndices = 0
 
-    private var raw_x = Array(LINES) { FloatArray(POINTS) }
-    private var raw_y = Array(LINES) { FloatArray(POINTS) }
-    private var raw_z = Array(LINES) { FloatArray(POINTS) }
-    private var raw_index = Array(LINES) { IntArray(POINTS) }
+    private var rawX = Array(LINES) { FloatArray(POINTS) }
+    private var rawY = Array(LINES) { FloatArray(POINTS) }
+    private var rawZ = Array(LINES) { FloatArray(POINTS) }
+    private var rawIndex = Array(LINES) { IntArray(POINTS) }
 
     private var vertexData: FloatArray
     private var offset: Int = 0
@@ -62,7 +62,7 @@ class ToroidHelix(val mColor: FloatArray /*RGBA*/)
         var i: Int = 0
         var j: Int
         var points: Int = 1
-        var polys: Int = 0
+        var polys = 0
         var x1: Float
         var y1: Float
         var z1: Float
@@ -147,11 +147,11 @@ class ToroidHelix(val mColor: FloatArray /*RGBA*/)
                 y3 = r3 * (ry2 * cos(theta.toDouble()).toFloat() + vy2 * sin(theta.toDouble()).toFloat())
                 z3 = r3 * (rz2 * cos(theta.toDouble()).toFloat() + vz2 * sin(theta.toDouble()).toFloat())
 
-                raw_x[i][j] = x2 + x3  /* actually sum of x1+x2+x3, the final point on surface */
-                raw_y[i][j] = y2 + y3
-                raw_z[i][j] = z2 + z3
+                rawX[i][j] = x2 + x3  /* actually sum of x1+x2+x3, the final point on surface */
+                rawY[i][j] = y2 + y3
+                rawZ[i][j] = z2 + z3
 
-                raw_index[i][j] = points
+                rawIndex[i][j] = points
                 points++
                 j++
             }
@@ -164,13 +164,13 @@ class ToroidHelix(val mColor: FloatArray /*RGBA*/)
         //        for (i = 0; i < (nx - 1); i++) {
         ///* reuse last point of i and j as first point */
         //            for (j = 0; j < (ny - 1); j++) {
-        //                tri_raw_p1[polys] = raw_index[i][j];
-        //                tri_raw_p2[polys] = raw_index[i][j + 1];
-        //                tri_raw_p3[polys] = raw_index[i + 1][j + 1];
+        //                tri_raw_p1[polys] = rawIndex[i][j];
+        //                tri_raw_p2[polys] = rawIndex[i][j + 1];
+        //                tri_raw_p3[polys] = rawIndex[i + 1][j + 1];
         //                polys++;
-        //                tri_raw_p1[polys] = raw_index[i][j];
-        //                tri_raw_p2[polys] = raw_index[i + 1][j + 1];
-        //                tri_raw_p3[polys] = raw_index[i + 1][j];
+        //                tri_raw_p1[polys] = rawIndex[i][j];
+        //                tri_raw_p2[polys] = rawIndex[i + 1][j + 1];
+        //                tri_raw_p3[polys] = rawIndex[i + 1][j];
         //                polys++;
         //            }
         //        }
@@ -190,34 +190,34 @@ class ToroidHelix(val mColor: FloatArray /*RGBA*/)
             /* reuse last point of i and j as first point */
             j = 0
             while (j < ny - 1) {
-                //                add_to_buffer(raw_index[i][j], ny);
-                //                add_to_buffer(raw_index[i][j + 1], ny);
-                //                add_to_buffer(raw_index[i + 1][j + 1], ny);
+                //                add_to_buffer(rawIndex[i][j], ny);
+                //                add_to_buffer(rawIndex[i][j + 1], ny);
+                //                add_to_buffer(rawIndex[i + 1][j + 1], ny);
                 // reverse 2 and 3 winding
-                //                add_to_buffer(raw_index[i][j], ny);
-                //                add_to_buffer(raw_index[i + 1][j + 1], ny);
-                //                add_to_buffer(raw_index[i][j + 1], ny);
+                //                add_to_buffer(rawIndex[i][j], ny);
+                //                add_to_buffer(rawIndex[i + 1][j + 1], ny);
+                //                add_to_buffer(rawIndex[i][j + 1], ny);
 
                 triangle(
-                        raw_index[i][j],
-                        raw_index[i + 1][j + 1],
-                        raw_index[i][j + 1],
+                        rawIndex[i][j],
+                        rawIndex[i + 1][j + 1],
+                        rawIndex[i][j + 1],
                         ny
                 )
 
                 polys++
-                //                add_to_buffer(raw_index[i][j], ny);
-                //                add_to_buffer(raw_index[i + 1][j + 1], ny);
-                //                add_to_buffer(raw_index[i + 1][j], ny);
+                //                add_to_buffer(rawIndex[i][j], ny);
+                //                add_to_buffer(rawIndex[i + 1][j + 1], ny);
+                //                add_to_buffer(rawIndex[i + 1][j], ny);
                 // reverse 2 and 3 winding
-                //                add_to_buffer(raw_index[i][j], ny);
-                //                add_to_buffer(raw_index[i + 1][j], ny);
-                //                add_to_buffer(raw_index[i + 1][j + 1], ny);
+                //                add_to_buffer(rawIndex[i][j], ny);
+                //                add_to_buffer(rawIndex[i + 1][j], ny);
+                //                add_to_buffer(rawIndex[i + 1][j + 1], ny);
 
                 triangle(
-                        raw_index[i][j],
-                        raw_index[i + 1][j],
-                        raw_index[i + 1][j + 1],
+                        rawIndex[i][j],
+                        rawIndex[i + 1][j],
+                        rawIndex[i + 1][j + 1],
                         ny
                 )
 
@@ -242,17 +242,17 @@ class ToroidHelix(val mColor: FloatArray /*RGBA*/)
         t1_index--
         t2_index--
         t3_index--
-        v1[0] = raw_x[t1_index / blocking][t1_index % blocking]
-        v1[1] = raw_y[t1_index / blocking][t1_index % blocking]
-        v1[2] = raw_z[t1_index / blocking][t1_index % blocking]
+        v1[0] = rawX[t1_index / blocking][t1_index % blocking]
+        v1[1] = rawY[t1_index / blocking][t1_index % blocking]
+        v1[2] = rawZ[t1_index / blocking][t1_index % blocking]
 
-        v2[0] = raw_x[t2_index / blocking][t2_index % blocking]
-        v2[1] = raw_y[t2_index / blocking][t2_index % blocking]
-        v2[2] = raw_z[t2_index / blocking][t2_index % blocking]
+        v2[0] = rawX[t2_index / blocking][t2_index % blocking]
+        v2[1] = rawY[t2_index / blocking][t2_index % blocking]
+        v2[2] = rawZ[t2_index / blocking][t2_index % blocking]
 
-        v3[0] = raw_x[t3_index / blocking][t3_index % blocking]
-        v3[1] = raw_y[t3_index / blocking][t3_index % blocking]
-        v3[2] = raw_z[t3_index / blocking][t3_index % blocking]
+        v3[0] = rawX[t3_index / blocking][t3_index % blocking]
+        v3[1] = rawY[t3_index / blocking][t3_index % blocking]
+        v3[2] = rawZ[t3_index / blocking][t3_index % blocking]
 
         n = XYZ.getNormal(v1, v2, v3)
 

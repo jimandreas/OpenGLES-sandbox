@@ -40,8 +40,6 @@ object BufferManager {
     var sFloatArrayIndex: Int = 0
     
     fun allocateInitialBuffer() {
-        if (sFloatArrayAlloatedAlready) {
-        }
         sFloatArray = FloatArray(sFloatArraySize)
         
         sFloatArrayAlloatedAlready = true
@@ -199,7 +197,7 @@ object BufferManager {
     private const val COLOR_DATA_SIZE_IN_ELEMENTS = 4
 
     private const val BYTES_PER_FLOAT = 4
-    private const val BYTES_PER_SHORT = 2
+//    private const val BYTES_PER_SHORT = 2
 
     private const val STRIDE_IN_FLOATS = POSITION_DATA_SIZE_IN_ELEMENTS + NORMAL_DATA_SIZE_IN_ELEMENTS + COLOR_DATA_SIZE_IN_ELEMENTS
     private const val STRIDE_IN_BYTES = STRIDE_IN_FLOATS * BYTES_PER_FLOAT

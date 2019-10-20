@@ -1,4 +1,4 @@
-@file:Suppress("LocalVariableName", "PrivatePropertyName", "unused")
+@file:Suppress("LocalVariableName", "PrivatePropertyName"/*, "unused"*/)
 
 package com.jimandreas.opengl.displayobjects
 
@@ -29,7 +29,7 @@ import javax.microedition.khronos.opengles.GL10
  * renderers -- the static class GLES20 is used instead.
  */
 class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDisplayObjects)
-    : RendererCommon(activityIn, surfaceViewIn), GLSurfaceView.Renderer {
+    : RendererCommon(surfaceViewIn), GLSurfaceView.Renderer {
 
 /*    var touchX = 300f
     var touchY = 300f
@@ -43,7 +43,7 @@ class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDis
     var deltaTranslateX = 0f
     var deltaTranslateY = 0f*/
 
-    private lateinit var activity: ActivityDisplayObjects
+    private var activity: ActivityDisplayObjects
 
     init {
         if (activityIn is ActivityDisplayObjects) {
@@ -120,10 +120,6 @@ class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDis
     private var renderOnlyIBO = true
 
     /**
-     * This is a handle to our light point program.
-     */
-    private var pointProgramHandle: Int = 0
-    /**
      * A temporary matrix.
      */
     private val temporaryMatrix = FloatArray(16)
@@ -136,17 +132,17 @@ class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDis
     private val accumulatedScaling = FloatArray(16)
     private val incrementalRotation = FloatArray(16)
 
-    private var cube: Cube? = null
-    private var teapot: Teapot? = null
-    private var teapotIBO: TeapotIBO? = null
-    private var heightMap: HeightMap? = null
-    private var sphere: Sphere? = null
-    private var cylinder: Cylinder? = null
-    private var ellipse: Ellipse? = null
-    // private val ellipseHelix: EllipseHelix? = null
-    private var toroidHelix: ToroidHelix? = null
-    private var cone: Cone? = null
-    private var triangleTest: TriangleTest? = null
+    private lateinit var cube: Cube
+    private lateinit var teapot: Teapot
+    private lateinit var teapotIBO: TeapotIBO
+    private lateinit var heightMap: HeightMap
+    private lateinit var sphere: Sphere
+    private lateinit var cylinder: Cylinder
+    private lateinit var ellipse: Ellipse
+    // private val ellipseHelix: EllipseHelix
+    private lateinit var toroidHelix: ToroidHelix
+    private lateinit var cone: Cone
+    private lateinit var triangleTest: TriangleTest
 
     override fun onSurfaceCreated(glUnused: GL10, config: EGLConfig) {
 
@@ -198,28 +194,6 @@ class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDis
         fragmentShaderHandle = compileShader(GLES20.GL_FRAGMENT_SHADER, fragmentShader)
         perPixelProgramHandle = createAndLinkProgram(vertexShaderHandle, fragmentShaderHandle,
                 arrayOf("a_Position", "a_Color", "a_Normal"))
-
-        // Define a simple shader program for our point (the orbiting light source)
-        val pointVertexShader = ("uniform mat4 u_MVPMatrix;      \n"
-                + "attribute vec4 a_Position;     \n"
-                + "void main()                    \n"
-                + "{                              \n"
-                + "   gl_Position = u_MVPMatrix   \n"
-                + "               * a_Position;   \n"
-                + "   gl_PointSize = 5.0;         \n"
-                + "}                              \n")
-
-        val pointFragmentShader = ("precision mediump float;       \n"
-                + "void main()                    \n"
-                + "{                              \n"
-                + "   gl_FragColor = vec4(1.0,    \n"
-                + "   1.0, 1.0, 1.0);             \n"
-                + "}                              \n")
-
-        val pointVertexShaderHandle = compileShader(GLES20.GL_VERTEX_SHADER, pointVertexShader)
-        val pointFragmentShaderHandle = compileShader(GLES20.GL_FRAGMENT_SHADER, pointFragmentShader)
-        pointProgramHandle = createAndLinkProgram(pointVertexShaderHandle, pointFragmentShaderHandle,
-                arrayOf("a_Position"))
 
         /*
          * begin the geometry assortment allocations
@@ -355,28 +329,28 @@ class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDis
         Matrix.translateM(modelMatrix, 0, -.75f, 1.0f, -2.5f)
         Matrix.scaleM(modelMatrix, 0, 1.0f, 1.0f, 1.0f)
         doMatrixSetup()
-        cylinder!!.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
+        cylinder.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
 
         // Obj #5 center
         Matrix.setIdentityM(modelMatrix, 0)
         Matrix.translateM(modelMatrix, 0, 0.0f, 1.0f, -2.5f)
         Matrix.scaleM(modelMatrix, 0, .6f, .6f, .6f)
         doMatrixSetup()
-        sphere!!.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
+        sphere.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
 
         // Obj #3 upper right
         Matrix.setIdentityM(modelMatrix, 0)
         Matrix.translateM(modelMatrix, 0, 1.0f, .75f, -2.5f)
         Matrix.scaleM(modelMatrix, 0, 3.5f, 3.5f, 3.5f)
         doMatrixSetup()
-        teapotIBO!!.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
+        teapotIBO.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
 
         // Obj #4 mid left
         Matrix.setIdentityM(modelMatrix, 0)
         Matrix.translateM(modelMatrix, 0, -1.0f, 0.0f, -2.5f)
         Matrix.scaleM(modelMatrix, 0, .25f, .25f, .25f)
         doMatrixSetup()
-        cube!!.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
+        cube.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
 
         //        // Obj #5 center
         //        Matrix.setIdentityM(modelMatrix, 0);
@@ -401,7 +375,7 @@ class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDis
         Matrix.scaleM(modelMatrix, 0, 3.5f, 3.5f, 3.5f)
         doMatrixSetup()
         if (!renderOnlyIBO) {
-            teapot!!.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)  // direct rendering
+            teapot.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)  // direct rendering
         }
 
         // Obj #7 bottom left
@@ -409,7 +383,7 @@ class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDis
         Matrix.translateM(modelMatrix, 0, -1.0f, -1.0f, -2.5f)
         Matrix.scaleM(modelMatrix, 0, .05f, .05f, .05f)
         doMatrixSetup()
-        heightMap!!.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
+        heightMap.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
 
         // Obj #2 middle
         Matrix.setIdentityM(modelMatrix, 0)
@@ -417,14 +391,14 @@ class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDis
         Matrix.scaleM(modelMatrix, 0, 1.0f, 1.0f, 1.0f)
         doMatrixSetup()
         // triangleTest.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag);
-        ellipse!!.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
+        ellipse.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
 
         // Obj #9 bottom right
         Matrix.setIdentityM(modelMatrix, 0)
         Matrix.translateM(modelMatrix, 0, 1.0f, -1.0f, -2.5f)
         Matrix.scaleM(modelMatrix, 0, 0.9f, 0.9f, 0.9f)
         doMatrixSetup()
-        cone!!.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
+        cone.render(positionHandle, colorHandle, normalHandle, wireFrameRenderingFlag)
 
         val glError: Int = GLES20.glGetError()
         if (glError != GLES20.GL_NO_ERROR) {
@@ -476,28 +450,6 @@ class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDis
         if (glError != GLES20.GL_NO_ERROR) {
             Timber.e("GLERROR: $glError")
         }
-    }
-
-    /**
-     * Draws a point representing the position of the light.
-     */
-    private fun drawLight() {
-        val pointMVPMatrixHandle = GLES20.glGetUniformLocation(pointProgramHandle, "u_MVPMatrix")
-        val pointPositionHandle = GLES20.glGetAttribLocation(pointProgramHandle, "a_Position")
-
-        // Pass in the position.
-        GLES20.glVertexAttrib3f(pointPositionHandle, lightPosInModelSpace[0], lightPosInModelSpace[1], lightPosInModelSpace[2])
-
-        // Since we are not using a buffer object, disable vertex arrays for this attribute.
-        GLES20.glDisableVertexAttribArray(pointPositionHandle)
-
-        // Pass in the transformation matrix.
-        Matrix.multiplyMM(MVPMatrix, 0, viewMatrix, 0, lightModelMatrix, 0)
-        Matrix.multiplyMM(MVPMatrix, 0, projectionMatrix, 0, MVPMatrix, 0)
-        GLES20.glUniformMatrix4fv(pointMVPMatrixHandle, 1, false, MVPMatrix, 0)
-
-        // Draw the point.
-        GLES20.glDrawArrays(GLES20.GL_POINTS, 0, 1)
     }
 
     /**
@@ -615,8 +567,8 @@ class RendererDisplayObjects(activityIn: Activity, surfaceViewIn: SurfaceViewDis
     }
 
     companion object {
-        private var scaleCount = 0
-        private var shrinking = true
+/*        private var scaleCount = 0
+        private var shrinking = true*/
         private var height: Int = 0
         private var width: Int = 0
     }

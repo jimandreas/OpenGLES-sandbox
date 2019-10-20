@@ -7,6 +7,7 @@ import timber.log.Timber
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
+
 class TeapotIBO(color: FloatArray) {
 
     private val vbo = IntArray(1)

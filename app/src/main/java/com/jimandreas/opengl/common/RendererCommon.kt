@@ -1,8 +1,7 @@
+@file:Suppress("unusedparameter")
 package com.jimandreas.opengl.common
 
-import android.app.Activity
-
-abstract class RendererCommon(activityIn: Activity, surfaceViewIn: SurfaceViewCommon) {
+abstract class RendererCommon(surfaceViewIn: SurfaceViewCommon) {
     var scaleCurrent = 0.5f
     var scalePrevious = 0f
     var deltaX = 0f
