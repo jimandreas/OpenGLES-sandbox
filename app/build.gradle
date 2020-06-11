@@ -23,14 +23,14 @@
 //apply plugin: "androidx.navigation.safeargs"
 
         android {
-            compileSdkVersion 28
+            compileSdkVersion 29
             dataBinding {
                 enabled = true
             }
             defaultConfig {
                 applicationId "com.learnopengles.sandbox"
                 minSdkVersion 24
-                targetSdkVersion 28
+                targetSdkVersion 29
                 versionCode 1
                 versionName "1.0"
                 testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -60,8 +60,8 @@
             implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
 
             // Navigation
-            implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
-            implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
+            implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
+            implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
 
             // Core with Ktx
             implementation "androidx.core:core-ktx:$version_core"
