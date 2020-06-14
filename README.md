@@ -11,7 +11,7 @@ Android OpenGL test repo
 
 Update: this project has been converted to Kotlin
 
-<b>Current Studio level:</b> (Mar 2018) - Android Studio 3.5+
+<b>Current Studio level:</b> (October 2019) - Android Studio 3.5+
 
 Gif movie
 ---------
