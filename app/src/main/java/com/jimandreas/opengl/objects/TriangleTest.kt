@@ -1,4 +1,4 @@
-@file:Suppress("LocalVariableName")
+@file:Suppress("LocalVariableName", "UNUSED_CHANGED_VALUE")
 
 package com.jimandreas.opengl.objects
 

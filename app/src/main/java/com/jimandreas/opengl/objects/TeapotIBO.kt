@@ -1,4 +1,4 @@
-@file:Suppress("LocalVariableName")
+@file:Suppress("LocalVariableName", "UNUSED_VARIABLE")
 
 package com.jimandreas.opengl.objects
 
@@ -147,8 +147,7 @@ class TeapotIBO(color: FloatArray) {
             GLES20.glEnableVertexAttribArray(colorAttribute)
 
             // Draw
-            val todo: Int
-            todo = if (doWireframeRendering) {
+            val todo = if (doWireframeRendering) {
                 GLES20.GL_LINE_STRIP
             } else {
                 GLES20.GL_TRIANGLE_STRIP

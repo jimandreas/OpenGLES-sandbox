@@ -1,4 +1,9 @@
-@file:Suppress("FunctionName", "LocalVariableName", "unused")
+@file:Suppress("FunctionName",
+        "LocalVariableName",
+        "unused",
+        "VARIABLE_WITH_REDUNDANT_INITIALIZER",
+        "UNUSED_CHANGED_VALUE",
+        "SameParameterValue", "MemberVisibilityCanBePrivate")
 
 package com.jimandreas.opengl.objects
 
@@ -19,7 +24,7 @@ package com.jimandreas.opengl.objects
  * some of the original code and secondary steps are commented out but left in
  *  - this makes things a bit messy but helps to sort of document the progression
  *
- * reference (great for study of packed VBO's:
+ * reference - great for study of packed VBO's:
  *
  * http://www.learnopengles.com/android-lesson-seven-an-introduction-to-vertex-buffer-objects-vbos/
  */
@@ -57,11 +62,11 @@ class ToroidHelix(val mColor: FloatArray /*RGBA*/)
 
         var phi: Float
         var theta: Float
-        var phi1: Float = 0.0f
+        var phi1 = 0.0f
         var theta1: Float
-        var i: Int = 0
+        var i = 0
         var j: Int
-        var points: Int = 1
+        var points = 1
         var polys = 0
         var x1: Float
         var y1: Float
