@@ -28,4 +28,5 @@
 
     <string name="button_objects_multiple_more_triangles">More TRIs</string>
     <string name="button_objects_multiple_fewer_triangles">Fewer TRIs</string>
+    <string name="fab_button">FAB button</string>
 </resources>

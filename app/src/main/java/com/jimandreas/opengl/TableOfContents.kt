@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.jimandreas.opengl
 
 import android.app.Activity
@@ -14,6 +12,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.jimandreas.opengl.displayobjects.ActivityDisplayObjects
 import com.jimandreas.opengl.displayobjfile.ActivityDisplayObjFile
 import com.jimandreas.opengl.displayscaled.ActivityDisplayScaled
+
 import timber.log.Timber
 import java.util.*
 
@@ -22,9 +21,9 @@ class TableOfContents : ListActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (savedInstanceState == null && BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
+//        if (savedInstanceState == null && BuildConfig.DEBUG) {
+//            Timber.plant(Timber.DebugTree())
+//        }
 
         setTitle(R.string.toc)
         setContentView(R.layout.table_of_contents)

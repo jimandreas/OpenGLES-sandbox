@@ -75,7 +75,7 @@ open class SurfaceViewCommon : GLSurfaceView {
         // Turn off long press--this control doesn't use it, and if long press is enabled,
         // you can't scroll for a bit, pause, then scroll some more (the pause is interpreted
         // as a long press, apparently)
-        gestureDetector!!.setIsLongpressEnabled(false)
+        //gestureDetector!!.setIsLongpressEnabled(false)
     }
 
     // with h/t to :
@@ -97,12 +97,12 @@ open class SurfaceViewCommon : GLSurfaceView {
         // hand the event to the GestureDetector
         // ignore the result for now.
         // TODO:  hook up fling logic
-        val result = gestureDetector!!.onTouchEvent(m)
+        val result = gestureDetector!!.onTouchEvent(m!!)
 
         if (m == null) {
             return true
         }
-        if (hack) renderMode = RENDERMODE_CONTINUOUSLY
+        if (HACK) renderMode = RENDERMODE_CONTINUOUSLY
 
         //Number of touches
         val pointerCount = m.pointerCount
@@ -195,7 +195,7 @@ open class SurfaceViewCommon : GLSurfaceView {
                         oldY = (y1 + y2) / 2.0f
                         initialSpacing = spacing(m)
                     }
-                    MotionEvent.ACTION_POINTER_UP -> if (hack) renderMode = RENDERMODE_WHEN_DIRTY
+                    MotionEvent.ACTION_POINTER_UP -> if (HACK) renderMode = RENDERMODE_WHEN_DIRTY
                 }// Log.w("Down", "touch DOWN, initialSpacing is " + initialSpacing);
                 lastTouchState = TWO_FINGERS_DOWN
                 return true
@@ -227,7 +227,7 @@ open class SurfaceViewCommon : GLSurfaceView {
 
                 return true
             }
-            hack -> renderMode = RENDERMODE_WHEN_DIRTY
+            HACK -> renderMode = RENDERMODE_WHEN_DIRTY
         }
         return super.onTouchEvent(m)
     }
@@ -268,7 +268,12 @@ open class SurfaceViewCommon : GLSurfaceView {
      * processing.
      */
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
-        override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
+        override fun onScroll(
+            e1: MotionEvent?,
+            e2: MotionEvent,
+            distanceX: Float,
+            distanceY: Float
+        ): Boolean {
 
             // Timber.w("onScroll");
             return true
@@ -276,7 +281,12 @@ open class SurfaceViewCommon : GLSurfaceView {
 
         // not implemented - probably a bad idea
         //   might be good to average out the pivot to help with jitter
-        override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+        override fun onFling(
+            e1: MotionEvent?,
+            e2: MotionEvent,
+            velocityX: Float,
+            velocityY: Float
+        ): Boolean {
 
             // Timber.w("onFling");
             //            // Set up the Scroller for a fling
@@ -331,6 +341,6 @@ open class SurfaceViewCommon : GLSurfaceView {
         private const val TWO_FINGERS_DOWN = 2
         private const val MORE_FINGERS = 3
 
-        private const val hack = true   // play with Rendermode
+        private const val HACK = true   // play with Rendermode
     }
 }
