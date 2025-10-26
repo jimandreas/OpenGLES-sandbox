@@ -1,4 +1,4 @@
-@file:Suppress("PrivatePropertyName")
+@file:Suppress("PrivatePropertyName", "unused", "unused", "unused", "unused", "unused")
 
 package com.jimandreas.opengl.objects
 
@@ -277,8 +277,7 @@ class Cylinder(numSlices: Int, radius: Float, height: Float, color: FloatArray /
             doWireframeRendering: Boolean) {
 
         // Draw
-        var todo: Int
-        todo = if (doWireframeRendering) {
+        var todo: Int = if (doWireframeRendering) {
             GLES20.GL_LINES
         } else {
             GLES20.GL_TRIANGLE_FAN

@@ -12,7 +12,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-@file:Suppress("FunctionName", "LocalVariableName")
+@file:Suppress("FunctionName", "LocalVariableName", "UnusedVariable", "CanBeVal")
 package com.jimandreas.opengl.objects
 
 import android.annotation.SuppressLint
@@ -531,7 +531,7 @@ class ObjFile(activity: ActivityDisplayObjFile) {
          * create the buffer for the indices
          */
         offset = 0
-        var x: Int = 0
+        var x = 0
         val indexData = ShortArray(indices.size)
         while (x < indices.size) {
 

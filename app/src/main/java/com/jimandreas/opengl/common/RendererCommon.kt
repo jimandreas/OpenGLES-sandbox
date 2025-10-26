@@ -1,4 +1,3 @@
-@file:Suppress( "UNUSED_PARAMETER")
 package com.jimandreas.opengl.common
 
 abstract class RendererCommon(surfaceViewIn: SurfaceViewCommon) {

@@ -1,3 +1,7 @@
+@file:Suppress("JoinDeclarationAndAssignment", "JoinDeclarationAndAssignment",
+    "JoinDeclarationAndAssignment", "JoinDeclarationAndAssignment", "JoinDeclarationAndAssignment"
+)
+
 package com.jimandreas.opengl.objects
 
 import android.opengl.GLES20

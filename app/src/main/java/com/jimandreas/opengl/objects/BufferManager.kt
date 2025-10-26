@@ -1,3 +1,8 @@
+@file:Suppress("ConstPropertyName",
+    "JoinDeclarationAndAssignment", "unused", "unused", "unused", "unused", "unused", "unused",
+    "unused", "unused", "unused", "unused", "unused", "unused", "unused", "unused"
+)
+
 package com.jimandreas.opengl.objects
 
 import android.opengl.GLES20

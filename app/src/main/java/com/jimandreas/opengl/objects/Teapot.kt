@@ -157,8 +157,7 @@ class Teapot(color: FloatArray) {
         GLES20.glEnableVertexAttribArray(mNormalHandle)
 
         // Draw
-        val todo: Int
-        todo = if (doWireframeRendering) {
+        val todo: Int = if (doWireframeRendering) {
             GLES20.GL_LINE_STRIP
         } else {
             GLES20.GL_TRIANGLE_STRIP

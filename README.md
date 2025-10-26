@@ -9,9 +9,9 @@ Android OpenGL test repo
 
 3) The ToroidHelix object can be duplicated in a scene to study the performance of Android graphics.
 
-Update: this project has been converted to Kotlin
+Update: this project has been converted to Kotlin, and updated to:
 
-<b>Current Studio level:</b> (October 2019) - Android Studio 3.5+
+<b>Android Studio Narwhal 4 Feature Drop | 2025.1.4
 
 Gif movie
 ---------

@@ -1,9 +1,10 @@
+@file:Suppress("AssignedValueIsNeverRead")
+
 package com.jimandreas.opengl
 
 import android.app.Activity
 import android.app.ListActivity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.SparseArray
 import android.widget.AdapterView.OnItemClickListener
@@ -15,6 +16,7 @@ import com.jimandreas.opengl.displayscaled.ActivityDisplayScaled
 
 import timber.log.Timber
 import java.util.*
+import androidx.core.net.toUri
 
 class TableOfContents : ListActivity() {
 
@@ -86,9 +88,7 @@ class TableOfContents : ListActivity() {
         fab.setOnClickListener {
             Timber.i("FAB clicked")
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(
-                    "https://github.com/jimandreas/OpenGLES-sandbox"
-            )
+            intent.data = "https://github.com/jimandreas/OpenGLES-sandbox".toUri()
             startActivity(intent)
         }
     }

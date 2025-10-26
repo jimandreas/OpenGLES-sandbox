@@ -1,4 +1,4 @@
-@file:Suppress("PrivatePropertyName")
+@file:Suppress("PrivatePropertyName", "unused", "unused", "unused", "unused", "unused")
 
 package com.jimandreas.opengl.objects
 

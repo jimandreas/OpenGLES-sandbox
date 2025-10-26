@@ -153,8 +153,7 @@ class Sphere(numSlices: Int, radius: Float, color: FloatArray /*RGBA*/) {
             doWireframeRendering: Boolean) {
 
         // Draw
-        val todo: Int
-        todo = if (doWireframeRendering) {
+        val todo: Int = if (doWireframeRendering) {
             GLES20.GL_LINE_STRIP
         } else {
             GLES20.GL_TRIANGLE_STRIP

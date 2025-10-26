@@ -1,4 +1,6 @@
-@file:Suppress("ConstantConditionIf", "unused", "UNUSED_VARIABLE", "SENSELESS_COMPARISON")
+@file:Suppress("ConstantConditionIf", "unused", "SENSELESS_COMPARISON", "EmptyMethod",
+    "UnusedVariable"
+)
 
 package com.jimandreas.opengl.common
 

@@ -1,4 +1,7 @@
-@file:Suppress("PrivatePropertyName")
+@file:Suppress("PrivatePropertyName", "unused", "unused", "LocalVariableName",
+    "JoinDeclarationAndAssignment", "JoinDeclarationAndAssignment", "JoinDeclarationAndAssignment",
+    "JoinDeclarationAndAssignment", "JoinDeclarationAndAssignment", "JoinDeclarationAndAssignment"
+)
 
 package com.jimandreas.opengl.objects
 
