@@ -12,7 +12,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-@file:Suppress("FunctionName", "LocalVariableName", "UnusedVariable", "CanBeVal")
+@file:Suppress("FunctionName", "unused", "LocalVariableName", "UnusedVariable", "CanBeVal")
 package com.jimandreas.opengl.objects
 
 import android.annotation.SuppressLint
@@ -63,8 +63,6 @@ class ObjFile(activity: ActivityDisplayObjFile) {
     private var minZ = 1e6f
     private var lastVertexNumber = 0
 
-
-
     fun parse(objFileName: String) {
         // Timber.i("start parsing files = " + objFileName);
         val start_time = SystemClock.uptimeMillis().toFloat()
@@ -87,11 +85,6 @@ class ObjFile(activity: ActivityDisplayObjFile) {
         var line: String? = null
         try {
             inputStream = assetManager.open(objFileName, AssetManager.ACCESS_BUFFER)
-            if (inputStream == null) {
-                Timber.i("cannot open$objFileName, returning")
-                return
-            }
-
             reader = BufferedReader(InputStreamReader(inputStream))
 
             var name: String? = null
@@ -109,7 +102,7 @@ class ObjFile(activity: ActivityDisplayObjFile) {
                 }
                 line = reader.readLine()
             }
-        } catch (e: IOException) {
+        } catch (_: IOException) {
             Timber.i("IO error in file $objFileName")
             if (line != null) {
                 Timber.i("IO exception at line: $line")
@@ -164,10 +157,6 @@ class ObjFile(activity: ActivityDisplayObjFile) {
         var line: String? = null
         try {
             inputStream = assetManager.open(objFileName, AssetManager.ACCESS_BUFFER)
-            if (inputStream == null) {
-                Timber.e("cannot open$objFileName, returning")
-                return
-            }
 
             val reader = BufferedReader(InputStreamReader(inputStream))
             line = reader.readLine()
@@ -233,8 +222,7 @@ class ObjFile(activity: ActivityDisplayObjFile) {
 
         if (numTokens == 0)
             return
-        val type = parts.nextToken()
-
+        parts.nextToken()
         val isQuad = numTokens == 5
         val quadvids = IntArray(4)
         val quadtids = IntArray(4)
@@ -370,7 +358,7 @@ class ObjFile(activity: ActivityDisplayObjFile) {
     private fun parseFloat(s: String): Float {
         return try {
             java.lang.Float.parseFloat(s)
-        } catch (e: RuntimeException) {
+        } catch (_: RuntimeException) {
             0f
         }
 
