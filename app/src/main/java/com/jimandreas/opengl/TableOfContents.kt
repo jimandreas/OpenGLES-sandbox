@@ -23,9 +23,9 @@ class TableOfContents : ListActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        if (savedInstanceState == null && BuildConfig.DEBUG) {
-//            Timber.plant(Timber.DebugTree())
-//        }
+        if (savedInstanceState == null && BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
 
         setTitle(R.string.toc)
         setContentView(R.layout.table_of_contents)
