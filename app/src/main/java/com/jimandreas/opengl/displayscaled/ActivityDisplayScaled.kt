@@ -3,7 +3,6 @@ package com.jimandreas.opengl.displayscaled
 import android.app.Activity
 import android.app.ActivityManager
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
 import android.widget.Button
 import com.jimandreas.opengl.R
@@ -28,11 +27,8 @@ class ActivityDisplayScaled : Activity() {
             // Request an OpenGL ES 2.0 compatible context.
             surfaceView.setEGLContextClientVersion(2)
 
-            val displayMetrics = DisplayMetrics()
-            windowManager.defaultDisplay.getMetrics(displayMetrics)
-
             mRenderer = RendererDisplayScaled(this, surfaceView)
-            surfaceView.setRenderer(mRenderer, displayMetrics.density)
+            surfaceView.setRenderer(mRenderer, resources.displayMetrics.density)
         } else {
             // This is where you could create an OpenGL ES 1.x compatible
             // renderer if you wanted to support both ES 1 and ES 2.

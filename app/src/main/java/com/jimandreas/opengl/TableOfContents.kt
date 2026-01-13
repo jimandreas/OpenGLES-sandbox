@@ -3,12 +3,13 @@
 package com.jimandreas.opengl
 
 import android.app.Activity
-import android.app.ListActivity
 import android.content.Intent
 import android.os.Bundle
 import android.util.SparseArray
 import android.widget.AdapterView.OnItemClickListener
+import android.widget.ListView
 import android.widget.SimpleAdapter
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.jimandreas.opengl.displayobjects.ActivityDisplayObjects
 import com.jimandreas.opengl.displayobjfile.ActivityDisplayObjFile
@@ -18,7 +19,7 @@ import timber.log.Timber
 import java.util.*
 import androidx.core.net.toUri
 
-class TableOfContents : ListActivity() {
+class TableOfContents : AppCompatActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +71,8 @@ class TableOfContents : ListActivity() {
                 arrayOf(ITEM_IMAGE, ITEM_TITLE, ITEM_SUBTITLE),
                 intArrayOf(R.id.Image, R.id.Title, R.id.SubTitle))
 
-        listAdapter = dataAdapter
+        val listView: ListView = findViewById(R.id.list_view)
+        listView.adapter = dataAdapter
 
         listView.onItemClickListener = OnItemClickListener { _, _, position, _ ->
             val activityToLaunch = activityMapping.get(position)

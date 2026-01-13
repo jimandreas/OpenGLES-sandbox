@@ -84,7 +84,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.service)
-    implementation("com.google.android.material:material:1.13.0")
+    implementation(libs.material)
 
     implementation(libs.timber)
 

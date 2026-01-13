@@ -3,7 +3,6 @@ package com.jimandreas.opengl.displayobjects
 import android.app.Activity
 import android.app.ActivityManager
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
 import android.widget.Button
 import com.jimandreas.opengl.R
@@ -32,11 +31,8 @@ class ActivityDisplayObjects : Activity() {
         // Request an OpenGL ES 2.0 compatible context.
         surfaceView.setEGLContextClientVersion(2)
 
-        val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-
         mRenderer = RendererDisplayObjects( this, surfaceView )
-        surfaceView.setRenderer(mRenderer, displayMetrics.density)
+        surfaceView.setRenderer(mRenderer, resources.displayMetrics.density)
 
         findViewById<View>(R.id.button_only_ibo).setOnClickListener { toggleIBO() }
         findViewById<View>(R.id.button_switch_rendering_mode).setOnClickListener { toggleWireframe() }
