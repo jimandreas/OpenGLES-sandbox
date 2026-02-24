@@ -1,5 +1,5 @@
 [versions]
-agp = "9.0.0"
+agp = "9.0.1"
 androidxFragment = "1.8.9"
 androidxFragmentKtx = "1.8.9"
 appcompat = "1.7.1"
@@ -8,8 +8,7 @@ constraintlayout = "2.2.1"
 espressoCore = "3.7.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
-jupiter = "6.0.2"
-kotlin = "2.3.0"
+jupiter = "6.0.3"
 lifecycle = "2.10.0"
 navigation-fragment-ktx = "2.9.7"
 timber = "5.0.1"
@@ -33,7 +32,6 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
 
 
